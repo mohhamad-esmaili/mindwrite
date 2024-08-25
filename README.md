@@ -1,16 +1,21 @@
-# mindwrite
+# MindWrite
 
-A new Flutter project.
+This project is clone of Google KeepNote, with Redux
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+-[] text to speech
+-[] draw
+-[] label making
+-[] archive
+-[] settings
+-[] deleted
+-[] reminders
+-[] palete colors and bg image for notes 
+-[] pin and ordering lists
+-[] date picker
+-[] persian version
+-[] add image to notes
+-[] take image to notes
+-[] recording
+-[] tick boxes in notes
+-[] send and share + make copy
+-[] do and redo buttons
