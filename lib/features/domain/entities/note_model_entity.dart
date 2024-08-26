@@ -5,12 +5,14 @@ import 'package:mindwrite/features/data/models/label_model.dart';
 class NoteModelEntity extends Equatable {
   final String title;
   final String description;
+  final DateTime? lastUpdate;
   final List<LabelModel>? labels;
   final BackgroundModel? noteBackground;
 
   const NoteModelEntity(
       {required this.title,
       required this.description,
+      this.lastUpdate,
       this.labels,
       this.noteBackground});
 

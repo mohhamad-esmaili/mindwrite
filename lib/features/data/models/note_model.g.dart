@@ -16,7 +16,7 @@ class NoteModelAdapter extends TypeAdapter<NoteModel> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return NoteModel(title: '', description: '');
+    return NoteModel(title: '', description: '', lastUpdate: DateTime.now());
   }
 
   @override

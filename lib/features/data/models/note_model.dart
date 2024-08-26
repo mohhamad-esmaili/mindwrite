@@ -8,14 +8,16 @@ class NoteModel extends NoteModelEntity {
   const NoteModel({
     @HiveField(0) required super.title,
     @HiveField(1) required super.description,
-    @HiveField(2) super.labels,
-    @HiveField(3) super.noteBackground,
+    @HiveField(2) required super.lastUpdate,
+    @HiveField(3) super.labels,
+    @HiveField(4) super.noteBackground,
   });
 
   factory NoteModel.fromJson(dynamic json) {
     return NoteModel(
       title: json['title'],
       description: json['description'],
+      lastUpdate: json['lastupdate'] ?? DateTime.now(),
       labels: json['labels'] ?? [],
       noteBackground: json['noteBackground'] ?? [],
     );

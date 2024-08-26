@@ -1,6 +1,6 @@
-import 'package:mindwrite/core/enums/color_enums.dart';
+import 'package:flutter/material.dart';
 
 class BackgroundModel {
-  NoteColors color;
-  BackgroundModel({this.color = NoteColors.transparent});
+  Color color;
+  BackgroundModel({this.color = Colors.transparent});
 }
