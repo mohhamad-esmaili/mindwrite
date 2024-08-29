@@ -3,19 +3,24 @@ import 'package:mindwrite/features/data/models/background_model.dart';
 import 'package:mindwrite/features/data/models/label_model.dart';
 
 class NoteModelEntity extends Equatable {
-  final String title;
-  final String description;
+  final int? id;
+  final String? title;
+  final String? description;
   final DateTime? lastUpdate;
   final List<LabelModel>? labels;
   final BackgroundModel? noteBackground;
+  final bool? pin;
 
   const NoteModelEntity(
-      {required this.title,
+      {required this.id,
+      required this.title,
       required this.description,
       this.lastUpdate,
       this.labels,
-      this.noteBackground});
+      this.noteBackground,
+      this.pin = false});
 
   @override
-  List<Object?> get props => [title, description, labels, noteBackground];
+  List<Object?> get props =>
+      [id, title, description, labels, noteBackground, pin];
 }
