@@ -18,4 +18,8 @@ class ColorConstants {
   static Color scaffoldDarkColor = Color.fromRGBO(19, 19, 19, 1);
   static Color appbarDarkColor = Color.fromRGBO(30, 31, 33, 1);
   static Color primaryDarkColor = Color.fromRGBO(197, 198, 2020, 1);
+  static Color primaryColor = Color.fromRGBO(0, 74, 119, 1);
+
+  static Color WhiteTextColor = Color.fromRGBO(255, 255, 255, 1);
+  static Color DarkerWhiteTextColor = Color.fromRGBO(200, 200, 200, 1);
 }
