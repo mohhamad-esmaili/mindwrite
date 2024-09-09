@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mindwrite/features/home_feature/screens/home_view.dart';
-import 'package:mindwrite/features/note_feature/screen/note_screen.dart';
+import 'package:mindwrite/features/home_feature/presentation/screens/home_view.dart';
+import 'package:mindwrite/features/note_feature/presentation/screen/note_screen.dart';
 
 class AppRoutes {
   static final GoRouter router = GoRouter(

@@ -1,6 +1,6 @@
 # MindWrite
 
-This project is clone of Google KeepNote, with Redux
+This project is clone of Google KeepNote, with Bloc
 
 -[] text to speech
 -[] draw
