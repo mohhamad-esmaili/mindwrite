@@ -11,7 +11,7 @@ class AppRoutes {
         name: "home",
         pageBuilder: (context, state) => CustomTransitionPage(
           child: HomeView(),
-          transitionDuration: Duration(milliseconds: 500),
+          transitionDuration: const Duration(milliseconds: 500),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return SlideTransition(
                 position: getOffsetAnimation(animation), child: child);
@@ -23,7 +23,7 @@ class AppRoutes {
         name: "note_view",
         pageBuilder: (context, state) => CustomTransitionPage(
           child: NoteView(),
-          transitionDuration: Duration(milliseconds: 500),
+          transitionDuration: const Duration(milliseconds: 500),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return SlideTransition(
                 position: getOffsetAnimation(animation), child: child);

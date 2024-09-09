@@ -9,21 +9,21 @@ class HomeBottomBar extends StatelessWidget {
     return BottomAppBar(
       color: ColorConstants.appbarDarkColor,
       notchMargin: 10,
-      padding: EdgeInsets.all(5),
+      padding: const EdgeInsets.all(5),
       shape: const CircularNotchedRectangle(),
       clipBehavior: Clip.antiAlias,
       child: Row(
         children: [
           IconButton(
             onPressed: () {},
-            icon: Icon(
+            icon: const Icon(
               Icons.check_box_outlined,
               size: 35,
             ),
           ),
           IconButton(
             onPressed: () {},
-            icon: Icon(
+            icon: const Icon(
               Icons.brush_rounded,
               size: 35,
             ),

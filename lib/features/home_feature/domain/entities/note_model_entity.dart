@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:mindwrite/features/data/models/background_model.dart';
-import 'package:mindwrite/features/data/models/label_model.dart';
+import 'package:mindwrite/features/home_feature/data/models/background_model.dart';
+import 'package:mindwrite/features/home_feature/data/models/label_model.dart';
 
 class NoteModelEntity extends Equatable {
   final int? id;

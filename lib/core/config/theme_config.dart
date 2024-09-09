@@ -11,7 +11,7 @@ class ThemeConfig {
       iconTheme: IconThemeData(color: ColorConstants.primaryDarkColor),
       drawerTheme: DrawerThemeData(
         backgroundColor: ColorConstants.scaffoldDarkColor,
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
             topRight: Radius.circular(0),
             bottomRight: Radius.circular(0),

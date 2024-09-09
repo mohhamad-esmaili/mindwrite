@@ -1,10 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:mindwrite/core/resources/data_state.dart';
-import 'package:mindwrite/features/data/models/note_model.dart';
-import 'package:mindwrite/features/domain/entities/note_model_entity.dart';
+import 'package:mindwrite/features/home_feature/domain/entities/note_model_entity.dart';
 
-import 'package:mindwrite/features/domain/usecases/change_notecolor.dart';
+import 'package:mindwrite/features/home_feature/domain/usecases/load_notes_usecase.dart';
 
 part 'home_event.dart';
 part 'home_state.dart';

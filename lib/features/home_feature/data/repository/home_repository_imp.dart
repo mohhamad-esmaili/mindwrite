@@ -1,11 +1,7 @@
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:mindwrite/core/resources/data_state.dart';
-import 'package:mindwrite/features/data/data_source/local/home_local_database.dart';
-import 'package:mindwrite/features/data/models/note_model.dart';
-import 'package:mindwrite/features/domain/entities/note_model_entity.dart';
-import 'package:mindwrite/features/domain/repository/home_repository.dart';
-import 'package:mindwrite/locator.dart';
+import 'package:mindwrite/features/home_feature/data/data_source/local/home_local_database.dart';
+import 'package:mindwrite/features/home_feature/data/models/note_model.dart';
+import 'package:mindwrite/features/home_feature/domain/repository/home_repository.dart';
 
 class HomeRepositoryImp extends HomeRepository {
   final NoteModel createdNote;

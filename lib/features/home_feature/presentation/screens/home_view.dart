@@ -5,8 +5,8 @@ import 'package:go_router/go_router.dart';
 import 'package:mindwrite/core/utils/color_constants.dart';
 import 'package:mindwrite/core/widgets/app_drawer.dart';
 import 'package:mindwrite/core/widgets/circular_indicator_widget.dart';
-import 'package:mindwrite/features/data/models/note_model.dart';
-import 'package:mindwrite/features/domain/entities/note_model_entity.dart';
+import 'package:mindwrite/features/home_feature/data/models/note_model.dart';
+import 'package:mindwrite/features/home_feature/domain/entities/note_model_entity.dart';
 import 'package:mindwrite/features/home_feature/presentation/bloc/home_bloc.dart';
 import 'package:mindwrite/features/home_feature/presentation/widgets/bottom_navbar.dart';
 import 'package:mindwrite/features/home_feature/presentation/widgets/home_appbar.dart';
@@ -27,13 +27,13 @@ class HomeView extends StatelessWidget {
         } else if (state is HomeLoaded) {
           return Scaffold(
             key: _scaffoldKey,
-            drawer: AppDrawer(),
+            drawer: const AppDrawer(),
             extendBodyBehindAppBar: true,
             backgroundColor: Colors.transparent,
             body: SafeArea(
               child: Scrollbar(
                 thickness: 2,
-                radius: Radius.circular(20),
+                radius: const Radius.circular(20),
                 interactive: true,
                 child: NestedScrollView(
                   floatHeaderSlivers: true,
@@ -47,15 +47,15 @@ class HomeView extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         state.pinnedNotes.isNotEmpty
-                            ? ListviewTitle(title: "Pinnded")
-                            : SizedBox(),
+                            ? const ListviewTitle(title: "Pinnded")
+                            : const SizedBox(),
                         MasonryGridView.count(
                           crossAxisCount: 2, // تعداد ستون‌ها
                           mainAxisSpacing: 8,
                           crossAxisSpacing: 10,
                           shrinkWrap: true,
-                          padding: EdgeInsets.all(8.0),
-                          physics: NeverScrollableScrollPhysics(),
+                          padding: const EdgeInsets.all(8.0),
+                          physics: const NeverScrollableScrollPhysics(),
                           itemCount: state.pinnedNotes.length,
                           itemBuilder: (context, index) {
                             NoteModelEntity selectedNote =
@@ -63,7 +63,7 @@ class HomeView extends StatelessWidget {
                             //TODO: make fade when dismissing
                             return Dismissible(
                               key: Key(selectedNote.id.toString()),
-                              resizeDuration: Duration(milliseconds: 600),
+                              resizeDuration: const Duration(milliseconds: 600),
                               child: Container(
                                 decoration: BoxDecoration(
                                   color: selectedNote.noteBackground!.color,
@@ -82,14 +82,16 @@ class HomeView extends StatelessWidget {
                                       padding: const EdgeInsets.all(8.0),
                                       child: Text(
                                         selectedNote.title!,
-                                        style: TextStyle(color: Colors.white),
+                                        style: const TextStyle(
+                                            color: Colors.white),
                                       ),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Text(
                                         selectedNote.description!,
-                                        style: TextStyle(color: Colors.white),
+                                        style: const TextStyle(
+                                            color: Colors.white),
                                       ),
                                     ),
                                   ],
@@ -98,14 +100,14 @@ class HomeView extends StatelessWidget {
                             );
                           },
                         ),
-                        ListviewTitle(title: "Others"),
+                        const ListviewTitle(title: "Others"),
                         MasonryGridView.count(
                           crossAxisCount: 2, // تعداد ستون‌ها
                           mainAxisSpacing: 8,
                           crossAxisSpacing: 10,
                           shrinkWrap: true,
-                          padding: EdgeInsets.all(8.0),
-                          physics: NeverScrollableScrollPhysics(),
+                          padding: const EdgeInsets.all(8.0),
+                          physics: const NeverScrollableScrollPhysics(),
                           itemCount: state.notes.length,
                           itemBuilder: (context, index) {
                             NoteModelEntity selectedNote = state.notes[index];
@@ -127,14 +129,16 @@ class HomeView extends StatelessWidget {
                                     padding: const EdgeInsets.all(8.0),
                                     child: Text(
                                       selectedNote.title!,
-                                      style: TextStyle(color: Colors.white),
+                                      style:
+                                          const TextStyle(color: Colors.white),
                                     ),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Text(
                                       selectedNote.description!,
-                                      style: TextStyle(color: Colors.white),
+                                      style:
+                                          const TextStyle(color: Colors.white),
                                     ),
                                   ),
                                 ],
@@ -151,10 +155,10 @@ class HomeView extends StatelessWidget {
             floatingActionButton: Container(
               height: 75,
               width: 75,
-              margin: EdgeInsets.only(bottom: 10),
+              margin: const EdgeInsets.only(bottom: 10),
               child: FloatingActionButton(
                 onPressed: () => context.go('/create_note'),
-                backgroundColor: Color.fromRGBO(41, 42, 44, 1),
+                backgroundColor: const Color.fromRGBO(41, 42, 44, 1),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(25),
                 ),
@@ -167,7 +171,7 @@ class HomeView extends StatelessWidget {
             ),
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.miniEndDocked,
-            bottomNavigationBar: HomeBottomBar(),
+            bottomNavigationBar: const HomeBottomBar(),
           );
         } else if (state is HomeLoadFailed) {
           return Scaffold(

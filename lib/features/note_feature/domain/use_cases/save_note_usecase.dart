@@ -1,7 +1,6 @@
 import 'package:mindwrite/core/resources/data_state.dart';
 import 'package:mindwrite/core/usecase/use_case.dart';
-import 'package:mindwrite/features/data/models/note_model.dart';
-import 'package:mindwrite/features/domain/entities/note_model_entity.dart';
+import 'package:mindwrite/features/home_feature/data/models/note_model.dart';
 
 import 'package:mindwrite/features/note_feature/domain/repository/note_repository.dart';
 

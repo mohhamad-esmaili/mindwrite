@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mindwrite/core/resources/data_state.dart';
-import 'package:mindwrite/features/data/models/background_model.dart';
-import 'package:mindwrite/features/data/models/note_model.dart';
+import 'package:mindwrite/features/home_feature/data/models/background_model.dart';
+import 'package:mindwrite/features/home_feature/data/models/note_model.dart';
 
 import 'package:mindwrite/features/note_feature/domain/use_cases/save_note_usecase.dart';
 

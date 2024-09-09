@@ -25,7 +25,7 @@ class NoteAppbar extends StatelessWidget {
 
                   context.go('/');
                 },
-                icon: Icon(
+                icon: const Icon(
                   Icons.arrow_back_rounded,
                   color: Colors.white,
                 )),
@@ -46,17 +46,17 @@ class NoteAppbar extends StatelessWidget {
                     ),
                   );
                 } else {
-                  return CircularProgressIndicator();
+                  return const CircularProgressIndicator();
                 }
               }),
               IconButton(
                 onPressed: () {},
-                icon: Icon(Icons.archive_outlined),
+                icon: const Icon(Icons.archive_outlined),
               ),
             ],
           );
         } else {
-          return CircularProgressIndicator();
+          return const CircularProgressIndicator();
         }
       },
     );

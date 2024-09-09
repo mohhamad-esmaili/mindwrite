@@ -1,24 +1,31 @@
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:mindwrite/features/data/models/background_model.dart';
-import 'package:mindwrite/features/data/models/label_model.dart';
-import 'package:mindwrite/features/domain/entities/note_model_entity.dart';
+import 'package:mindwrite/features/home_feature/data/models/background_model.dart';
+import 'package:mindwrite/features/home_feature/data/models/label_model.dart';
+import 'package:mindwrite/features/home_feature/domain/entities/note_model_entity.dart';
 
 part 'note_model.g.dart';
 
 @HiveType(typeId: 1)
 class NoteModel extends NoteModelEntity {
+  @override
   @HiveField(0)
   final int? id;
+  @override
   @HiveField(1)
   final String? title;
+  @override
   @HiveField(2)
   final String? description;
+  @override
   @HiveField(3)
   final DateTime lastUpdate;
+  @override
   @HiveField(4)
   final List<LabelModel>? labels;
+  @override
   @HiveField(5)
   final BackgroundModel? noteBackground;
+  @override
   @HiveField(6)
   final bool pin;
 

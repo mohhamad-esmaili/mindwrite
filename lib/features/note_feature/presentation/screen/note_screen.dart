@@ -15,7 +15,7 @@ class NoteView extends StatelessWidget {
   final TextEditingController descriptionController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    context.read<NoteBloc>().add(NoteInitialEvent());
+    context.read<NoteBloc>().add(const NoteInitialEvent());
     return BlocBuilder<NoteBloc, NoteState>(builder: (context, state) {
       if (state is NoteInitial) {
         Color initialColor = state.note.noteBackground!.color;
@@ -30,7 +30,7 @@ class NoteView extends StatelessWidget {
               ),
             ),
             body: Container(
-              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -47,7 +47,7 @@ class NoteView extends StatelessWidget {
                       maxLines: null,
                       minLines: 1,
                       keyboardType: TextInputType.multiline,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         hintText: "Title",
                         hintStyle: TextStyle(color: Colors.white),
                         disabledBorder: InputBorder.none,
@@ -75,7 +75,7 @@ class NoteView extends StatelessWidget {
                         ],
                       ),
                       keyboardType: TextInputType.multiline,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         hintText: "Description",
                         hintStyle: TextStyle(color: Colors.white),
                         disabledBorder: InputBorder.none,

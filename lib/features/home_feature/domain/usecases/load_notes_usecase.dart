@@ -1,9 +1,8 @@
 import 'package:mindwrite/core/resources/data_state.dart';
 import 'package:mindwrite/core/usecase/use_case.dart';
 
-import 'package:mindwrite/features/data/models/note_model.dart';
-import 'package:mindwrite/features/domain/entities/note_model_entity.dart';
-import 'package:mindwrite/features/domain/repository/home_repository.dart';
+import 'package:mindwrite/features/home_feature/data/models/note_model.dart';
+import 'package:mindwrite/features/home_feature/domain/repository/home_repository.dart';
 
 class LoadAllNotes implements UseCase<DataState<List<NoteModel>>, NoteModel> {
   final HomeRepository noteRepository;

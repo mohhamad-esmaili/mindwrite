@@ -14,7 +14,7 @@ class SliverHomeAppbar extends StatelessWidget {
       foregroundColor: Colors.transparent,
       title: Container(
         width: double.infinity,
-        padding: EdgeInsets.all(5),
+        padding: const EdgeInsets.all(5),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(50),
           color: ColorConstants.appbarDarkColor,
@@ -27,7 +27,7 @@ class SliverHomeAppbar extends StatelessWidget {
                   Icons.menu,
                   color: Theme.of(context).iconTheme.color,
                 )),
-            Text("Search"),
+            const Text("Search"),
           ],
         ),
       ),

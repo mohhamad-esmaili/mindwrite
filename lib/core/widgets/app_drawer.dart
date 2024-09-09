@@ -69,7 +69,7 @@ class AppDrawer extends StatelessWidget {
         ),
         style: TextButton.styleFrom(
           alignment: Alignment.centerLeft,
-          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 13),
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 13),
           backgroundColor: backColor,
         ),
       );

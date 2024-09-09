@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mindwrite/features/data/models/background_model.dart';
+import 'package:mindwrite/features/home_feature/data/models/background_model.dart';
 
 class ColorConstants {
   static List<BackgroundModel> noteColors = [
@@ -15,11 +15,11 @@ class ColorConstants {
     BackgroundModel(color: const Color.fromRGBO(75, 68, 58, 1)),
     BackgroundModel(color: const Color.fromRGBO(35, 36, 40, 1)),
   ];
-  static Color scaffoldDarkColor = Color.fromRGBO(19, 19, 19, 1);
-  static Color appbarDarkColor = Color.fromRGBO(30, 31, 33, 1);
-  static Color primaryDarkColor = Color.fromRGBO(197, 198, 2020, 1);
-  static Color primaryColor = Color.fromRGBO(0, 74, 119, 1);
+  static Color scaffoldDarkColor = const Color.fromRGBO(19, 19, 19, 1);
+  static Color appbarDarkColor = const Color.fromRGBO(30, 31, 33, 1);
+  static Color primaryDarkColor = const Color.fromRGBO(197, 198, 2020, 1);
+  static Color primaryColor = const Color.fromRGBO(0, 74, 119, 1);
 
-  static Color WhiteTextColor = Color.fromRGBO(255, 255, 255, 1);
-  static Color DarkerWhiteTextColor = Color.fromRGBO(200, 200, 200, 1);
+  static Color WhiteTextColor = const Color.fromRGBO(255, 255, 255, 1);
+  static Color DarkerWhiteTextColor = const Color.fromRGBO(200, 200, 200, 1);
 }

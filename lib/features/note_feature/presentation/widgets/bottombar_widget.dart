@@ -18,7 +18,7 @@ class BottombarWidget extends StatelessWidget {
       child: Row(
         children: [
           IconButton(
-              icon: Icon(
+              icon: const Icon(
                 Icons.palette_outlined,
                 color: Colors.white,
               ),
@@ -26,7 +26,7 @@ class BottombarWidget extends StatelessWidget {
           Expanded(
             child: Text(
               DateFormater.changeDateEdited(noteDateTime),
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
               ),
               textAlign: TextAlign.center,
@@ -34,7 +34,7 @@ class BottombarWidget extends StatelessWidget {
           ),
           IconButton(
               onPressed: () => getMoreSettingsBottomSheet(context),
-              icon: Icon(Icons.more_vert_rounded))
+              icon: const Icon(Icons.more_vert_rounded))
         ],
       ),
     );
@@ -43,7 +43,7 @@ class BottombarWidget extends StatelessWidget {
   Future<void> getPaleteBottomSheet(BuildContext context) =>
       showModalBottomSheet<void>(
         context: context,
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.zero,
         ),
         builder: (BuildContext context) {
@@ -72,7 +72,7 @@ class BottombarWidget extends StatelessWidget {
                           },
                           child: Container(
                             width: 50,
-                            margin: EdgeInsets.only(left: 20),
+                            margin: const EdgeInsets.only(left: 20),
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               color: index == 0 ? Colors.grey[800] : itemColor,
@@ -84,7 +84,7 @@ class BottombarWidget extends StatelessWidget {
                               ),
                             ),
                             child: AnimatedSwitcher(
-                              duration: Duration(milliseconds: 300),
+                              duration: const Duration(milliseconds: 300),
                               transitionBuilder:
                                   (Widget child, Animation<double> animation) {
                                 return ScaleTransition(
@@ -93,17 +93,17 @@ class BottombarWidget extends StatelessWidget {
                               child: initialColor == itemColor
                                   ? Icon(
                                       Icons.check,
-                                      key: ValueKey("check_${index}"),
+                                      key: ValueKey("check_$index"),
                                       color: Colors.white,
                                     )
                                   : index == 0
                                       ? Icon(
                                           Icons.invert_colors_off_rounded,
-                                          key: ValueKey("empty${index}"),
+                                          key: ValueKey("empty$index"),
                                           color: Colors.white,
                                         )
                                       : SizedBox(
-                                          key: ValueKey("empty_${index}"),
+                                          key: ValueKey("empty_$index"),
                                         ),
                             ),
                           ),
@@ -113,7 +113,7 @@ class BottombarWidget extends StatelessWidget {
                   ),
                 );
               }
-              return CircularProgressIndicator();
+              return const CircularProgressIndicator();
             },
           );
         },
@@ -121,7 +121,7 @@ class BottombarWidget extends StatelessWidget {
   Future<void> getMoreSettingsBottomSheet(BuildContext context) =>
       showModalBottomSheet<void>(
         context: context,
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.zero,
         ),
         builder: (BuildContext context) {
@@ -154,7 +154,7 @@ class BottombarWidget extends StatelessWidget {
                   ),
                 );
               }
-              return CircularProgressIndicator();
+              return const CircularProgressIndicator();
             },
           );
         },
@@ -171,10 +171,11 @@ class BottombarWidget extends StatelessWidget {
         ),
         label: Text(
           label,
-          style: TextStyle(color: Colors.white),
+          style: const TextStyle(color: Colors.white),
         ),
         style: TextButton.styleFrom(
-          padding: EdgeInsets.only(right: 10, left: 10, top: 10, bottom: 10),
+          padding:
+              const EdgeInsets.only(right: 10, left: 10, top: 10, bottom: 10),
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.zero)),
           overlayColor: Colors.white,
