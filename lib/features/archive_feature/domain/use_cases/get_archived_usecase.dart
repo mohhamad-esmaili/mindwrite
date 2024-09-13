@@ -1,18 +1,18 @@
 import 'package:mindwrite/core/resources/data_state.dart';
 import 'package:mindwrite/core/usecase/use_case.dart';
+import 'package:mindwrite/features/archive_feature/domain/repository/archive_repository.dart';
 
 import 'package:mindwrite/features/home_feature/data/model/note_model.dart';
-import 'package:mindwrite/features/home_feature/domain/repository/home_repository.dart';
 
-class LoadAllArchivedUsecase
+class GetArchivedUsecase
     implements UseCase<DataState<List<NoteModel>>, NoteModel> {
-  final HomeRepository noteRepository;
-  LoadAllArchivedUsecase(this.noteRepository);
+  final ArchiveRepository archiveRepository;
+  GetArchivedUsecase(this.archiveRepository);
 
   @override
   Future<DataState<List<NoteModel>>> call([void param]) async {
     try {
-      final result = await noteRepository.loadNotesFromBox();
+      final result = await archiveRepository.loadArchivedNotesFromBox();
 
       return DataSuccess(result.data);
     } catch (e) {

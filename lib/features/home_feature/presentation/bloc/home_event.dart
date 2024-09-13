@@ -12,7 +12,9 @@ class GetNotesEvent extends HomeEvent {
   List<Object> get props => [];
 }
 
-class GetPinnedNotesEvent extends HomeEvent {
+class ToggleArchiveEvent extends HomeEvent {
+  final NoteModel note;
+  const ToggleArchiveEvent(this.note);
   @override
-  List<Object> get props => [];
+  List<Object> get props => [note];
 }

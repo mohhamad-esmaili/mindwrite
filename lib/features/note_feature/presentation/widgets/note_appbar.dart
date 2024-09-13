@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mindwrite/core/widgets/snackbar_widget.dart';
+import 'package:mindwrite/features/home_feature/presentation/bloc/home_bloc.dart';
 import 'package:mindwrite/features/note_feature/presentation/bloc/note_bloc.dart';
 
 class NoteAppbar extends StatelessWidget {
@@ -50,7 +52,24 @@ class NoteAppbar extends StatelessWidget {
                 }
               }),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  if (titleController.text.isNotEmpty) {
+                    context
+                        .read<NoteBloc>()
+                        .add(NoteArchiveEvent(!state.note.archived));
+                    context.go('/');
+                    SnackbarWidget.getSnackbar(context, "Note Archived", "Undo",
+                        () {
+                      context
+                          .read<HomeBloc>()
+                          .add(ToggleArchiveEvent(state.note));
+                      context.read<HomeBloc>().add(GetNotesEvent());
+                    }, null);
+                  } else {
+                    SnackbarWidget.getSnackbar(
+                        context, "Enter note title!", "Ok", null, null);
+                  }
+                },
                 icon: const Icon(Icons.archive_outlined),
               ),
             ],

@@ -5,7 +5,7 @@ This project is clone of Google KeepNote, with Bloc
 - [ ] text to speech
 - [ ] draw
 - [ ] label making
-- [ ] archive
+- [ꭓ] archive
 - [ ] settings
 - [ ] deleted
 - [ ] reminders
@@ -19,3 +19,4 @@ This project is clone of Google KeepNote, with Bloc
 - [ ] tick boxes in notes
 - [ ] send and share + make copy
 - [ ] do and redo buttons
+- [ ] light theme

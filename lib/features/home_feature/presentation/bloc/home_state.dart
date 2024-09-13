@@ -8,7 +8,7 @@ sealed class HomeState extends Equatable {
 }
 
 class HomeInitial extends HomeState {
-  final List<NoteModelEntity> notes;
+  final List<NoteModel> notes;
 
   const HomeInitial(this.notes);
 
@@ -17,12 +17,21 @@ class HomeInitial extends HomeState {
 }
 
 class HomeLoaded extends HomeState {
-  final List<NoteModelEntity> notes;
-  final List<NoteModelEntity> pinnedNotes;
+  final List<NoteModel> notes;
+  final List<NoteModel> pinnedNotes;
   const HomeLoaded(this.notes, this.pinnedNotes);
 
   @override
   List<Object> get props => [notes];
+}
+
+class HomeLoading extends HomeState {
+  final String loading;
+
+  const HomeLoading(this.loading);
+
+  @override
+  List<Object> get props => [loading];
 }
 
 class HomeLoadFailed extends HomeState {

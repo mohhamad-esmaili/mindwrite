@@ -1,7 +1,8 @@
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:mindwrite/features/home_feature/data/models/background_model.dart';
-import 'package:mindwrite/features/home_feature/data/models/label_model.dart';
+import 'package:mindwrite/features/home_feature/data/model/background_model.dart';
+import 'package:mindwrite/features/home_feature/data/model/label_model.dart';
 import 'package:mindwrite/features/home_feature/domain/entities/note_model_entity.dart';
+import 'package:uuid/uuid.dart'; // Import the UUID package
 
 part 'note_model.g.dart';
 
@@ -9,7 +10,7 @@ part 'note_model.g.dart';
 class NoteModel extends NoteModelEntity {
   @override
   @HiveField(0)
-  final int? id;
+  final String? id;
   @override
   @HiveField(1)
   final String? title;
@@ -28,23 +29,30 @@ class NoteModel extends NoteModelEntity {
   @override
   @HiveField(6)
   final bool pin;
+  @override
+  @HiveField(7)
+  late final bool archived;
 
-  const NoteModel({
-    required this.id,
+  static const Uuid _uuid = Uuid();
+
+  NoteModel({
+    super.id,
     required this.title,
     required this.description,
     required this.lastUpdate,
     this.labels,
     this.noteBackground,
     this.pin = false,
-  }) : super(
-            id: id,
+    this.archived = false,
+  })  : id = id ?? _uuid.v4(),
+        super(
             title: title,
             description: description,
             labels: labels,
             lastUpdate: lastUpdate,
             noteBackground: noteBackground,
-            pin: pin);
+            pin: pin,
+            archived: archived);
 
   factory NoteModel.fromJson(dynamic json) {
     return NoteModel(
@@ -55,17 +63,19 @@ class NoteModel extends NoteModelEntity {
       labels: json['labels'] ?? [],
       noteBackground: json['noteBackground'] ?? [],
       pin: json['pin'] ?? false,
+      archived: json['archived'] ?? false,
     );
   }
 
   NoteModel copyWith({
-    int? id,
+    String? id,
     String? title,
     String? description,
     DateTime? lastUpdate,
     List<LabelModel>? labels,
     BackgroundModel? noteBackground,
     bool? pin,
+    bool? archived,
   }) {
     return NoteModel(
       id: id ?? this.id,
@@ -75,6 +85,7 @@ class NoteModel extends NoteModelEntity {
       labels: labels ?? this.labels,
       noteBackground: noteBackground ?? this.noteBackground,
       pin: pin ?? this.pin,
+      archived: archived ?? this.archived,
     );
   }
 }

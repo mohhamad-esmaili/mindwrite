@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:mindwrite/core/config/theme_config.dart';
 import 'package:mindwrite/core/routes/app_routes.dart';
+import 'package:mindwrite/features/archive_feature/presentation/bloc/archive_bloc.dart';
+import 'package:mindwrite/features/archive_feature/presentation/bloc/archive_event.dart';
 import 'package:mindwrite/features/home_feature/presentation/bloc/home_bloc.dart';
 import 'package:mindwrite/features/note_feature/presentation/bloc/note_bloc.dart';
 
@@ -30,8 +32,13 @@ class Root extends StatelessWidget {
           create: (context) =>
               locator<NoteBloc>()..add(const NoteInitialEvent()),
         ),
+        BlocProvider(
+          create: (context) =>
+              locator<ArchiveBloc>()..add(const GetAllArchive()),
+        ),
       ],
       child: MaterialApp.router(
+        // theme: ThemeConfig.darkAppTheme,
         theme: ThemeConfig.darkAppTheme,
         themeMode: ThemeMode.dark,
         debugShowCheckedModeBanner: false,

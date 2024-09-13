@@ -1,6 +1,6 @@
 import 'package:mindwrite/core/resources/data_state.dart';
 import 'package:mindwrite/features/home_feature/data/data_source/local/home_local_database.dart';
-import 'package:mindwrite/features/home_feature/data/models/note_model.dart';
+import 'package:mindwrite/features/home_feature/data/model/note_model.dart';
 import 'package:mindwrite/features/home_feature/domain/repository/home_repository.dart';
 
 class HomeRepositoryImp extends HomeRepository {
@@ -13,6 +13,16 @@ class HomeRepositoryImp extends HomeRepository {
     try {
       List<NoteModel> allValues = await homeLocalDataBase.getListOfNotes();
       return DataSuccess(allValues);
+    } catch (e) {
+      return DataFailed(e.toString());
+    }
+  }
+
+  @override
+  Future<DataState<NoteModel>> saveNotesToBox(NoteModel note) async {
+    try {
+      final allValues = await homeLocalDataBase.saveNoteToHive(note);
+      return DataSuccess(note);
     } catch (e) {
       return DataFailed(e.toString());
     }

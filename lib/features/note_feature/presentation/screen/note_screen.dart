@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 
-import 'package:mindwrite/core/utils/color_constants.dart';
 import 'package:mindwrite/core/widgets/circular_indicator_widget.dart';
-import 'package:mindwrite/features/home_feature/presentation/bloc/home_bloc.dart';
 import 'package:mindwrite/features/note_feature/presentation/bloc/note_bloc.dart';
 import 'package:mindwrite/features/note_feature/presentation/widgets/bottombar_widget.dart';
 import 'package:mindwrite/features/note_feature/presentation/widgets/note_appbar.dart';
@@ -67,13 +64,6 @@ class NoteView extends StatelessWidget {
                           )),
                       maxLines: null,
                       minLines: 1,
-                      contentInsertionConfiguration:
-                          ContentInsertionConfiguration(
-                        onContentInserted: (_) {/*your cb here*/},
-                        allowedMimeTypes: [
-                          "image/png", /*...*/
-                        ],
-                      ),
                       keyboardType: TextInputType.multiline,
                       decoration: const InputDecoration(
                         hintText: "Description",

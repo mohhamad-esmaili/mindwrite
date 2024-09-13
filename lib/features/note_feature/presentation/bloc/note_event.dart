@@ -41,6 +41,13 @@ class ChangeNotePinEvent extends NoteEvent {
   List<Object?> get props => [isPin];
 }
 
+class NoteArchiveEvent extends NoteEvent {
+  final bool isArchived;
+  const NoteArchiveEvent(this.isArchived);
+  @override
+  List<Object?> get props => [isArchived];
+}
+
 class SaveNoteEvent extends NoteEvent {
   final NoteModel noteModel;
   const SaveNoteEvent(this.noteModel);

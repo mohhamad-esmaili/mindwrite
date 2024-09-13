@@ -1,13 +1,11 @@
-import 'dart:math';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mindwrite/core/resources/data_state.dart';
-import 'package:mindwrite/features/home_feature/data/models/background_model.dart';
-import 'package:mindwrite/features/home_feature/data/models/note_model.dart';
+import 'package:mindwrite/features/home_feature/data/model/background_model.dart';
+import 'package:mindwrite/features/home_feature/data/model/note_model.dart';
 
 import 'package:mindwrite/features/note_feature/domain/use_cases/save_note_usecase.dart';
 
@@ -22,12 +20,12 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
   NoteBloc(this.note, this.saveUseCase) : super(NoteInitial(note)) {
     on<NoteInitialEvent>((event, emit) {
       note = note.copyWith(
-        id: Random().nextInt(1000),
         title: null,
         description: null,
         lastUpdate: DateTime.now(),
         noteBackground: BackgroundModel(color: Colors.transparent),
         pin: false,
+        archived: false,
       );
       emit(NoteInitial(note));
     });
@@ -38,6 +36,10 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
     });
     on<ChangeNotePinEvent>((event, emit) {
       note = note.copyWith(pin: event.isPin);
+      emit(NoteInitial(note));
+    });
+    on<NoteArchiveEvent>((event, emit) {
+      note = note.copyWith(archived: event.isArchived);
       emit(NoteInitial(note));
     });
     on<ChangeNoteEvent>((event, emit) {

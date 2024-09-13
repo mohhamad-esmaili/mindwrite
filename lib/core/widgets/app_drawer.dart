@@ -40,13 +40,23 @@ class AppDrawer extends StatelessWidget {
                 ),
               ),
               makeTextButton(
-                context,
-                "Notes",
-                () => context.go('/'),
-                currentPathName == '/'
-                    ? Theme.of(context).primaryColor
-                    : Colors.transparent,
+                  context: context,
+                  title: "Notes",
+                  onpress: () => context.go('/'),
+                  buttonIcon: Icons.lightbulb_outline_rounded,
+                  currentPathName: currentPathName!,
+                  buttonPath: '/'),
+              Divider(
+                color: ColorConstants.drawerDividerColor,
+                thickness: 2,
               ),
+              makeTextButton(
+                  context: context,
+                  title: "Archive",
+                  onpress: () => context.go('/archive'),
+                  buttonIcon: Icons.archive_outlined,
+                  currentPathName: currentPathName,
+                  buttonPath: '/archive'),
             ],
           ),
         ),
@@ -54,23 +64,30 @@ class AppDrawer extends StatelessWidget {
     );
   }
 
-  Widget makeTextButton(BuildContext context, String title,
-          VoidCallback onpress, Color backColor) =>
+  Widget makeTextButton(
+          {required BuildContext context,
+          required String title,
+          required VoidCallback onpress,
+          required IconData buttonIcon,
+          required String currentPathName,
+          required String buttonPath}) =>
       TextButton.icon(
         onPressed: onpress,
         icon: Icon(
-          Icons.lightbulb_outline_rounded,
+          buttonIcon,
           color: Theme.of(context).iconTheme.color,
         ),
         label: Text(
           title,
           style: TextStyle(
-              color: ColorConstants.DarkerWhiteTextColor, fontSize: 15),
+              color: ColorConstants.darkerWhiteTextColor, fontSize: 15),
         ),
         style: TextButton.styleFrom(
           alignment: Alignment.centerLeft,
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 13),
-          backgroundColor: backColor,
+          backgroundColor: currentPathName == buttonPath
+              ? Theme.of(context).primaryColor
+              : Colors.transparent,
         ),
       );
 }
