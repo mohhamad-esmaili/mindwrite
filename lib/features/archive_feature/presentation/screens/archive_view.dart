@@ -11,13 +11,29 @@ import 'package:mindwrite/features/archive_feature/presentation/bloc/archive_sta
 import 'package:mindwrite/features/home_feature/data/model/note_model.dart';
 
 import 'package:mindwrite/core/widgets/note_widget.dart';
+import 'package:mindwrite/features/home_feature/presentation/bloc/home_bloc.dart';
+import 'package:mindwrite/locator.dart';
 
-class ArchiveView extends StatelessWidget {
+class ArchiveView extends StatefulWidget {
   ArchiveView({super.key});
+
+  @override
+  State<ArchiveView> createState() => _ArchiveViewState();
+}
+
+class _ArchiveViewState extends State<ArchiveView> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Fetch latest notes when screen is loaded or refreshed
+    context.read<ArchiveBloc>().add(const GetAllArchive());
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final snackbarService = locator<SnackbarService>();
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
@@ -59,29 +75,36 @@ class ArchiveView extends StatelessWidget {
                                         state.archivedNotes[index];
                                     return NoteWidget(
                                         selectedNote: selectedNote,
-                                        onDismissed: () {
+                                        onDismissed: () async {
                                           bool undoPressed = false;
-                                          SnackbarWidget.getSnackbar(
-                                            context,
-                                            "Note archived",
-                                            "Undo",
-                                            () {
-                                              undoPressed = true;
-                                              NoteModel simpleVersion =
-                                                  selectedNote.copyWith(
-                                                      archived: false);
-                                              context.read<ArchiveBloc>().add(
-                                                  ToggleOffArchiveEvent(
-                                                      simpleVersion));
-                                            },
-                                            () {
-                                              if (!undoPressed) {
-                                                context.read<ArchiveBloc>().add(
+
+                                          final archiveBloc =
+                                              context.read<ArchiveBloc>();
+                                          archiveBloc.add(ToggleOffArchiveEvent(
+                                              selectedNote));
+                                          if (context.mounted) {
+                                            await snackbarService.show(
+                                              context: context,
+                                              message: "Note archived",
+                                              actionLabel: "Undo",
+                                              onAction: () {
+                                                undoPressed = true;
+                                                NoteModel simpleVersion =
+                                                    selectedNote.copyWith(
+                                                        archived: false);
+                                                archiveBloc.add(
                                                     ToggleOffArchiveEvent(
-                                                        selectedNote));
-                                              }
-                                            },
-                                          );
+                                                        simpleVersion));
+                                              },
+                                              onClosed: () {
+                                                if (!undoPressed) {
+                                                  archiveBloc.add(
+                                                      ToggleOffArchiveEvent(
+                                                          selectedNote));
+                                                }
+                                              },
+                                            );
+                                          }
                                         });
                                   },
                                 ),

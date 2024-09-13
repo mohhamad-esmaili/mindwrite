@@ -21,7 +21,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc(this.allLoadedNotes, this.loadNotesUsecase,
       this.loadPinnedNotesUsecase, this.changeArchiveUsecase)
       : super(HomeInitial(allLoadedNotes)) {
-    on<GetNotesEvent>((event, emit) async {
+    on<GetAllNotesEvent>((event, emit) async {
       emit(const HomeLoading("loading"));
       final result = await loadNotesUsecase.call();
       pinnedNotes!.clear();
@@ -34,20 +34,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     });
     on<ToggleArchiveEvent>((event, emit) async {
       emit(const HomeLoading("loading"));
-      print("inside bloc");
-      print(event.note.archived);
 
       await changeArchiveUsecase.call(event.note);
 
-      print("inside bloc");
-      // Remove the note from the list
       allLoadedNotes.remove(event.note);
       final result = await loadNotesUsecase.call();
-      print(result.data);
 
       if (result is DataSuccess<List<NoteModelEntity>>) {
         pinnedNotes = await loadPinnedNotesUsecase(result);
-        print(result.data);
 
         emit(HomeLoaded(result.data!, pinnedNotes!));
       } else if (result is DataFailed) {

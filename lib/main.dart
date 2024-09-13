@@ -26,7 +26,7 @@ class Root extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => locator<HomeBloc>()..add(GetNotesEvent()),
+          create: (context) => locator<HomeBloc>()..add(GetAllNotesEvent()),
         ),
         BlocProvider(
           create: (context) =>

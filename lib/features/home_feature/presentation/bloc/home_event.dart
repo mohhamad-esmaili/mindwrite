@@ -7,7 +7,7 @@ sealed class HomeEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class GetNotesEvent extends HomeEvent {
+class GetAllNotesEvent extends HomeEvent {
   @override
   List<Object> get props => [];
 }

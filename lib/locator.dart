@@ -1,6 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:mindwrite/core/widgets/snackbar_widget.dart';
 import 'package:mindwrite/features/archive_feature/data/repository/archive_repository_imp.dart';
 import 'package:mindwrite/features/archive_feature/domain/repository/archive_repository.dart';
 import 'package:mindwrite/features/archive_feature/domain/use_cases/get_archived_usecase.dart';
@@ -45,6 +46,9 @@ setup() async {
   );
 
   locator.registerFactory<List<NoteModel>>(() => []);
+
+  // app snackbar
+  locator.registerSingleton<SnackbarService>(SnackbarService());
 
   // Register NoteRepository
   locator.registerFactory<HomeRepository>(

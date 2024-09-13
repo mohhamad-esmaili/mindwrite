@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:mindwrite/core/widgets/snackbar_widget.dart';
 import 'package:mindwrite/features/home_feature/presentation/bloc/home_bloc.dart';
 import 'package:mindwrite/features/note_feature/presentation/bloc/note_bloc.dart';
+import 'package:mindwrite/locator.dart';
 
 class NoteAppbar extends StatelessWidget {
   final Color initialColor;
@@ -13,6 +14,7 @@ class NoteAppbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final snackbarService = locator<SnackbarService>();
     return BlocBuilder<NoteBloc, NoteState>(
       builder: (context, state) {
         if (state is NoteInitial) {
@@ -58,16 +60,24 @@ class NoteAppbar extends StatelessWidget {
                         .read<NoteBloc>()
                         .add(NoteArchiveEvent(!state.note.archived));
                     context.go('/');
-                    SnackbarWidget.getSnackbar(context, "Note Archived", "Undo",
-                        () {
-                      context
-                          .read<HomeBloc>()
-                          .add(ToggleArchiveEvent(state.note));
-                      context.read<HomeBloc>().add(GetNotesEvent());
-                    }, null);
+                    snackbarService.show(
+                        context: context,
+                        message: "Note Archived",
+                        actionLabel: "Undo",
+                        onAction: () {
+                          context
+                              .read<HomeBloc>()
+                              .add(ToggleArchiveEvent(state.note));
+                          context.read<HomeBloc>().add(GetAllNotesEvent());
+                        },
+                        onClosed: null);
                   } else {
-                    SnackbarWidget.getSnackbar(
-                        context, "Enter note title!", "Ok", null, null);
+                    snackbarService.show(
+                        context: context,
+                        message: "Enter note title!",
+                        actionLabel: "Ok",
+                        onAction: null,
+                        onClosed: null);
                   }
                 },
                 icon: const Icon(Icons.archive_outlined),

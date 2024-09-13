@@ -4,6 +4,8 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mindwrite/core/widgets/app_drawer.dart';
 import 'package:mindwrite/core/widgets/snackbar_widget.dart';
+import 'package:mindwrite/features/archive_feature/presentation/bloc/archive_bloc.dart';
+import 'package:mindwrite/features/archive_feature/presentation/bloc/archive_event.dart';
 import 'package:mindwrite/features/home_feature/data/model/note_model.dart';
 import 'package:mindwrite/features/home_feature/domain/entities/note_model_entity.dart';
 import 'package:mindwrite/features/home_feature/presentation/bloc/home_bloc.dart';
@@ -11,15 +13,28 @@ import 'package:mindwrite/features/home_feature/presentation/widgets/bottom_navb
 import 'package:mindwrite/features/home_feature/presentation/widgets/home_appbar.dart';
 import 'package:mindwrite/features/home_feature/presentation/widgets/listview_title.dart';
 import 'package:mindwrite/core/widgets/note_widget.dart';
+import 'package:mindwrite/locator.dart';
 
-class HomeView extends StatelessWidget {
-  HomeView({super.key});
+class HomeView extends StatefulWidget {
+  const HomeView({super.key});
+
+  @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Fetch latest notes when screen is loaded or refreshed
+    context.read<HomeBloc>().add(GetAllNotesEvent());
+  }
 
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
-
+    final snackbarService = locator<SnackbarService>();
     return Scaffold(
       key: _scaffoldKey,
       drawer: const AppDrawer(),
@@ -83,28 +98,35 @@ class HomeView extends StatelessWidget {
                                           state.notes[index];
                                       return NoteWidget(
                                         selectedNote: selectedNote,
-                                        onDismissed: () {
+                                        onDismissed: () async {
                                           bool undoPressed = false;
-                                          SnackbarWidget.getSnackbar(
-                                            context,
-                                            "Note archived",
-                                            "Undo",
-                                            () => undoPressed = true,
-                                            () {
-                                              NoteModel archivedVersion =
-                                                  selectedNote.copyWith(
-                                                      archived: true);
-                                              if (!undoPressed) {
-                                                context.read<HomeBloc>().add(
-                                                    ToggleArchiveEvent(
-                                                        selectedNote));
-                                              } else {
-                                                context.read<HomeBloc>().add(
-                                                    ToggleArchiveEvent(
-                                                        archivedVersion));
-                                              }
-                                            },
-                                          );
+                                          final homeBloc =
+                                              context.read<HomeBloc>();
+                                          homeBloc.add(
+                                              ToggleArchiveEvent(selectedNote));
+                                          if (context.mounted) {
+                                            await snackbarService.show(
+                                              context: context,
+                                              message: "Note archived",
+                                              actionLabel: "Undo",
+                                              onAction: () =>
+                                                  undoPressed = true,
+                                              onClosed: () {
+                                                NoteModel archivedVersion =
+                                                    selectedNote.copyWith(
+                                                        archived: true);
+                                                if (!undoPressed) {
+                                                  homeBloc.add(
+                                                      ToggleArchiveEvent(
+                                                          selectedNote));
+                                                } else {
+                                                  homeBloc.add(
+                                                      ToggleArchiveEvent(
+                                                          archivedVersion));
+                                                }
+                                              },
+                                            );
+                                          }
                                         },
                                       );
                                     },
