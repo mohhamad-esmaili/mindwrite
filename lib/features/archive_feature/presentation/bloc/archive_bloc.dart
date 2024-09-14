@@ -26,16 +26,11 @@ class ArchiveBloc extends Bloc<ArchiveEvent, ArchiveState> {
     });
     on<ToggleOffArchiveEvent>((event, emit) async {
       emit(const ArchiveLoading("loading"));
-      print("inside bloc");
-      print(event.note.archived);
 
       await changeArchiveUsecase(event.note);
 
-      print("inside bloc");
-      // Remove the note from the list
       allArchivedNotes.remove(event.note);
       final result = await getArchivedUsecase();
-      print(result.data);
 
       if (result is DataSuccess<List<NoteModel>>) {
         emit(ArchiveLoaded(result.data!));

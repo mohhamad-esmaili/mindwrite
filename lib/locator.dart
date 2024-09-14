@@ -40,6 +40,7 @@ setup() async {
     () => NoteModel(
       title: null,
       description: null,
+      id: null,
       lastUpdate: DateTime.now(),
       noteBackground: BackgroundModel(color: Colors.transparent),
     ),

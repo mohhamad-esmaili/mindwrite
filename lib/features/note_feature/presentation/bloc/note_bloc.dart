@@ -8,8 +8,8 @@ import 'package:mindwrite/features/home_feature/data/model/background_model.dart
 import 'package:mindwrite/features/home_feature/data/model/note_model.dart';
 
 import 'package:mindwrite/features/note_feature/domain/use_cases/save_note_usecase.dart';
-
 import 'package:mindwrite/locator.dart';
+import 'package:uuid/uuid.dart';
 
 part 'note_event.dart';
 part 'note_state.dart';
@@ -24,6 +24,7 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
         description: null,
         lastUpdate: DateTime.now(),
         noteBackground: BackgroundModel(color: Colors.transparent),
+        id: null,
         pin: false,
         archived: false,
       );
@@ -54,7 +55,9 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
       emit(NoteInitial(note));
     });
     on<SaveNoteEvent>((event, emit) async {
-      final result = await saveUseCase.call(event.noteModel);
+      const Uuid _uuid = Uuid();
+      NoteModel updatedId = event.noteModel.copyWith(id: _uuid.v4());
+      final result = await saveUseCase.call(updatedId);
       if (result is DataSuccess) {
         emit(NoteInitial(locator<NoteModel>()));
       } else {

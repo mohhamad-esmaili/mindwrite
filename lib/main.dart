@@ -38,7 +38,6 @@ class Root extends StatelessWidget {
         ),
       ],
       child: MaterialApp.router(
-        // theme: ThemeConfig.darkAppTheme,
         theme: ThemeConfig.darkAppTheme,
         themeMode: ThemeMode.dark,
         debugShowCheckedModeBanner: false,

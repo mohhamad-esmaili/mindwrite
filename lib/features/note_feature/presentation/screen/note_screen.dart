@@ -16,7 +16,8 @@ class NoteView extends StatelessWidget {
     return BlocBuilder<NoteBloc, NoteState>(builder: (context, state) {
       if (state is NoteInitial) {
         Color initialColor = state.note.noteBackground!.color;
-
+        print("===========");
+        print(state.note.id);
         return Scaffold(
             backgroundColor: initialColor,
             appBar: PreferredSize(

@@ -4,8 +4,6 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mindwrite/core/widgets/app_drawer.dart';
 import 'package:mindwrite/core/widgets/snackbar_widget.dart';
-import 'package:mindwrite/features/archive_feature/presentation/bloc/archive_bloc.dart';
-import 'package:mindwrite/features/archive_feature/presentation/bloc/archive_event.dart';
 import 'package:mindwrite/features/home_feature/data/model/note_model.dart';
 import 'package:mindwrite/features/home_feature/domain/entities/note_model_entity.dart';
 import 'package:mindwrite/features/home_feature/presentation/bloc/home_bloc.dart';
@@ -60,6 +58,7 @@ class _HomeViewState extends State<HomeView> {
                         BlocBuilder<HomeBloc, HomeState>(
                           builder: (context, state) {
                             if (state is HomeLoaded) {
+                              print(state.pinnedNotes.length);
                               return Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [

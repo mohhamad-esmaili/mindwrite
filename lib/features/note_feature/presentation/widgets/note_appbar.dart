@@ -25,6 +25,7 @@ class NoteAppbar extends StatelessWidget {
                 onPressed: () {
                   if (titleController.text.isNotEmpty) {
                     context.read<NoteBloc>().add(SaveNoteEvent(state.note));
+                    context.read<HomeBloc>().add(GetAllNotesEvent());
                   }
 
                   context.go('/');

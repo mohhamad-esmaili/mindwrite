@@ -5,11 +5,11 @@ This project is clone of Google KeepNote, with Bloc
 - [ ] text to speech
 - [ ] draw
 - [ ] label making
-- [ꭓ] archive
+- [*] archive
 - [ ] settings
 - [ ] deleted
 - [ ] reminders
-- [ ] palete colors and bg image for notes 
+- [ ] palette colors and bg image for notes 
 - [ ] pin and ordering lists
 - [ ] date picker
 - [ ] persian version

@@ -13,7 +13,7 @@ part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   List<NoteModel> allLoadedNotes;
-  List<NoteModel>? pinnedNotes = [];
+  List<NoteModel>? pinnedNotes;
   LoadAllArchivedUsecase loadNotesUsecase;
   LoadPinnedNotesUsecase loadPinnedNotesUsecase;
   ChangeArchiveUsecase changeArchiveUsecase;
@@ -24,8 +24,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<GetAllNotesEvent>((event, emit) async {
       emit(const HomeLoading("loading"));
       final result = await loadNotesUsecase.call();
-      pinnedNotes!.clear();
+      print(pinnedNotes);
+
       if (result is DataSuccess<List<NoteModelEntity>>) {
+        pinnedNotes!.clear();
         pinnedNotes = await loadPinnedNotesUsecase(result);
         emit(HomeLoaded(result.data!, pinnedNotes!));
       } else if (result is DataFailed) {

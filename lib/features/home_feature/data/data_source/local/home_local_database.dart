@@ -7,18 +7,15 @@ class HomeLocalDataBase {
   Future<List<NoteModel>> getListOfNotes() async {
     List<NoteModel> result =
         box.values.where((element) => element.archived == false).toList();
-    for (var element in result) {
-      print(element.archived);
-    }
     return result;
   }
 
   Future<void> saveNoteToHive(NoteModel note) async {
     NoteModel? result = box.get(note.id);
-    print("in the save home: ${note.archived}");
+
     if (result != null) {
       NoteModel updatedNote = result.copyWith(archived: !note.archived);
-      print(updatedNote.archived);
+
       await box.put(result.id, updatedNote);
     } else {}
   }
