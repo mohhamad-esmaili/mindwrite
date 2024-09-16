@@ -24,14 +24,14 @@ class AppDrawer extends StatelessWidget {
                       TextSpan(
                         text: 'Mind ',
                         style: TextStyle(
-                            color: ColorConstants.primaryDarkColor,
+                            color: AppColorConstants.primaryDarkColor,
                             fontWeight: FontWeight.bold,
                             fontSize: 30),
                       ),
                       TextSpan(
                         text: 'Write',
                         style: TextStyle(
-                            color: ColorConstants.primaryDarkColor,
+                            color: AppColorConstants.primaryDarkColor,
                             fontWeight: FontWeight.bold,
                             fontSize: 25),
                       ),
@@ -42,18 +42,24 @@ class AppDrawer extends StatelessWidget {
               makeTextButton(
                   context: context,
                   title: "Notes",
-                  onpress: () => context.go('/'),
+                  onpress: () {
+                    ScaffoldMessenger.of(context).clearSnackBars();
+                    context.go('/home');
+                  },
                   buttonIcon: Icons.lightbulb_outline_rounded,
                   currentPathName: currentPathName!,
-                  buttonPath: '/'),
+                  buttonPath: '/home'),
               Divider(
-                color: ColorConstants.drawerDividerColor,
+                color: AppColorConstants.drawerDividerColor,
                 thickness: 2,
               ),
               makeTextButton(
                   context: context,
                   title: "Archive",
-                  onpress: () => context.go('/archive'),
+                  onpress: () {
+                    ScaffoldMessenger.of(context).clearSnackBars();
+                    context.go('/archive');
+                  },
                   buttonIcon: Icons.archive_outlined,
                   currentPathName: currentPathName,
                   buttonPath: '/archive'),
@@ -80,7 +86,7 @@ class AppDrawer extends StatelessWidget {
         label: Text(
           title,
           style: TextStyle(
-              color: ColorConstants.darkerWhiteTextColor, fontSize: 15),
+              color: AppColorConstants.darkerWhiteTextColor, fontSize: 15),
         ),
         style: TextButton.styleFrom(
           alignment: Alignment.centerLeft,

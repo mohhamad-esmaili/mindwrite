@@ -9,7 +9,7 @@ class SnackbarService {
     VoidCallback? onClosed,
   }) async {
     final scaffoldMessenger = ScaffoldMessenger.of(context);
-    scaffoldMessenger.hideCurrentSnackBar();
+    scaffoldMessenger.removeCurrentSnackBar();
     await scaffoldMessenger
         .showSnackBar(
           SnackBar(
