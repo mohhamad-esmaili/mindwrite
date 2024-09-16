@@ -23,7 +23,8 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
         title: null,
         description: null,
         lastUpdate: DateTime.now(),
-        noteBackground: BackgroundModel(color: Colors.transparent),
+        noteBackground:
+            BackgroundModel(color: Colors.transparent, backgroundPath: null),
         id: null,
         pin: false,
         archived: false,
@@ -31,10 +32,20 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
       emit(NoteInitial(note));
     });
     on<ChangeNoteColorEvent>((event, emit) {
+      print(
+          "Event triggered: ${event.selectedColor}, ${event.selectedBackGround}");
       note = note.copyWith(
-          noteBackground: BackgroundModel(color: event.selectedColor));
+          noteBackground: BackgroundModel(
+        color: event.selectedColor == Color(0xff131313)
+            ? Colors.transparent
+            : event.selectedColor,
+        backgroundPath: event.selectedBackGround,
+      ));
+      print(
+          "Event triggered: ${note.noteBackground!.color}, ${note.noteBackground!.backgroundPath}");
       emit(NoteInitial(note));
     });
+
     on<ChangeNotePinEvent>((event, emit) {
       note = note.copyWith(pin: event.isPin);
       emit(NoteInitial(note));
@@ -52,11 +63,12 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
         lastUpdate: date,
       );
 
-      emit(NoteInitial(note));
+      emit(NoteInitial(note, descriptionLines: event.descriptionLines));
     });
+
     on<SaveNoteEvent>((event, emit) async {
-      const Uuid _uuid = Uuid();
-      NoteModel updatedId = event.noteModel.copyWith(id: _uuid.v4());
+      const Uuid uuid = Uuid();
+      NoteModel updatedId = event.noteModel.copyWith(id: uuid.v4());
       final result = await saveUseCase.call(updatedId);
       if (result is DataSuccess) {
         emit(NoteInitial(locator<NoteModel>()));

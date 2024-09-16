@@ -16,22 +16,51 @@ class NoteInitialEvent extends NoteEvent {
 class ChangeNoteEvent extends NoteEvent {
   final String? titleTextEditingController;
   final String? decriptionTextEditingController;
+  final DateTime? lastUpdate;
+  final Color selectedColor;
+  final String? selectedBackground;
+  final int? descriptionLines;
 
   const ChangeNoteEvent({
+    this.lastUpdate,
     this.titleTextEditingController,
     this.decriptionTextEditingController,
+    this.descriptionLines,
+    this.selectedColor = Colors.transparent,
+    this.selectedBackground,
   });
 
   @override
-  List<Object?> get props =>
-      [titleTextEditingController, decriptionTextEditingController];
+  List<Object?> get props => [
+        lastUpdate,
+        titleTextEditingController,
+        decriptionTextEditingController,
+        descriptionLines,
+        selectedColor,
+        selectedBackground
+      ];
+}
+
+class ChangeNoteColorsPalette extends NoteEvent {
+  final Color selectedColor;
+  final String? selectedBackground;
+
+  const ChangeNoteColorsPalette({
+    this.selectedColor = Colors.transparent,
+    this.selectedBackground,
+  });
+
+  @override
+  List<Object?> get props => [selectedColor, selectedBackground];
 }
 
 class ChangeNoteColorEvent extends NoteEvent {
   final Color selectedColor;
-  const ChangeNoteColorEvent(this.selectedColor);
+
+  final String? selectedBackGround;
+  const ChangeNoteColorEvent(this.selectedColor, this.selectedBackGround);
   @override
-  List<Object?> get props => [selectedColor];
+  List<Object?> get props => [selectedColor, selectedBackGround];
 }
 
 class ChangeNotePinEvent extends NoteEvent {

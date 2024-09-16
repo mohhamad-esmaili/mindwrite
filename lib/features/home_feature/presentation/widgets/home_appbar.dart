@@ -97,7 +97,7 @@ class SliverHomeAppbar extends StatelessWidget {
             padding: const EdgeInsets.all(5),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(100),
-              color: ColorConstants.appbarDarkColor,
+              color: AppColorConstants.appbarDarkColor,
             ),
             child: Row(
               children: [

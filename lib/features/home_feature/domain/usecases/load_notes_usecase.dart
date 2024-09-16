@@ -13,7 +13,7 @@ class LoadAllArchivedUsecase
   Future<DataState<List<NoteModel>>> call([void param]) async {
     try {
       final result = await noteRepository.loadNotesFromBox();
-
+      result.data!.sort((a, b) => b.lastUpdate.compareTo(a.lastUpdate));
       return DataSuccess(result.data);
     } catch (e) {
       return DataFailed('Failed to save note: ${e.toString()}');

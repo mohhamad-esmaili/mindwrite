@@ -18,15 +18,18 @@ class BackgroundModelAdapter extends TypeAdapter<BackgroundModel> {
     };
     return BackgroundModel(
       color: fields[0] as Color,
+      backgroundPath: fields[1] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, BackgroundModel obj) {
     writer
-      ..writeByte(1)
+      ..writeByte(2)
       ..writeByte(0)
-      ..write(obj.color);
+      ..write(obj.color)
+      ..writeByte(1)
+      ..write(obj.backgroundPath);
   }
 
   @override

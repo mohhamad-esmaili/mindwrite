@@ -7,5 +7,18 @@ part 'background_model.g.dart';
 class BackgroundModel {
   @HiveField(0)
   Color color;
-  BackgroundModel({this.color = Colors.transparent});
+  @HiveField(1)
+  String? backgroundPath;
+  BackgroundModel({this.color = Colors.transparent, this.backgroundPath});
+
+  BackgroundModel copyWith({
+    Color? color,
+    String? backgroundPath,
+    required BackgroundModel noteBackground,
+  }) {
+    return BackgroundModel(
+      color: color ?? this.color,
+      backgroundPath: backgroundPath ?? this.backgroundPath,
+    );
+  }
 }

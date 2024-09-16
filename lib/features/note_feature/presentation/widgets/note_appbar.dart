@@ -25,10 +25,11 @@ class NoteAppbar extends StatelessWidget {
                 onPressed: () {
                   if (titleController.text.isNotEmpty) {
                     context.read<NoteBloc>().add(SaveNoteEvent(state.note));
+
                     context.read<HomeBloc>().add(GetAllNotesEvent());
                   }
 
-                  context.go('/');
+                  context.go('/home');
                 },
                 icon: const Icon(
                   Icons.arrow_back_rounded,
@@ -60,7 +61,7 @@ class NoteAppbar extends StatelessWidget {
                     context
                         .read<NoteBloc>()
                         .add(NoteArchiveEvent(!state.note.archived));
-                    context.go('/');
+                    context.go('/home');
                     snackbarService.show(
                         context: context,
                         message: "Note Archived",

@@ -10,7 +10,9 @@ sealed class NoteState extends Equatable {
 class NoteInitial extends NoteState {
   final NoteModel note;
 
-  const NoteInitial(this.note);
+  final int? descriptionLines;
+
+  const NoteInitial(this.note, {this.descriptionLines = 1});
 
   @override
   List<Object> get props => [note];

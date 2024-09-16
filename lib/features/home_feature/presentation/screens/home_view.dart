@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mindwrite/core/gen/assets.gen.dart';
+import 'package:mindwrite/core/utils/color_constants.dart';
 import 'package:mindwrite/core/widgets/app_drawer.dart';
+import 'package:mindwrite/core/widgets/circular_indicator_widget.dart';
 import 'package:mindwrite/core/widgets/snackbar_widget.dart';
 import 'package:mindwrite/features/home_feature/data/model/note_model.dart';
 import 'package:mindwrite/features/home_feature/domain/entities/note_model_entity.dart';
@@ -11,6 +14,7 @@ import 'package:mindwrite/features/home_feature/presentation/widgets/bottom_navb
 import 'package:mindwrite/features/home_feature/presentation/widgets/home_appbar.dart';
 import 'package:mindwrite/features/home_feature/presentation/widgets/listview_title.dart';
 import 'package:mindwrite/core/widgets/note_widget.dart';
+import 'package:mindwrite/features/note_feature/presentation/bloc/note_bloc.dart';
 import 'package:mindwrite/locator.dart';
 
 class HomeView extends StatefulWidget {
@@ -33,6 +37,7 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
     final snackbarService = locator<SnackbarService>();
+
     return Scaffold(
       key: _scaffoldKey,
       drawer: const AppDrawer(),
@@ -58,7 +63,6 @@ class _HomeViewState extends State<HomeView> {
                         BlocBuilder<HomeBloc, HomeState>(
                           builder: (context, state) {
                             if (state is HomeLoaded) {
-                              print(state.pinnedNotes.length);
                               return Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -155,21 +159,37 @@ class _HomeViewState extends State<HomeView> {
         ),
       ),
       floatingActionButton: Container(
-        height: 75,
-        width: 75,
+        height: 70,
+        width: 70,
         margin: const EdgeInsets.only(bottom: 10),
         child: FloatingActionButton(
-          onPressed: () => context.go('/create_note'),
-          backgroundColor: const Color.fromRGBO(41, 42, 44, 1),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(25),
-          ),
-          child: Icon(
-            Icons.add,
-            size: 55,
-            color: themeData.iconTheme.color,
-          ),
-        ),
+            onPressed: () {
+              context.read<NoteBloc>().add(const NoteInitialEvent());
+              context.go('/create_note');
+            },
+            backgroundColor: const Color.fromRGBO(41, 42, 44, 1),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(25),
+            ),
+            child: ShaderMask(
+              shaderCallback: (Rect bounds) {
+                return LinearGradient(
+                  begin: Alignment.bottomRight,
+                  end: Alignment.topLeft,
+                  stops: [.3, .6, .9],
+                  colors: [
+                    Colors.white,
+                    Colors.blue[200]!,
+                    Colors.blueAccent,
+                  ],
+                ).createShader(bounds);
+              },
+              child: Icon(
+                Icons.add,
+                size: 55,
+                color: Colors.white,
+              ),
+            )),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.miniEndDocked,
       bottomNavigationBar: const HomeBottomBar(),
