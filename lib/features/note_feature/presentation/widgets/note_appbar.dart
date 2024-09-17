@@ -25,6 +25,7 @@ class NoteAppbar extends StatelessWidget {
                 onPressed: () {
                   if (titleController.text.isNotEmpty) {
                     context.read<NoteBloc>().add(SaveNoteEvent(state.note));
+                    context.read<NoteBloc>().add(const ClearNoteDataEvent());
 
                     context.read<HomeBloc>().add(GetAllNotesEvent());
                   }
@@ -62,7 +63,7 @@ class NoteAppbar extends StatelessWidget {
                         .read<NoteBloc>()
                         .add(NoteArchiveEvent(!state.note.archived));
                     context.go('/home');
-                    snackbarService.show(
+                    snackbarService.showStatusSnackbar(
                         context: context,
                         message: "Note Archived",
                         actionLabel: "Undo",
@@ -74,7 +75,7 @@ class NoteAppbar extends StatelessWidget {
                         },
                         onClosed: null);
                   } else {
-                    snackbarService.show(
+                    snackbarService.showStatusSnackbar(
                         context: context,
                         message: "Enter note title!",
                         actionLabel: "Ok",

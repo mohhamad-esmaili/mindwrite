@@ -6,6 +6,7 @@ import 'package:mindwrite/features/archive_feature/data/repository/archive_repos
 import 'package:mindwrite/features/archive_feature/domain/repository/archive_repository.dart';
 import 'package:mindwrite/features/archive_feature/domain/use_cases/get_archived_usecase.dart';
 import 'package:mindwrite/features/archive_feature/presentation/bloc/archive_bloc.dart';
+
 import 'package:mindwrite/features/home_feature/data/model/background_model.dart';
 import 'package:mindwrite/features/home_feature/data/model/color_adapter.dart';
 import 'package:mindwrite/features/home_feature/data/model/label_model.dart';
@@ -42,6 +43,7 @@ setup() async {
       description: null,
       id: null,
       lastUpdate: DateTime.now(),
+      drawingsList: null,
       noteBackground: BackgroundModel(color: Colors.transparent),
     ),
   );

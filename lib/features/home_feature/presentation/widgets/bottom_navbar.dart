@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mindwrite/core/utils/color_constants.dart';
+import 'package:mindwrite/features/note_feature/presentation/bloc/note_bloc.dart';
 
 class HomeBottomBar extends StatelessWidget {
   const HomeBottomBar({super.key});
@@ -23,7 +26,10 @@ class HomeBottomBar extends StatelessWidget {
             ),
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              context.go("/create_note");
+              context.go("/draw");
+            },
             icon: const Icon(
               Icons.brush_rounded,
               size: 35,

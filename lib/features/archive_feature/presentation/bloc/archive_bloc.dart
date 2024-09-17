@@ -16,7 +16,7 @@ class ArchiveBloc extends Bloc<ArchiveEvent, ArchiveState> {
       this.allArchivedNotes, this.getArchivedUsecase, this.changeArchiveUsecase)
       : super(ArchiveInitial(allArchivedNotes)) {
     on<GetAllArchive>((event, emit) async {
-      emit(ArchiveLoading("loading"));
+      emit(const ArchiveLoading("loading"));
       final result = await getArchivedUsecase.call();
       if (result is DataSuccess<List<NoteModel>>) {
         emit(ArchiveLoaded(result.data!));

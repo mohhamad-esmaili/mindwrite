@@ -26,7 +26,7 @@ class FloatingButtonWidget extends StatelessWidget {
               return LinearGradient(
                 begin: Alignment.bottomRight,
                 end: Alignment.topLeft,
-                stops: [.3, .6, .9],
+                stops: const [.3, .6, .9],
                 colors: [
                   Colors.white,
                   Colors.blue[200]!,
@@ -34,7 +34,7 @@ class FloatingButtonWidget extends StatelessWidget {
                 ],
               ).createShader(bounds);
             },
-            child: Icon(
+            child: const Icon(
               Icons.add,
               size: 55,
               color: Colors.white,

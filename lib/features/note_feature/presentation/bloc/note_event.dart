@@ -84,3 +84,26 @@ class SaveNoteEvent extends NoteEvent {
   @override
   List<Object?> get props => [noteModel];
 }
+
+class ChangeDrawingLists extends NoteEvent {
+  final Uint8List drewPaint;
+  const ChangeDrawingLists(this.drewPaint);
+
+  @override
+  List<Object?> get props => [drewPaint];
+}
+
+class RemovePaintEvent extends NoteEvent {
+  final Uint8List drewPaint;
+  const RemovePaintEvent(this.drewPaint);
+
+  @override
+  List<Object?> get props => [drewPaint];
+}
+
+class ClearNoteDataEvent extends NoteEvent {
+  const ClearNoteDataEvent();
+
+  @override
+  List<Object?> get props => [];
+}

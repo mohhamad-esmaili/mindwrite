@@ -1,21 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:mindwrite/locator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:go_router/go_router.dart';
-import 'package:mindwrite/core/gen/assets.gen.dart';
-import 'package:mindwrite/core/utils/color_constants.dart';
 import 'package:mindwrite/core/widgets/app_drawer.dart';
-import 'package:mindwrite/core/widgets/circular_indicator_widget.dart';
+import 'package:mindwrite/core/widgets/note_widget.dart';
 import 'package:mindwrite/core/widgets/snackbar_widget.dart';
 import 'package:mindwrite/features/home_feature/data/model/note_model.dart';
-import 'package:mindwrite/features/home_feature/domain/entities/note_model_entity.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mindwrite/features/home_feature/presentation/bloc/home_bloc.dart';
-import 'package:mindwrite/features/home_feature/presentation/widgets/bottom_navbar.dart';
 import 'package:mindwrite/features/home_feature/presentation/widgets/home_appbar.dart';
+import 'package:mindwrite/features/home_feature/domain/entities/note_model_entity.dart';
+import 'package:mindwrite/features/home_feature/presentation/widgets/bottom_navbar.dart';
 import 'package:mindwrite/features/home_feature/presentation/widgets/listview_title.dart';
-import 'package:mindwrite/core/widgets/note_widget.dart';
-import 'package:mindwrite/features/note_feature/presentation/bloc/note_bloc.dart';
-import 'package:mindwrite/locator.dart';
+import 'package:mindwrite/features/home_feature/presentation/widgets/floating_button.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -35,7 +31,6 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData themeData = Theme.of(context);
     final snackbarService = locator<SnackbarService>();
 
     return Scaffold(
@@ -108,7 +103,8 @@ class _HomeViewState extends State<HomeView> {
                                           homeBloc.add(
                                               ToggleArchiveEvent(selectedNote));
                                           if (context.mounted) {
-                                            await snackbarService.show(
+                                            await snackbarService
+                                                .showStatusSnackbar(
                                               context: context,
                                               message: "Note archived",
                                               actionLabel: "Undo",
@@ -158,39 +154,7 @@ class _HomeViewState extends State<HomeView> {
           ],
         ),
       ),
-      floatingActionButton: Container(
-        height: 70,
-        width: 70,
-        margin: const EdgeInsets.only(bottom: 10),
-        child: FloatingActionButton(
-            onPressed: () {
-              context.read<NoteBloc>().add(const NoteInitialEvent());
-              context.go('/create_note');
-            },
-            backgroundColor: const Color.fromRGBO(41, 42, 44, 1),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(25),
-            ),
-            child: ShaderMask(
-              shaderCallback: (Rect bounds) {
-                return LinearGradient(
-                  begin: Alignment.bottomRight,
-                  end: Alignment.topLeft,
-                  stops: [.3, .6, .9],
-                  colors: [
-                    Colors.white,
-                    Colors.blue[200]!,
-                    Colors.blueAccent,
-                  ],
-                ).createShader(bounds);
-              },
-              child: Icon(
-                Icons.add,
-                size: 55,
-                color: Colors.white,
-              ),
-            )),
-      ),
+      floatingActionButton: const FloatingButtonWidget(),
       floatingActionButtonLocation: FloatingActionButtonLocation.miniEndDocked,
       bottomNavigationBar: const HomeBottomBar(),
     );

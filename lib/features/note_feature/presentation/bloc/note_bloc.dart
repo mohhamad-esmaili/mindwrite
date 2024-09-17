@@ -10,7 +10,7 @@ import 'package:mindwrite/features/home_feature/data/model/note_model.dart';
 import 'package:mindwrite/features/note_feature/domain/use_cases/save_note_usecase.dart';
 import 'package:mindwrite/locator.dart';
 import 'package:uuid/uuid.dart';
-
+import 'dart:typed_data';
 part 'note_event.dart';
 part 'note_state.dart';
 
@@ -18,17 +18,19 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
   final SaveNoteToBoxUsecase saveUseCase;
   NoteModel note;
   NoteBloc(this.note, this.saveUseCase) : super(NoteInitial(note)) {
+    NoteModel defaultNote = note.copyWith(
+      title: null,
+      description: null,
+      lastUpdate: DateTime.now(),
+      noteBackground:
+          BackgroundModel(color: Colors.transparent, backgroundPath: null),
+      id: null,
+      pin: false,
+      archived: false,
+      drawingsList: null,
+    );
     on<NoteInitialEvent>((event, emit) {
-      note = note.copyWith(
-        title: null,
-        description: null,
-        lastUpdate: DateTime.now(),
-        noteBackground:
-            BackgroundModel(color: Colors.transparent, backgroundPath: null),
-        id: null,
-        pin: false,
-        archived: false,
-      );
+      note = defaultNote;
       emit(NoteInitial(note));
     });
     on<ChangeNoteColorEvent>((event, emit) {
@@ -36,7 +38,7 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
           "Event triggered: ${event.selectedColor}, ${event.selectedBackGround}");
       note = note.copyWith(
           noteBackground: BackgroundModel(
-        color: event.selectedColor == Color(0xff131313)
+        color: event.selectedColor == const Color(0xff131313)
             ? Colors.transparent
             : event.selectedColor,
         backgroundPath: event.selectedBackGround,
@@ -71,10 +73,32 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
       NoteModel updatedId = event.noteModel.copyWith(id: uuid.v4());
       final result = await saveUseCase.call(updatedId);
       if (result is DataSuccess) {
+        note = defaultNote;
         emit(NoteInitial(locator<NoteModel>()));
       } else {
         emit(NoteSaveFailed(result.error!));
       }
+    });
+    on<ChangeDrawingLists>((event, emit) {
+      note = note.copyWith(
+        drawingsList: (note.drawingsList ?? [])..add(event.drewPaint),
+      );
+
+      emit(NoteInitial(note));
+    });
+    on<RemovePaintEvent>((event, emit) {
+      emit(NoteSaving());
+      List<Uint8List> initializedPaints = List.from(note.drawingsList!);
+
+      initializedPaints.removeWhere((element) => element == event.drewPaint);
+      note = note.copyWith(drawingsList: initializedPaints);
+
+      emit(NoteInitial(note));
+    });
+
+    on<ClearNoteDataEvent>((event, emit) {
+      note = defaultNote;
+      emit(NoteInitial(note));
     });
   }
 }

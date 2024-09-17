@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mindwrite/features/home_feature/data/model/background_model.dart';
 
 class AppColorConstants {
   /// app colors

@@ -1,11 +1,13 @@
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-
 import 'package:mindwrite/core/widgets/circular_indicator_widget.dart';
+import 'package:mindwrite/core/widgets/snackbar_widget.dart';
 import 'package:mindwrite/features/note_feature/presentation/bloc/note_bloc.dart';
 import 'package:mindwrite/features/note_feature/presentation/widgets/bottom_section/bottombar_section.dart';
 import 'package:mindwrite/features/note_feature/presentation/widgets/note_appbar.dart';
+import 'package:mindwrite/features/note_feature/presentation/widgets/notedraw_section.dart';
 
 class NoteView extends StatelessWidget {
   NoteView({super.key});
@@ -16,14 +18,18 @@ class NoteView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<NoteBloc, NoteState>(builder: (context, state) {
+      if (state is NoteSaving) {
+        return CircularIndicatorWidget();
+      }
       if (state is NoteInitial) {
         Color initialColor = state.note.noteBackground!.color;
         String? initialBG = state.note.noteBackground!.backgroundPath;
         int descriptionLines = state.descriptionLines ?? 1;
 
         return PopScope(
-          canPop: false,
-          onPopInvoked: (didPop) => context.go("/home"),
+          onPopInvoked: (popDisposition) {
+            context.go('/home');
+          },
           child: Scaffold(
             backgroundColor: initialColor,
             body: Stack(
@@ -63,7 +69,13 @@ class NoteView extends StatelessWidget {
                                   mainAxisSize: MainAxisSize.max,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    // Title TextField
+                                    // Conditionally render the draw section only when there are drawings
+                                    if (state.note.drawingsList != null &&
+                                        state.note.drawingsList!.isNotEmpty)
+                                      NoteDrawSectionWidget()
+                                    else
+                                      SizedBox.shrink(),
+
                                     TextField(
                                       controller: titleController,
                                       onChanged: (text) => context

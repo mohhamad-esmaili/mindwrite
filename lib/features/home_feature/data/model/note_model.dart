@@ -2,7 +2,8 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:mindwrite/features/home_feature/data/model/background_model.dart';
 import 'package:mindwrite/features/home_feature/data/model/label_model.dart';
 import 'package:mindwrite/features/home_feature/domain/entities/note_model_entity.dart';
-import 'package:uuid/uuid.dart'; // Import the UUID package
+import 'package:uuid/uuid.dart';
+import 'dart:typed_data';
 
 part 'note_model.g.dart';
 
@@ -32,6 +33,8 @@ class NoteModel extends NoteModelEntity {
   @override
   @HiveField(7)
   late final bool archived;
+  @HiveField(9)
+  final List<Uint8List>? drawingsList;
 
   static const Uuid _uuid = Uuid();
 
@@ -44,15 +47,18 @@ class NoteModel extends NoteModelEntity {
     this.noteBackground,
     this.pin = false,
     this.archived = false,
+    this.drawingsList,
   })  : id = id ?? _uuid.v4(),
         super(
-            title: title,
-            description: description,
-            labels: labels,
-            lastUpdate: lastUpdate,
-            noteBackground: noteBackground,
-            pin: pin,
-            archived: archived);
+          title: title,
+          description: description,
+          labels: labels,
+          lastUpdate: lastUpdate,
+          noteBackground: noteBackground,
+          pin: pin,
+          archived: archived,
+          drawingsList: drawingsList,
+        );
 
   factory NoteModel.fromJson(dynamic json) {
     return NoteModel(
@@ -64,6 +70,7 @@ class NoteModel extends NoteModelEntity {
       noteBackground: json['noteBackground'] ?? [],
       pin: json['pin'] ?? false,
       archived: json['archived'] ?? false,
+      drawingsList: json['drawingList'] ?? [],
     );
   }
 
@@ -76,6 +83,7 @@ class NoteModel extends NoteModelEntity {
     BackgroundModel? noteBackground,
     bool? pin,
     bool? archived,
+    List<Uint8List>? drawingsList,
   }) {
     return NoteModel(
       id: id ?? this.id,
@@ -86,6 +94,7 @@ class NoteModel extends NoteModelEntity {
       noteBackground: noteBackground ?? this.noteBackground,
       pin: pin ?? this.pin,
       archived: archived ?? this.archived,
+      drawingsList: drawingsList ?? this.drawingsList,
     );
   }
 }

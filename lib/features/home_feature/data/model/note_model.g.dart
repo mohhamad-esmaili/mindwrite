@@ -25,13 +25,14 @@ class NoteModelAdapter extends TypeAdapter<NoteModel> {
       noteBackground: fields[5] as BackgroundModel?,
       pin: fields[6] as bool,
       archived: fields[7] as bool,
+      drawingsList: (fields[9] as List?)?.cast<Uint8List>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, NoteModel obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -47,7 +48,9 @@ class NoteModelAdapter extends TypeAdapter<NoteModel> {
       ..writeByte(6)
       ..write(obj.pin)
       ..writeByte(7)
-      ..write(obj.archived);
+      ..write(obj.archived)
+      ..writeByte(9)
+      ..write(obj.drawingsList);
   }
 
   @override

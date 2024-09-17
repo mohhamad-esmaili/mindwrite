@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mindwrite/features/archive_feature/presentation/screens/archive_view.dart';
+import 'package:mindwrite/features/draw_feature/presentation/screen/draw_view.dart';
 import 'package:mindwrite/features/home_feature/presentation/screens/home_view.dart';
 import 'package:mindwrite/features/note_feature/presentation/screen/note_screen.dart';
 import 'package:mindwrite/features/splash_feature/presentation/splash_view.dart';
@@ -12,7 +13,7 @@ class AppRoutes {
         path: '/',
         name: "splash",
         pageBuilder: (context, state) => CustomTransitionPage(
-          child: SplashView(),
+          child: const SplashView(),
           transitionDuration: const Duration(milliseconds: 500),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return SlideTransition(
@@ -24,7 +25,7 @@ class AppRoutes {
         path: '/home',
         name: "home",
         pageBuilder: (context, state) => CustomTransitionPage(
-          child: HomeView(),
+          child: const HomeView(),
           transitionDuration: const Duration(milliseconds: 500),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return SlideTransition(
@@ -49,6 +50,18 @@ class AppRoutes {
         name: "archive",
         pageBuilder: (context, state) => CustomTransitionPage(
           child: ArchiveView(),
+          transitionDuration: const Duration(milliseconds: 500),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return SlideTransition(
+                position: getOffsetAnimation(animation), child: child);
+          },
+        ),
+      ),
+      GoRoute(
+        path: '/draw',
+        name: "draw",
+        pageBuilder: (context, state) => CustomTransitionPage(
+          child: const DrawView(),
           transitionDuration: const Duration(milliseconds: 500),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return SlideTransition(

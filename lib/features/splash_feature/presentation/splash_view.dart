@@ -31,7 +31,7 @@ class _SplashViewState extends State<SplashView> {
             child: Assets.images.logoDark.svg(
               width: 300,
               height: 300,
-              placeholderBuilder: (context) => CircularIndicatorWidget(),
+              placeholderBuilder: (context) => const CircularIndicatorWidget(),
               colorFilter: ColorFilter.mode(
                 Theme.of(context).primaryColor,
                 BlendMode.srcIn,

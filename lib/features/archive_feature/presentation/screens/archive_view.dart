@@ -15,7 +15,7 @@ import 'package:mindwrite/features/home_feature/presentation/bloc/home_bloc.dart
 import 'package:mindwrite/locator.dart';
 
 class ArchiveView extends StatefulWidget {
-  ArchiveView({super.key});
+  const ArchiveView({super.key});
 
   @override
   State<ArchiveView> createState() => _ArchiveViewState();
@@ -83,7 +83,8 @@ class _ArchiveViewState extends State<ArchiveView> {
                                           archiveBloc.add(ToggleOffArchiveEvent(
                                               selectedNote));
                                           if (context.mounted) {
-                                            await snackbarService.show(
+                                            await snackbarService
+                                                .showStatusSnackbar(
                                               context: context,
                                               message: "Note archived",
                                               actionLabel: "Undo",

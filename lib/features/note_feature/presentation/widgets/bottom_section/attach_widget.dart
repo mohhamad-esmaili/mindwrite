@@ -4,8 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:mindwrite/features/note_feature/presentation/bloc/note_bloc.dart';
 
 /// this widget contains left three dots icon which allow us to share or delete note
-class ThreeDotsButtonWidget extends StatelessWidget {
-  const ThreeDotsButtonWidget({super.key});
+class AtachButtonWidget extends StatelessWidget {
+  const AtachButtonWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,15 +23,13 @@ class ThreeDotsButtonWidget extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 _makeSettingButton(
-                    onPress: () {
-                      context.go('/home');
-                    },
-                    label: "Delete",
-                    icon: Icons.delete),
-                // TODO: share in social media
-                // shared plus has error here to build
-                _makeSettingButton(
-                    onPress: () {}, label: "Send", icon: Icons.share_rounded),
+                  onPress: () {
+                    context.pop();
+                    context.go('/draw');
+                  },
+                  label: "Drawing",
+                  icon: Icons.brush_rounded,
+                ),
               ],
             ),
           );
