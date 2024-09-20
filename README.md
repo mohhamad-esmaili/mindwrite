@@ -2,7 +2,7 @@
 
 <div style="display: flex; align-items: center;">
   <div style="flex: 1;">
-    <img src="github_assets/app_logo.png" alt="GitHub Logo"/>
+    <img src="github_assets/app_logo.png" alt="GitHub Logo" width="200"/>
   </div>
   <div style="flex: 1.5; padding-left: 20px;">
     <h1>MindWrite</h1>
@@ -21,13 +21,16 @@
 </div>
 
 ### Available Features:
-- [*] draw
-- [*] archive
-- [*] deleted
-- [*] palette colors and bg image for notes 
-- [*] add image to notes
-- [*] take image to notes
+
+- [x] draw
+- [x] archive
+- [x] deleted
+- [x] palette colors and bg image for notes 
+- [x] add image to notes
+- [x] take image to notes
+
 ### Todo:
+
 - [ ] text to speech
 - [ ] label making
 - [ ] settings
@@ -40,3 +43,4 @@
 - [ ] send and share + make copy
 - [ ] do and redo buttons
 - [ ] light theme
+
