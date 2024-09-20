@@ -1,5 +1,5 @@
 name: mindwrite
-description: "clone app of google keepNote"
+description: "clone app of google keepNote with Bloc"
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
@@ -12,30 +12,30 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.6
-  equatable: ^2.0.5
-  hive_flutter: ^1.1.0
-  hive: ^2.2.3
-  flutter_animate: ^4.5.0
   bloc: ^8.1.4
-  flutter_bloc: ^8.1.6
-  get_it: ^7.7.0
-  go_router: ^14.2.7
-  flutter_staggered_grid_view: ^0.7.0
-  intl: ^0.19.0
+  hive: ^2.2.3
   uuid: ^4.5.0
-  loading_animation_widget: ^1.2.1
-  flutter_svg: ^2.0.10+1
-  syncfusion_flutter_signaturepad: ^26.2.14
+  intl: ^0.19.0
+  get_it: ^7.7.0
+  equatable: ^2.0.5
+  go_router: ^14.2.7
+  hive_flutter: ^1.1.0
+  flutter_bloc: ^8.1.6
   image_picker: ^1.1.2
+  flutter_svg: ^2.0.10+1
+  flutter_animate: ^4.5.0
+  loading_animation_widget: ^1.2.1
+  flutter_staggered_grid_view: ^0.7.0
+  syncfusion_flutter_signaturepad: ^26.2.14
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^4.0.0
-  hive_generator: ^2.0.1
-  build_runner: ^2.4.11
   flutter_gen: ^5.7.0
+  flutter_lints: ^4.0.0
+  build_runner: ^2.4.11
   better_commit: ^1.6.0
+  hive_generator: ^2.0.1
 
     
 
@@ -53,7 +53,6 @@ flutter:
     - assets/fonts/
     - assets/images/
   
-  # example:
   fonts:
     - family: Google sans
       fonts:
@@ -71,12 +70,3 @@ flutter:
           style: italic
         - asset: assets/fonts/GoogleSans-Regular.ttf
           weight: 100
-
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
-
