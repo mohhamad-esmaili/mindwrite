@@ -1,5 +1,7 @@
 
- <img src="github_assets/app_logo.png" alt="GitHub Logo" width="150" align="center"/>
+<img src="github_assets/app_logo.png" alt="GitHub Logo" width="150" align="center" style="border: 5px solid white; border-radius: 10px;"/>
+
+
 
 # MindWrite
 This app is a best practice of Clean architectue with Bloc and playing with technologies like equatable, image_picker, get_it, go_router, hive and more..</p>
@@ -16,6 +18,7 @@ This app is a best practice of Clean architectue with Bloc and playing with tech
 - [x] deleted
 - [x] palette colors and background image for notes 
 - [x] add and take image to notes
+- [x] pin and ordering lists
 
 ### Todo:
 
@@ -23,7 +26,6 @@ This app is a best practice of Clean architectue with Bloc and playing with tech
 - [ ] label making
 - [ ] settings
 - [ ] reminders
-- [ ] pin and ordering lists
 - [ ] date picker
 - [ ] persian version
 - [ ] recording
