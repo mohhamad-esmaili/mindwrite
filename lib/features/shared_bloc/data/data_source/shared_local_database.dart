@@ -25,7 +25,10 @@ class SharedLocalDatabase {
         (element) => element.id == noteToPin.id,
       );
 
-      NoteModel updatedNote = existingNote.copyWith(pin: !existingNote.pin);
+      NoteModel updatedNote = existingNote.copyWith(
+        pin: !existingNote.pin,
+        archived: false,
+      );
 
       await noteBox.put(updatedNote.id, updatedNote);
     }
@@ -40,7 +43,10 @@ class SharedLocalDatabase {
       );
       print(noteToPin.noteBackground!.color);
       NoteModel updatedNote = existingNote.copyWith(
-        noteBackground: BackgroundModel(color: noteToPin.noteBackground!.color),
+        noteBackground: BackgroundModel(
+          color: noteToPin.noteBackground!.color,
+          backgroundPath: noteToPin.noteBackground!.backgroundPath,
+        ),
       );
 
       await noteBox.put(updatedNote.id, updatedNote);

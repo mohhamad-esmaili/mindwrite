@@ -29,7 +29,7 @@ class HomeBottomBar extends StatelessWidget {
               onPressed: () {},
               icon: const Icon(
                 Icons.check_box_outlined,
-                size: 35,
+                size: 30,
               ),
             ),
             IconButton(
@@ -39,7 +39,7 @@ class HomeBottomBar extends StatelessWidget {
               },
               icon: const Icon(
                 Icons.brush_rounded,
-                size: 35,
+                size: 30,
               ),
             ),
             IconButton(
@@ -58,7 +58,7 @@ class HomeBottomBar extends StatelessWidget {
               },
               icon: const Icon(
                 Icons.image_outlined,
-                size: 35,
+                size: 30,
               ),
             ),
           ],

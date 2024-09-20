@@ -37,66 +37,70 @@ class _HomeViewState extends State<HomeView> {
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.transparent,
       body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: Scrollbar(
-                thickness: 2,
-                radius: const Radius.circular(20),
-                interactive: true,
-                child: NestedScrollView(
-                  floatHeaderSlivers: true,
-                  headerSliverBuilder: (context, innerBoxIsScrolled) => [
-                    SliverHomeAppbar(
-                      scaffoldKey: _scaffoldKey,
-                      sharedBloc: sharedBloc,
-                    ),
-                  ],
-                  body: SingleChildScrollView(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        BlocBuilder<HomeBloc, HomeState>(
-                          builder: (context, state) {
-                            if (state is HomeLoaded) {
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  if (state.pinnedNotes.isNotEmpty)
-                                    const ListviewTitle(title: "Pinned"),
-                                  MasonaryBuilder(
-                                    sharedBloc: sharedBloc,
-                                    noteModelList: state.pinnedNotes,
-                                    defaultArchiveNote: true,
+        child: Padding(
+          padding: const EdgeInsets.only(top: 20),
+          child: Column(
+            children: [
+              Expanded(
+                child: Scrollbar(
+                  thickness: 2,
+                  radius: const Radius.circular(20),
+                  interactive: true,
+                  child: NestedScrollView(
+                    floatHeaderSlivers: true,
+                    headerSliverBuilder: (context, innerBoxIsScrolled) => [
+                      SliverHomeAppbar(
+                        scaffoldKey: _scaffoldKey,
+                        sharedBloc: sharedBloc,
+                      ),
+                    ],
+                    body: SingleChildScrollView(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          BlocBuilder<HomeBloc, HomeState>(
+                            builder: (context, state) {
+                              if (state is HomeLoaded) {
+                                return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    if (state.pinnedNotes.isNotEmpty)
+                                      const ListviewTitle(title: "Pinned"),
+                                    if (state.pinnedNotes.isNotEmpty)
+                                      MasonaryBuilder(
+                                        sharedBloc: sharedBloc,
+                                        noteModelList: state.pinnedNotes,
+                                        defaultArchiveNote: true,
+                                      ),
+                                    const ListviewTitle(title: "Others"),
+                                    MasonaryBuilder(
+                                      sharedBloc: sharedBloc,
+                                      noteModelList: state.notes,
+                                      defaultArchiveNote: true,
+                                    ),
+                                  ],
+                                );
+                              } else if (state is HomeLoadFailed) {
+                                return Center(
+                                  child: Text(
+                                    'Failed to load notes: ${state.error}',
+                                    style: const TextStyle(color: Colors.red),
                                   ),
-                                  const ListviewTitle(title: "Others"),
-                                  MasonaryBuilder(
-                                    sharedBloc: sharedBloc,
-                                    noteModelList: state.notes,
-                                    defaultArchiveNote: true,
-                                  ),
-                                ],
-                              );
-                            } else if (state is HomeLoadFailed) {
-                              return Center(
-                                child: Text(
-                                  'Failed to load notes: ${state.error}',
-                                  style: const TextStyle(color: Colors.red),
-                                ),
-                              );
-                            } else {
-                              return const SizedBox
-                                  .shrink(); // Empty state fallback
-                            }
-                          },
-                        ),
-                      ],
+                                );
+                              } else {
+                                return const SizedBox
+                                    .shrink(); // Empty state fallback
+                              }
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
       floatingActionButton: const FloatingButtonWidget(),

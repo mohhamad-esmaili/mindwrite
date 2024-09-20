@@ -38,7 +38,7 @@ class NoteModel extends NoteModelEntity {
   final List<Uint8List>? drawingsList;
   @override
   @HiveField(10)
-  late final bool isDeleted;
+  late final bool? isDeleted;
 
   static const Uuid _uuid = Uuid();
 

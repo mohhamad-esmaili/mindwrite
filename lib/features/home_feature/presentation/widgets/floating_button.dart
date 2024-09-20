@@ -9,8 +9,8 @@ class FloatingButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 70,
-      width: 70,
+      height: 65,
+      width: 65,
       margin: const EdgeInsets.only(bottom: 10),
       child: FloatingActionButton(
           onPressed: () {
@@ -19,18 +19,18 @@ class FloatingButtonWidget extends StatelessWidget {
           },
           backgroundColor: const Color.fromRGBO(41, 42, 44, 1),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(25),
+            borderRadius: BorderRadius.circular(20),
           ),
           child: ShaderMask(
             shaderCallback: (Rect bounds) {
               return LinearGradient(
                 begin: Alignment.bottomRight,
                 end: Alignment.topLeft,
-                stops: const [.3, .6, .9],
+                stops: const [.4, .4, .8],
                 colors: [
-                  Colors.white,
-                  Colors.blue[200]!,
+                  Colors.green,
                   Colors.blueAccent,
+                  Colors.red,
                 ],
               ).createShader(bounds);
             },

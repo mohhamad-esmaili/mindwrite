@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:mindwrite/core/enums/listmode_enum.dart';
 import 'package:mindwrite/core/utils/color_constants.dart';
 import 'package:mindwrite/core/widgets/snackbar_widget.dart';
 import 'package:mindwrite/features/shared_bloc/data/model/note_model.dart';
 import 'package:mindwrite/features/shared_bloc/presentation/bloc/shared_bloc.dart';
 
 class MasonaryBuilder extends StatefulWidget {
-  /// should pass sharedbloc to manage them
   final SharedBloc sharedBloc;
 
   final List<NoteModel> noteModelList;
@@ -36,21 +36,46 @@ class _MasonaryBuilderState extends State<MasonaryBuilder> {
 
   @override
   Widget build(BuildContext context) {
-    return MasonryGridView.count(
-      crossAxisCount: 2,
-      mainAxisSpacing: 8,
-      crossAxisSpacing: 10,
-      shrinkWrap: true,
-      padding: const EdgeInsets.all(8.0),
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: widget.noteModelList.length,
-      itemBuilder: (context, index) {
-        final NoteModel note = widget.noteModelList[index];
-        final double opacity = _opacityMap[note.id] ?? 1.0;
+    if (widget.noteModelList.isEmpty) {
+      return Container(
+        height: 100,
+        width: double.infinity,
+        margin: EdgeInsetsDirectional.all(10),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15), color: Colors.white12),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.sentiment_dissatisfied,
+                size: 40,
+              ),
+              Text(
+                "There is no note yet",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+    return BlocBuilder<SharedBloc, SharedState>(
+      bloc: widget.sharedBloc,
+      builder: (context, state) {
+        return MasonryGridView.count(
+          crossAxisCount:
+              widget.sharedBloc.listMode == ListModeEnum.multiple ? 2 : 1,
+          mainAxisSpacing: 8,
+          crossAxisSpacing: 10,
+          shrinkWrap: true,
+          padding: const EdgeInsets.all(8.0),
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: widget.noteModelList.length,
+          itemBuilder: (context, index) {
+            final NoteModel note = widget.noteModelList[index];
+            final double opacity = _opacityMap[note.id] ?? 1.0;
 
-        return BlocBuilder<SharedBloc, SharedState>(
-          bloc: widget.sharedBloc,
-          builder: (context, state) {
             final bool isSelected =
                 widget.sharedBloc.selectedItems.contains(note);
 

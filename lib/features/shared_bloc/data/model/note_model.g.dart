@@ -26,7 +26,7 @@ class NoteModelAdapter extends TypeAdapter<NoteModel> {
       pin: fields[6] as bool,
       archived: fields[7] as bool,
       drawingsList: (fields[9] as List?)?.cast<Uint8List>(),
-      isDeleted: fields[10] as bool,
+      isDeleted: fields[10] as bool?,
     );
   }
 

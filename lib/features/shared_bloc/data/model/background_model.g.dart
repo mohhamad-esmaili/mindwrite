@@ -17,7 +17,7 @@ class BackgroundModelAdapter extends TypeAdapter<BackgroundModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return BackgroundModel(
-      color: fields[0] as Color,
+      color: fields[0] as Color?,
       backgroundPath: fields[1] as String?,
     );
   }

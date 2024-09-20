@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mindwrite/core/enums/listmode_enum.dart';
 import 'package:mindwrite/core/widgets/snackbar_widget.dart';
 import 'package:mindwrite/features/shared_bloc/presentation/bloc/shared_bloc.dart';
 
@@ -20,6 +21,7 @@ class ScreensAppbar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    ThemeData themeData = Theme.of(context);
     return AnimatedSwitcher(
       duration: const Duration(milliseconds: 500),
       switchInCurve: Curves.bounceIn,
@@ -37,28 +39,41 @@ class ScreensAppbar extends StatelessWidget implements PreferredSizeWidget {
                 ),
                 title: Text(state.selectedItems.length.toString()),
                 actions: [
-                  !isRestoreMode
-                      ? IconButton(
-                          onPressed: () {
-                            sharedBloc
-                                .add(DeleteNoteEvent(state.selectedItems));
-                            SnackbarService.showStatusSnackbar(
-                                message: "Notes Deleted", context: context);
-                          },
-                          icon: const Icon(Icons.delete_outline_rounded),
-                        )
-                      : const SizedBox.shrink(),
-                  isRestoreMode
-                      ? IconButton(
-                          onPressed: () {
-                            sharedBloc
-                                .add(RestoreNoteEvent(state.selectedItems));
-                            SnackbarService.showStatusSnackbar(
-                                message: "Notes restored", context: context);
-                          },
-                          icon: const Icon(Icons.restore),
-                        )
-                      : const SizedBox.shrink()
+                  if (!isRestoreMode)
+                    IconButton(
+                      onPressed: () => sharedBloc.add(
+                        PinNotesEvent(sharedBloc.selectedItems),
+                      ),
+                      icon: Icon(
+                        Icons.push_pin_rounded,
+                        color: themeData.iconTheme.color,
+                      ),
+                    ),
+                  IconButton(
+                    onPressed: () =>
+                        SnackbarService.showPaletteSelector(context: context),
+                    icon: Icon(
+                      Icons.palette_outlined,
+                      color: themeData.iconTheme.color,
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      sharedBloc.add(DeleteNoteEvent(state.selectedItems));
+                      SnackbarService.showStatusSnackbar(
+                          message: "Notes Deleted", context: context);
+                    },
+                    icon: const Icon(Icons.delete_outline_rounded),
+                  ),
+                  if (isRestoreMode)
+                    IconButton(
+                      onPressed: () {
+                        sharedBloc.add(RestoreNoteEvent(state.selectedItems));
+                        SnackbarService.showStatusSnackbar(
+                            message: "Notes restored", context: context);
+                      },
+                      icon: const Icon(Icons.restore),
+                    )
                 ],
               );
             }
@@ -66,6 +81,19 @@ class ScreensAppbar extends StatelessWidget implements PreferredSizeWidget {
           return AppBar(
             key: const ValueKey("normal"),
             title: Text(appbarTitle),
+            actions: [
+              IconButton(
+                onPressed: () => sharedBloc.add(
+                  ChangeCrossAxisCountEvent(),
+                ),
+                icon: Icon(
+                  sharedBloc.listMode == ListModeEnum.single
+                      ? Icons.auto_awesome_mosaic_rounded
+                      : Icons.splitscreen_rounded,
+                  color: themeData.iconTheme.color,
+                ),
+              ),
+            ],
           );
         },
       ),

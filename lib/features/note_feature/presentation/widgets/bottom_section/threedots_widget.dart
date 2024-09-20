@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mindwrite/features/note_feature/presentation/bloc/note_bloc.dart';
+import 'package:mindwrite/features/shared_bloc/presentation/bloc/shared_bloc.dart';
 
 /// this widget contains left three dots icon which allow us to share or delete note
 class ThreeDotsButtonWidget extends StatelessWidget {
@@ -24,6 +25,9 @@ class ThreeDotsButtonWidget extends StatelessWidget {
               children: [
                 _makeSettingButton(
                     onPress: () {
+                      BlocProvider.of<SharedBloc>(context)
+                          .add(DeleteNoteEvent([state.note]));
+                      context.pop();
                       context.go('/home');
                     },
                     label: "Delete",

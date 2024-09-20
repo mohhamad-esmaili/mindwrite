@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mindwrite/core/enums/listmode_enum.dart';
 import 'package:mindwrite/core/resources/data_state.dart';
 import 'package:mindwrite/features/archive_feature/presentation/bloc/archive_bloc.dart';
 import 'package:mindwrite/features/archive_feature/presentation/bloc/archive_event.dart';
@@ -23,6 +24,7 @@ part 'shared_state.dart';
 class SharedBloc extends Bloc<SharedEvent, SharedState> {
   bool isSelectionMode = false;
   List<NoteModel> selectedItems;
+  ListModeEnum listMode = ListModeEnum.multiple;
   ToggleArchiveUsecase toggleArchiveUsecase;
   DeleteNoteUsecase deleteNoteUsecase;
   RestoreDeletedNoteUsecase restoreDeletedNoteUsecase;
@@ -31,12 +33,13 @@ class SharedBloc extends Bloc<SharedEvent, SharedState> {
   SharedBloc(
     this.isSelectionMode,
     this.selectedItems,
+    this.listMode,
     this.toggleArchiveUsecase,
     this.deleteNoteUsecase,
     this.restoreDeletedNoteUsecase,
     this.pinToggleNoteUsecase,
     this.changePaletteNoteEvent,
-  ) : super(SharedInitial(selectedItems, isSelectionMode)) {
+  ) : super(SharedInitial(selectedItems, isSelectionMode, listMode)) {
     /// when have long press on notes, this will comes up
     on<LongPressItem>((event, emit) {
       emit(SharedLoading());
@@ -52,7 +55,7 @@ class SharedBloc extends Bloc<SharedEvent, SharedState> {
       if (selectedItems.isEmpty) {
         isSelectionMode = false;
       }
-      emit(SharedInitial(selectedItems, isSelectionMode));
+      emit(SharedInitial(selectedItems, isSelectionMode, listMode));
     });
 
     on<TapItem>((event, emit) {
@@ -67,7 +70,7 @@ class SharedBloc extends Bloc<SharedEvent, SharedState> {
         if (selectedItems.isEmpty) {
           isSelectionMode = false;
         }
-        emit(SharedInitial(selectedItems, isSelectionMode));
+        emit(SharedInitial(selectedItems, isSelectionMode, listMode));
       }
     });
 
@@ -76,7 +79,7 @@ class SharedBloc extends Bloc<SharedEvent, SharedState> {
       isSelectionMode = false;
       selectedItems.clear();
 
-      emit(SharedInitial(const [], isSelectionMode));
+      emit(SharedInitial(const [], isSelectionMode, listMode));
     });
 
     on<DeleteNoteEvent>((event, emit) async {
@@ -86,7 +89,7 @@ class SharedBloc extends Bloc<SharedEvent, SharedState> {
       if (result is DataSuccess<List<NoteModel>>) {
         isSelectionMode = false;
         selectedItems.clear();
-        emit(SharedInitial(selectedItems, isSelectionMode));
+        emit(SharedInitial(selectedItems, isSelectionMode, listMode));
         locator<ArchiveBloc>().add(const GetAllArchive());
         locator<HomeBloc>().add(LoadAllNotes());
 
@@ -103,7 +106,7 @@ class SharedBloc extends Bloc<SharedEvent, SharedState> {
         isSelectionMode = false;
         selectedItems.clear();
 
-        emit(SharedInitial(selectedItems, isSelectionMode));
+        emit(SharedInitial(selectedItems, isSelectionMode, listMode));
         locator<DeleteBloc>().add(const GetAllDeleted());
       } else if (result is DataFailed) {
         emit(SharedLoadFailed());
@@ -116,7 +119,7 @@ class SharedBloc extends Bloc<SharedEvent, SharedState> {
       locator<ArchiveBloc>().add(const GetAllArchive());
 
       if (result is DataSuccess<NoteModel>) {
-        emit(const SharedInitial([], false));
+        emit(SharedInitial([], false, listMode));
       } else if (result is DataFailed) {
         emit(SharedLoadFailed());
       }
@@ -129,7 +132,7 @@ class SharedBloc extends Bloc<SharedEvent, SharedState> {
         isSelectionMode = false;
         selectedItems.clear();
 
-        emit(SharedInitial(selectedItems, isSelectionMode));
+        emit(SharedInitial(selectedItems, isSelectionMode, listMode));
         locator<HomeBloc>().add(LoadAllNotes());
       } else if (result is DataFailed) {
         emit(SharedLoadFailed());
@@ -137,23 +140,35 @@ class SharedBloc extends Bloc<SharedEvent, SharedState> {
     });
     on<ChangePaletteNoteEvent>((event, emit) async {
       emit(SharedLoading());
-      print(selectedItems.first.noteBackground!.color);
+
       for (int i = 0; i < selectedItems.length; i++) {
         selectedItems[i] = selectedItems[i].copyWith(
-            noteBackground: BackgroundModel(color: event.selectedColor));
+          noteBackground: BackgroundModel(
+              color: event.selectedColor,
+              backgroundPath: selectedItems[i].noteBackground!.backgroundPath),
+        );
       }
-      print(selectedItems.first.noteBackground!.color);
 
       var result = await changePaletteNoteEvent(selectedItems);
       if (result is DataSuccess<List<NoteModel>>) {
         isSelectionMode = false;
         selectedItems.clear();
 
-        emit(SharedInitial(selectedItems, isSelectionMode));
+        emit(SharedInitial(selectedItems, isSelectionMode, listMode));
         locator<HomeBloc>().add(LoadAllNotes());
       } else if (result is DataFailed) {
         emit(SharedLoadFailed());
       }
+    });
+
+    on<ChangeCrossAxisCountEvent>((event, emit) async {
+      emit(SharedLoading());
+      if (listMode == ListModeEnum.multiple) {
+        listMode = ListModeEnum.single;
+      } else {
+        listMode = ListModeEnum.multiple;
+      }
+      emit(SharedInitial(selectedItems, isSelectionMode, listMode));
     });
   }
 }

@@ -1,6 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:mindwrite/core/enums/listmode_enum.dart';
 import 'package:mindwrite/core/widgets/snackbar_widget.dart';
 import 'package:mindwrite/features/archive_feature/data/repository/archive_repository_imp.dart';
 import 'package:mindwrite/features/archive_feature/domain/repository/archive_repository.dart';
@@ -127,6 +128,7 @@ setup() async {
   locator.registerSingleton<SharedBloc>(SharedBloc(
     false,
     [],
+    ListModeEnum.multiple,
     locator<ToggleArchiveUsecase>(),
     locator<DeleteNoteUsecase>(),
     locator<RestoreDeletedNoteUsecase>(),

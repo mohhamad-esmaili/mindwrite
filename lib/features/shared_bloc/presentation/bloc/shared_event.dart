@@ -64,3 +64,10 @@ class ChangePaletteNoteEvent extends SharedEvent {
   @override
   List<Object> get props => [selectedColor];
 }
+
+class ChangeCrossAxisCountEvent extends SharedEvent {
+  const ChangeCrossAxisCountEvent();
+
+  @override
+  List<Object> get props => [];
+}

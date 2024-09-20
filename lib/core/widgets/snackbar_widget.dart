@@ -118,7 +118,7 @@ class SnackbarService {
         .showSnackBar(
           SnackBar(
             content: Text(message),
-            duration: const Duration(seconds: 2),
+            duration: const Duration(seconds: 1),
             margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
             action: actionLabel.isNotEmpty
                 ? SnackBarAction(
