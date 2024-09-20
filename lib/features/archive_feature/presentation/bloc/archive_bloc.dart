@@ -3,35 +3,19 @@ import 'package:mindwrite/core/resources/data_state.dart';
 import 'package:mindwrite/features/archive_feature/domain/use_cases/get_archived_usecase.dart';
 import 'package:mindwrite/features/archive_feature/presentation/bloc/archive_event.dart';
 import 'package:mindwrite/features/archive_feature/presentation/bloc/archive_state.dart';
-import 'package:mindwrite/features/home_feature/data/model/note_model.dart';
-import 'package:mindwrite/features/home_feature/domain/usecases/change_archive_usecase.dart';
-import 'package:mindwrite/features/home_feature/presentation/bloc/home_bloc.dart';
-import 'package:mindwrite/locator.dart';
+import 'package:mindwrite/features/shared_bloc/data/model/note_model.dart';
 
 class ArchiveBloc extends Bloc<ArchiveEvent, ArchiveState> {
   List<NoteModel> allArchivedNotes;
   GetArchivedUsecase getArchivedUsecase;
-  ChangeArchiveUsecase changeArchiveUsecase;
+
   ArchiveBloc(
-      this.allArchivedNotes, this.getArchivedUsecase, this.changeArchiveUsecase)
-      : super(ArchiveInitial(allArchivedNotes)) {
+    this.allArchivedNotes,
+    this.getArchivedUsecase,
+  ) : super(ArchiveInitial(allArchivedNotes)) {
     on<GetAllArchive>((event, emit) async {
       emit(const ArchiveLoading("loading"));
       final result = await getArchivedUsecase.call();
-      if (result is DataSuccess<List<NoteModel>>) {
-        emit(ArchiveLoaded(result.data!));
-      } else if (result is DataFailed) {
-        emit(ArchiveLoadFailed(result.error!));
-      }
-    });
-    on<ToggleOffArchiveEvent>((event, emit) async {
-      emit(const ArchiveLoading("loading"));
-
-      await changeArchiveUsecase(event.note);
-
-      allArchivedNotes.remove(event.note);
-      final result = await getArchivedUsecase();
-
       if (result is DataSuccess<List<NoteModel>>) {
         emit(ArchiveLoaded(result.data!));
       } else if (result is DataFailed) {

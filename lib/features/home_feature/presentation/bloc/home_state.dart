@@ -22,7 +22,7 @@ class HomeLoaded extends HomeState {
   const HomeLoaded(this.notes, this.pinnedNotes);
 
   @override
-  List<Object> get props => [notes];
+  List<Object> get props => [notes, pinnedNotes];
 }
 
 class HomeLoading extends HomeState {

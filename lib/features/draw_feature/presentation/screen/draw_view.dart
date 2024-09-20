@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mindwrite/core/widgets/snackbar_widget.dart';
 
 import 'package:mindwrite/features/note_feature/presentation/bloc/note_bloc.dart';
 import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
@@ -29,7 +30,7 @@ class DrawViewState extends State<DrawView> {
         }
       }
     } catch (e) {
-      print("Error capturing signature: $e");
+      debugPrint("Error capturing signature: $e");
     }
     return null;
   }
@@ -64,7 +65,6 @@ class DrawViewState extends State<DrawView> {
     return PopScope(
       canPop: true,
       onPopInvoked: (_) {
-        print("pressed back");
         context.go('/create_note');
       },
       child: Scaffold(
@@ -74,17 +74,16 @@ class DrawViewState extends State<DrawView> {
           leading: IconButton(
             onPressed: () async {
               final imageBytes = await captureSignature();
-              print("------");
+
               final isEmpty = await isDrawingEmpty(imageBytes);
-              print(isEmpty);
+
               if (!isEmpty) {
                 if (context.mounted && imageBytes != null) {
                   context.read<NoteBloc>().add(ChangeDrawingLists(imageBytes));
                 }
-              } else {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('No drawing detected')),
-                );
+              } else if (context.mounted) {
+                SnackbarService.showStatusSnackbar(
+                    message: 'No drawing detected', context: context);
               }
 
               if (context.mounted) {

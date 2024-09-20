@@ -2,7 +2,7 @@ import 'package:mindwrite/core/resources/data_state.dart';
 import 'package:mindwrite/core/usecase/use_case.dart';
 import 'package:mindwrite/features/archive_feature/domain/repository/archive_repository.dart';
 
-import 'package:mindwrite/features/home_feature/data/model/note_model.dart';
+import 'package:mindwrite/features/shared_bloc/data/model/note_model.dart';
 
 class GetArchivedUsecase
     implements UseCase<DataState<List<NoteModel>>, NoteModel> {

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mindwrite/core/utils/color_constants.dart';
+import 'package:mindwrite/features/shared_bloc/presentation/bloc/shared_bloc.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
@@ -8,7 +10,7 @@ class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final currentPathName = GoRouterState.of(context).path;
-
+    final SharedBloc sharedBloc = BlocProvider.of<SharedBloc>(context);
     return Drawer(
       child: Scrollbar(
         child: SafeArea(
@@ -44,6 +46,7 @@ class AppDrawer extends StatelessWidget {
                   title: "Notes",
                   onpress: () {
                     ScaffoldMessenger.of(context).clearSnackBars();
+                    sharedBloc.add(ExitSelectionMode());
                     context.go('/home');
                   },
                   buttonIcon: Icons.lightbulb_outline_rounded,
@@ -54,15 +57,29 @@ class AppDrawer extends StatelessWidget {
                 thickness: 2,
               ),
               makeTextButton(
-                  context: context,
-                  title: "Archive",
-                  onpress: () {
-                    ScaffoldMessenger.of(context).clearSnackBars();
-                    context.go('/archive');
-                  },
-                  buttonIcon: Icons.archive_outlined,
-                  currentPathName: currentPathName,
-                  buttonPath: '/archive'),
+                context: context,
+                title: "Archive",
+                onpress: () {
+                  ScaffoldMessenger.of(context).clearSnackBars();
+                  sharedBloc.add(ExitSelectionMode());
+                  context.go('/archive');
+                },
+                buttonIcon: Icons.archive_outlined,
+                currentPathName: currentPathName,
+                buttonPath: '/archive',
+              ),
+              makeTextButton(
+                context: context,
+                title: "Deleted",
+                onpress: () {
+                  ScaffoldMessenger.of(context).clearSnackBars();
+                  sharedBloc.add(ExitSelectionMode());
+                  context.go('/delete');
+                },
+                buttonIcon: Icons.delete_outline_rounded,
+                currentPathName: currentPathName,
+                buttonPath: '/delete',
+              ),
             ],
           ),
         ),

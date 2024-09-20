@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:mindwrite/locator.dart';
+import 'package:mindwrite/core/widgets/masonary_builder.dart';
+import 'package:mindwrite/core/widgets/screens_appbar.dart';
+import 'package:mindwrite/features/shared_bloc/presentation/bloc/shared_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mindwrite/core/widgets/app_drawer.dart';
-import 'package:mindwrite/core/widgets/note_widget.dart';
 import 'package:mindwrite/core/widgets/snackbar_widget.dart';
-import 'package:mindwrite/features/home_feature/data/model/note_model.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:mindwrite/features/shared_bloc/data/model/note_model.dart';
 import 'package:mindwrite/features/home_feature/presentation/bloc/home_bloc.dart';
 import 'package:mindwrite/features/home_feature/presentation/widgets/home_appbar.dart';
-import 'package:mindwrite/features/home_feature/domain/entities/note_model_entity.dart';
 import 'package:mindwrite/features/home_feature/presentation/widgets/bottom_navbar.dart';
 import 'package:mindwrite/features/home_feature/presentation/widgets/listview_title.dart';
 import 'package:mindwrite/features/home_feature/presentation/widgets/floating_button.dart';
@@ -31,8 +30,7 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    final snackbarService = locator<SnackbarService>();
-
+    SharedBloc sharedBloc = BlocProvider.of<SharedBloc>(context);
     return Scaffold(
       key: _scaffoldKey,
       drawer: const AppDrawer(),
@@ -49,7 +47,10 @@ class _HomeViewState extends State<HomeView> {
                 child: NestedScrollView(
                   floatHeaderSlivers: true,
                   headerSliverBuilder: (context, innerBoxIsScrolled) => [
-                    SliverHomeAppbar(scaffoldKey: _scaffoldKey),
+                    SliverHomeAppbar(
+                      scaffoldKey: _scaffoldKey,
+                      sharedBloc: sharedBloc,
+                    ),
                   ],
                   body: SingleChildScrollView(
                     child: Column(
@@ -63,72 +64,16 @@ class _HomeViewState extends State<HomeView> {
                                 children: [
                                   if (state.pinnedNotes.isNotEmpty)
                                     const ListviewTitle(title: "Pinned"),
-                                  MasonryGridView.count(
-                                    crossAxisCount: 2,
-                                    mainAxisSpacing: 8,
-                                    crossAxisSpacing: 10,
-                                    shrinkWrap: true,
-                                    padding: const EdgeInsets.all(8.0),
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    itemCount: state.pinnedNotes.length,
-                                    itemBuilder: (context, index) {
-                                      NoteModelEntity selectedNote =
-                                          state.pinnedNotes[index];
-
-                                      return NoteWidget(
-                                          selectedNote: selectedNote,
-                                          onDismissed: () {});
-                                    },
+                                  MasonaryBuilder(
+                                    sharedBloc: sharedBloc,
+                                    noteModelList: state.pinnedNotes,
+                                    defaultArchiveNote: true,
                                   ),
                                   const ListviewTitle(title: "Others"),
-                                  MasonryGridView.count(
-                                    crossAxisCount: 2,
-                                    mainAxisSpacing: 8,
-                                    crossAxisSpacing: 10,
-                                    shrinkWrap: true,
-                                    padding: const EdgeInsets.all(8.0),
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    itemCount: state.notes.length,
-                                    itemBuilder: (context, index) {
-                                      NoteModel selectedNote =
-                                          state.notes[index];
-                                      return NoteWidget(
-                                        selectedNote: selectedNote,
-                                        onDismissed: () async {
-                                          bool undoPressed = false;
-                                          final homeBloc =
-                                              context.read<HomeBloc>();
-                                          homeBloc.add(
-                                              ToggleArchiveEvent(selectedNote));
-                                          if (context.mounted) {
-                                            await snackbarService
-                                                .showStatusSnackbar(
-                                              context: context,
-                                              message: "Note archived",
-                                              actionLabel: "Undo",
-                                              onAction: () =>
-                                                  undoPressed = true,
-                                              onClosed: () {
-                                                NoteModel archivedVersion =
-                                                    selectedNote.copyWith(
-                                                        archived: true);
-                                                if (!undoPressed) {
-                                                  homeBloc.add(
-                                                      ToggleArchiveEvent(
-                                                          selectedNote));
-                                                } else {
-                                                  homeBloc.add(
-                                                      ToggleArchiveEvent(
-                                                          archivedVersion));
-                                                }
-                                              },
-                                            );
-                                          }
-                                        },
-                                      );
-                                    },
+                                  MasonaryBuilder(
+                                    sharedBloc: sharedBloc,
+                                    noteModelList: state.notes,
+                                    defaultArchiveNote: true,
                                   ),
                                 ],
                               );

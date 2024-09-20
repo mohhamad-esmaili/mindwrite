@@ -14,34 +14,23 @@ class NoteDrawSectionWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<NoteBloc, NoteState>(
       builder: (context, state) {
-        if (state is NoteSaving) {
-          return CircularIndicatorWidget();
-        }
         if (state is NoteInitial) {
           List<Uint8List>? allPaints = state.note.drawingsList;
-
-          // Get the width of the screen
-          double screenWidth = MediaQuery.of(context).size.width;
 
           if (allPaints != null && allPaints.isNotEmpty) {
             return Center(
               child: SizedBox(
                 height: 400,
-                child: GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 1, // Each item takes one full row
-                    crossAxisSpacing: 8.0,
-                    mainAxisSpacing: 8.0,
-                    childAspectRatio: screenWidth / 350, // Full width
-                  ),
+                child: ListView.builder(
                   itemCount: allPaints.length,
+
                   scrollDirection: Axis.horizontal, // Horizontal scrolling
                   itemBuilder: (BuildContext context, int index) {
                     Uint8List selectedPaint = allPaints[index];
                     return Container(
-                      width: screenWidth, // Full width of the screen
+                      margin: const EdgeInsets.only(right: 10),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
+                        borderRadius: BorderRadius.circular(20),
                         color: Colors.white,
                       ),
                       child: Stack(
@@ -83,7 +72,7 @@ class NoteDrawSectionWidget extends StatelessWidget {
               ),
             );
           } else {
-            return SizedBox.shrink(); // Return empty if there are no drawings
+            return const SizedBox.shrink(); // Return empty if there are no drawings
           }
         } else {
           return const CircularIndicatorWidget();

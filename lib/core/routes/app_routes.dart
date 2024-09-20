@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mindwrite/features/archive_feature/presentation/screens/archive_view.dart';
+import 'package:mindwrite/features/delete_feature/presentation/screens/delete_view.dart';
 import 'package:mindwrite/features/draw_feature/presentation/screen/draw_view.dart';
 import 'package:mindwrite/features/home_feature/presentation/screens/home_view.dart';
 import 'package:mindwrite/features/note_feature/presentation/screen/note_screen.dart';
@@ -46,10 +47,22 @@ class AppRoutes {
         ),
       ),
       GoRoute(
+        path: '/delete',
+        name: "delete",
+        pageBuilder: (context, state) => CustomTransitionPage(
+          child: const DeleteView(),
+          transitionDuration: const Duration(milliseconds: 500),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return SlideTransition(
+                position: getOffsetAnimation(animation), child: child);
+          },
+        ),
+      ),
+      GoRoute(
         path: '/archive',
         name: "archive",
         pageBuilder: (context, state) => CustomTransitionPage(
-          child: ArchiveView(),
+          child: const ArchiveView(),
           transitionDuration: const Duration(milliseconds: 500),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return SlideTransition(

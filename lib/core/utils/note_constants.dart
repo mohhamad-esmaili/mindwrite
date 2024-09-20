@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mindwrite/core/gen/assets.gen.dart';
-import 'package:mindwrite/features/home_feature/data/model/background_model.dart';
+import 'package:mindwrite/features/shared_bloc/data/model/background_model.dart';
 
 class NoteConstants {
   static List<BackgroundModel> noteColors = [

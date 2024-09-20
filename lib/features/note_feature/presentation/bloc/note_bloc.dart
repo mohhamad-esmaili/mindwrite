@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mindwrite/core/resources/data_state.dart';
-import 'package:mindwrite/features/home_feature/data/model/background_model.dart';
-import 'package:mindwrite/features/home_feature/data/model/note_model.dart';
+import 'package:mindwrite/features/shared_bloc/data/model/background_model.dart';
+import 'package:mindwrite/features/shared_bloc/data/model/note_model.dart';
 
 import 'package:mindwrite/features/note_feature/domain/use_cases/save_note_usecase.dart';
 import 'package:mindwrite/locator.dart';
@@ -29,13 +29,15 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
       archived: false,
       drawingsList: null,
     );
+
+    /// the default state of note at first load
     on<NoteInitialEvent>((event, emit) {
       note = defaultNote;
       emit(NoteInitial(note));
     });
+
+    /// change background and note color
     on<ChangeNoteColorEvent>((event, emit) {
-      print(
-          "Event triggered: ${event.selectedColor}, ${event.selectedBackGround}");
       note = note.copyWith(
           noteBackground: BackgroundModel(
         color: event.selectedColor == const Color(0xff131313)
@@ -43,19 +45,23 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
             : event.selectedColor,
         backgroundPath: event.selectedBackGround,
       ));
-      print(
-          "Event triggered: ${note.noteBackground!.color}, ${note.noteBackground!.backgroundPath}");
+
       emit(NoteInitial(note));
     });
 
+    /// set note to pinned
     on<ChangeNotePinEvent>((event, emit) {
       note = note.copyWith(pin: event.isPin);
       emit(NoteInitial(note));
     });
+
+    /// send the note to archive
     on<NoteArchiveEvent>((event, emit) {
       note = note.copyWith(archived: event.isArchived);
       emit(NoteInitial(note));
     });
+
+    /// controls textediting controller in page
     on<ChangeNoteEvent>((event, emit) {
       DateTime date = DateTime.now();
 
@@ -68,6 +74,7 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
       emit(NoteInitial(note, descriptionLines: event.descriptionLines));
     });
 
+    /// save note with new id to avoid conflict
     on<SaveNoteEvent>((event, emit) async {
       const Uuid uuid = Uuid();
       NoteModel updatedId = event.noteModel.copyWith(id: uuid.v4());
@@ -79,13 +86,18 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
         emit(NoteSaveFailed(result.error!));
       }
     });
-    on<ChangeDrawingLists>((event, emit) {
-      note = note.copyWith(
-        drawingsList: (note.drawingsList ?? [])..add(event.drewPaint),
-      );
 
+    /// add images, draws and picked images to note
+    on<ChangeDrawingLists>((event, emit) {
+      final updatedList = List<Uint8List>.from(note.drawingsList ?? [])
+        ..add(event.drewPaint);
+      note = note.copyWith(
+        drawingsList: updatedList,
+      );
       emit(NoteInitial(note));
     });
+
+    /// remove image from list with button on the corner
     on<RemovePaintEvent>((event, emit) {
       emit(NoteSaving());
       List<Uint8List> initializedPaints = List.from(note.drawingsList!);
@@ -96,6 +108,7 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
       emit(NoteInitial(note));
     });
 
+    /// set note to default
     on<ClearNoteDataEvent>((event, emit) {
       note = defaultNote;
       emit(NoteInitial(note));

@@ -1,6 +1,10 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:mindwrite/core/widgets/camera_capture.dart';
 import 'package:mindwrite/features/note_feature/presentation/bloc/note_bloc.dart';
 
 /// this widget contains left three dots icon which allow us to share or delete note
@@ -22,6 +26,41 @@ class AtachButtonWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
+                _makeSettingButton(
+                  onPress: () async {
+                    Uint8List? selectedImage = await CameraCapture.openCamera(
+                        context, ImageSource.camera);
+
+                    if (context.mounted && selectedImage != null) {
+                      context
+                          .read<NoteBloc>()
+                          .add(ChangeDrawingLists(selectedImage));
+                    }
+                    if (context.mounted) {
+                      context.pop();
+                    }
+                  },
+                  label: "Take photo",
+                  icon: Icons.photo_camera_outlined,
+                ),
+                _makeSettingButton(
+                  onPress: () async {
+                    Uint8List? selectedImage = await CameraCapture.openCamera(
+                        context, ImageSource.gallery);
+
+                    if (context.mounted && selectedImage != null) {
+                      context
+                          .read<NoteBloc>()
+                          .add(ChangeDrawingLists(selectedImage));
+                    }
+
+                    if (context.mounted) {
+                      context.pop();
+                    }
+                  },
+                  label: "Add image",
+                  icon: Icons.image_outlined,
+                ),
                 _makeSettingButton(
                   onPress: () {
                     context.pop();

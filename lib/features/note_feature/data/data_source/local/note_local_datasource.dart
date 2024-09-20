@@ -1,5 +1,5 @@
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:mindwrite/features/home_feature/data/model/note_model.dart';
+import 'package:mindwrite/features/shared_bloc/data/model/note_model.dart';
 import 'package:mindwrite/locator.dart';
 
 class NoteLocalDatasource {

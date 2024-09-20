@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:mindwrite/core/widgets/snackbar_widget.dart';
 import 'package:mindwrite/features/home_feature/presentation/bloc/home_bloc.dart';
 import 'package:mindwrite/features/note_feature/presentation/bloc/note_bloc.dart';
-import 'package:mindwrite/locator.dart';
+import 'package:mindwrite/features/shared_bloc/presentation/bloc/shared_bloc.dart';
 
 class NoteAppbar extends StatelessWidget {
   final Color initialColor;
@@ -14,7 +14,6 @@ class NoteAppbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final snackbarService = locator<SnackbarService>();
     return BlocBuilder<NoteBloc, NoteState>(
       builder: (context, state) {
         if (state is NoteInitial) {
@@ -63,19 +62,18 @@ class NoteAppbar extends StatelessWidget {
                         .read<NoteBloc>()
                         .add(NoteArchiveEvent(!state.note.archived));
                     context.go('/home');
-                    snackbarService.showStatusSnackbar(
+                    SnackbarService.showStatusSnackbar(
                         context: context,
                         message: "Note Archived",
                         actionLabel: "Undo",
                         onAction: () {
                           context
-                              .read<HomeBloc>()
+                              .read<SharedBloc>()
                               .add(ToggleArchiveEvent(state.note));
-                          context.read<HomeBloc>().add(GetAllNotesEvent());
                         },
                         onClosed: null);
                   } else {
-                    snackbarService.showStatusSnackbar(
+                    SnackbarService.showStatusSnackbar(
                         context: context,
                         message: "Enter note title!",
                         actionLabel: "Ok",

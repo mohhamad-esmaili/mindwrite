@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:mindwrite/features/home_feature/data/model/note_model.dart';
+import 'package:mindwrite/features/shared_bloc/data/model/note_model.dart';
 
 abstract class ArchiveEvent extends Equatable {
   const ArchiveEvent();
@@ -14,9 +14,11 @@ class GetAllArchive extends ArchiveEvent {
   List<Object> get props => [];
 }
 
-class ToggleOffArchiveEvent extends ArchiveEvent {
-  final NoteModel note;
-  const ToggleOffArchiveEvent(this.note);
+class DeleteNoteArchiveEvent extends ArchiveEvent {
+  final List<NoteModel> selectedNotes;
+
+  const DeleteNoteArchiveEvent(this.selectedNotes);
+
   @override
-  List<Object> get props => [note];
+  List<Object> get props => [selectedNotes];
 }

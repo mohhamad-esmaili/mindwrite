@@ -5,8 +5,11 @@ import 'package:mindwrite/core/config/theme_config.dart';
 import 'package:mindwrite/core/routes/app_routes.dart';
 import 'package:mindwrite/features/archive_feature/presentation/bloc/archive_bloc.dart';
 import 'package:mindwrite/features/archive_feature/presentation/bloc/archive_event.dart';
+import 'package:mindwrite/features/delete_feature/presentation/bloc/delete_bloc.dart';
+import 'package:mindwrite/features/delete_feature/presentation/bloc/delete_event.dart';
 import 'package:mindwrite/features/home_feature/presentation/bloc/home_bloc.dart';
 import 'package:mindwrite/features/note_feature/presentation/bloc/note_bloc.dart';
+import 'package:mindwrite/features/shared_bloc/presentation/bloc/shared_bloc.dart';
 
 import 'package:mindwrite/locator.dart';
 
@@ -26,6 +29,9 @@ class Root extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
+          create: (context) => locator<SharedBloc>(),
+        ),
+        BlocProvider(
           create: (context) => locator<HomeBloc>()..add(GetAllNotesEvent()),
         ),
         BlocProvider(
@@ -35,6 +41,10 @@ class Root extends StatelessWidget {
         BlocProvider(
           create: (context) =>
               locator<ArchiveBloc>()..add(const GetAllArchive()),
+        ),
+        BlocProvider(
+          create: (context) =>
+              locator<DeleteBloc>()..add(const GetAllDeleted()),
         ),
       ],
       child: MaterialApp.router(

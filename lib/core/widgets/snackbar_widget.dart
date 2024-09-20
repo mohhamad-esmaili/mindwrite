@@ -38,7 +38,7 @@ class SnackbarService {
     );
   }
 
-  Future<void> showStatusSnackbar({
+  static Future<void> showStatusSnackbar({
     required String message,
     required BuildContext context,
     String actionLabel = '',

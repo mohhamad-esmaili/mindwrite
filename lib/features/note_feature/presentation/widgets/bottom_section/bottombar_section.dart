@@ -1,12 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-import 'package:mindwrite/core/gen/assets.gen.dart';
 import 'package:mindwrite/core/usecase/date_formater.dart';
-import 'package:mindwrite/core/utils/color_constants.dart';
-import 'package:mindwrite/core/utils/note_constants.dart';
-import 'package:mindwrite/features/home_feature/presentation/bloc/home_bloc.dart';
-import 'package:mindwrite/features/note_feature/presentation/bloc/note_bloc.dart';
 import 'package:mindwrite/features/note_feature/presentation/widgets/bottom_section/attach_widget.dart';
 import 'package:mindwrite/features/note_feature/presentation/widgets/bottom_section/threedots_widget.dart';
 import 'package:mindwrite/features/note_feature/presentation/widgets/bottom_section/palette_widget.dart';

@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 import 'package:mindwrite/core/widgets/app_drawer.dart';
-import 'package:mindwrite/core/widgets/snackbar_widget.dart';
+import 'package:mindwrite/core/widgets/masonary_builder.dart';
+import 'package:mindwrite/core/widgets/screens_appbar.dart';
 import 'package:mindwrite/features/archive_feature/presentation/bloc/archive_bloc.dart';
 import 'package:mindwrite/features/archive_feature/presentation/bloc/archive_event.dart';
 import 'package:mindwrite/features/archive_feature/presentation/bloc/archive_state.dart';
 
-import 'package:mindwrite/features/home_feature/data/model/note_model.dart';
-
-import 'package:mindwrite/core/widgets/note_widget.dart';
-import 'package:mindwrite/features/home_feature/presentation/bloc/home_bloc.dart';
-import 'package:mindwrite/locator.dart';
+import 'package:mindwrite/features/shared_bloc/presentation/bloc/shared_bloc.dart';
 
 class ArchiveView extends StatefulWidget {
   const ArchiveView({super.key});
@@ -33,13 +29,13 @@ class _ArchiveViewState extends State<ArchiveView> {
 
   @override
   Widget build(BuildContext context) {
-    final snackbarService = locator<SnackbarService>();
+    SharedBloc sharedBloc = BlocProvider.of<SharedBloc>(context);
     return Scaffold(
       key: _scaffoldKey,
-      appBar: AppBar(
-        title: const Text(
-          "Archive",
-        ),
+      appBar: ScreensAppbar(
+        appbarTitle: "Archive",
+        sharedBloc: sharedBloc,
+        isRestoreMode: false,
       ),
       drawer: const AppDrawer(),
       extendBodyBehindAppBar: true,
@@ -62,53 +58,10 @@ class _ArchiveViewState extends State<ArchiveView> {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                MasonryGridView.count(
-                                  crossAxisCount: 2,
-                                  mainAxisSpacing: 8,
-                                  crossAxisSpacing: 10,
-                                  shrinkWrap: true,
-                                  padding: const EdgeInsets.all(8.0),
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  itemCount: state.archivedNotes.length,
-                                  itemBuilder: (context, index) {
-                                    NoteModel selectedNote =
-                                        state.archivedNotes[index];
-                                    return NoteWidget(
-                                        selectedNote: selectedNote,
-                                        onDismissed: () async {
-                                          bool undoPressed = false;
-
-                                          final archiveBloc =
-                                              context.read<ArchiveBloc>();
-                                          archiveBloc.add(ToggleOffArchiveEvent(
-                                              selectedNote));
-                                          if (context.mounted) {
-                                            await snackbarService
-                                                .showStatusSnackbar(
-                                              context: context,
-                                              message: "Note archived",
-                                              actionLabel: "Undo",
-                                              onAction: () {
-                                                undoPressed = true;
-                                                NoteModel simpleVersion =
-                                                    selectedNote.copyWith(
-                                                        archived: false);
-                                                archiveBloc.add(
-                                                    ToggleOffArchiveEvent(
-                                                        simpleVersion));
-                                              },
-                                              onClosed: () {
-                                                if (!undoPressed) {
-                                                  archiveBloc.add(
-                                                      ToggleOffArchiveEvent(
-                                                          selectedNote));
-                                                }
-                                              },
-                                            );
-                                          }
-                                        });
-                                  },
-                                ),
+                                MasonaryBuilder(
+                                    noteModelList: state.archivedNotes,
+                                    defaultArchiveNote: false,
+                                    sharedBloc: sharedBloc),
                               ],
                             );
                           } else if (state is ArchiveLoadFailed) {
