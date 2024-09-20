@@ -14,9 +14,8 @@ This app is a best practice of Clean architectue with Bloc and playing with tech
 - [x] draw
 - [x] archive
 - [x] deleted
-- [x] palette colors and bg image for notes 
-- [x] add image to notes
-- [x] take image to notes
+- [x] palette colors and background image for notes 
+- [x] add and take image to notes
 
 ### Todo:
 
