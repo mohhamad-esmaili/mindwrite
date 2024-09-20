@@ -18,7 +18,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc(
       this.allLoadedNotes, this.loadNotesUsecase, this.loadPinnedNotesUsecase)
       : super(HomeInitial(allLoadedNotes)) {
-    on<GetAllNotesEvent>((event, emit) async {
+    on<LoadAllNotes>((event, emit) async {
       emit(const HomeLoading("loading"));
       final result = await loadNotesUsecase();
 

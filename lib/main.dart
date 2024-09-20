@@ -32,7 +32,7 @@ class Root extends StatelessWidget {
           create: (context) => locator<SharedBloc>(),
         ),
         BlocProvider(
-          create: (context) => locator<HomeBloc>()..add(GetAllNotesEvent()),
+          create: (context) => locator<HomeBloc>()..add(LoadAllNotes()),
         ),
         BlocProvider(
           create: (context) =>

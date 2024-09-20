@@ -39,4 +39,14 @@ class SharedRepositoryImp extends SharedRepository {
       return DataFailed(e.toString());
     }
   }
+
+  @override
+  Future<DataState<List<NoteModel>>> pinToggle(List<NoteModel> notes) async {
+    try {
+      await sharedLocalDatabase.pinToggleToBox(notes);
+      return DataSuccess(notes);
+    } catch (e) {
+      return DataFailed(e.toString());
+    }
+  }
 }

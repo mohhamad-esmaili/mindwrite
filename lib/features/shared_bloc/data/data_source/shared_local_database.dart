@@ -16,6 +16,20 @@ class SharedLocalDatabase {
     return result;
   }
 
+  Future<void> pinToggleToBox(List<NoteModel> notes) async {
+    List<NoteModel> existingNotes = noteBox.values.toList();
+
+    for (NoteModel noteToPin in notes) {
+      NoteModel? existingNote = existingNotes.firstWhere(
+        (element) => element.id == noteToPin.id,
+      );
+
+      NoteModel updatedNote = existingNote.copyWith(pin: !existingNote.pin);
+
+      await noteBox.put(updatedNote.id, updatedNote);
+    }
+  }
+
   Future<void> deleteNoteFromBox(List<NoteModel> noteList) async {
     // Fetch the existing notes from Hive
     List<NoteModel> existingNotes = noteBox.values.toList();

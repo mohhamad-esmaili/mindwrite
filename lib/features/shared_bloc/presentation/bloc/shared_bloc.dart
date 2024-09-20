@@ -10,6 +10,7 @@ import 'package:mindwrite/features/home_feature/presentation/bloc/home_bloc.dart
 import 'package:mindwrite/features/shared_bloc/data/model/note_model.dart';
 import 'package:mindwrite/features/shared_bloc/domain/usecases/change_archive_usecase.dart';
 import 'package:mindwrite/features/shared_bloc/domain/usecases/delete_note_usecase.dart';
+import 'package:mindwrite/features/shared_bloc/domain/usecases/pin_note_usecase.dart';
 import 'package:mindwrite/features/shared_bloc/domain/usecases/restore_note_usecase.dart';
 import 'package:mindwrite/locator.dart';
 
@@ -22,13 +23,16 @@ class SharedBloc extends Bloc<SharedEvent, SharedState> {
   ToggleArchiveUsecase toggleArchiveUsecase;
   DeleteNoteUsecase deleteNoteUsecase;
   RestoreDeletedNoteUsecase restoreDeletedNoteUsecase;
+  PinToggleNoteUsecase pinToggleNoteUsecase;
   SharedBloc(
     this.isSelectionMode,
     this.selectedItems,
     this.toggleArchiveUsecase,
     this.deleteNoteUsecase,
     this.restoreDeletedNoteUsecase,
+    this.pinToggleNoteUsecase,
   ) : super(SharedInitial(selectedItems, isSelectionMode)) {
+    /// when have long press on notes, this will comes up
     on<LongPressItem>((event, emit) {
       emit(SharedLoading());
 
@@ -79,7 +83,7 @@ class SharedBloc extends Bloc<SharedEvent, SharedState> {
         selectedItems.clear();
         emit(SharedInitial(selectedItems, isSelectionMode));
         locator<ArchiveBloc>().add(const GetAllArchive());
-        locator<HomeBloc>().add(GetAllNotesEvent());
+        locator<HomeBloc>().add(LoadAllNotes());
 
         print(selectedItems.length);
       } else if (result is DataFailed) {
@@ -103,11 +107,25 @@ class SharedBloc extends Bloc<SharedEvent, SharedState> {
 
     on<ToggleArchiveEvent>((event, emit) async {
       var result = await toggleArchiveUsecase(event.note);
-      locator<HomeBloc>().add(GetAllNotesEvent());
+      locator<HomeBloc>().add(LoadAllNotes());
       locator<ArchiveBloc>().add(const GetAllArchive());
 
       if (result is DataSuccess<NoteModel>) {
         emit(const SharedInitial([], false));
+      } else if (result is DataFailed) {
+        emit(SharedLoadFailed());
+      }
+    });
+
+    on<PinNotesEvent>((event, emit) async {
+      emit(SharedLoading());
+      var result = await pinToggleNoteUsecase(selectedItems);
+      if (result is DataSuccess<List<NoteModel>>) {
+        isSelectionMode = false;
+        selectedItems.clear();
+
+        emit(SharedInitial(selectedItems, isSelectionMode));
+        locator<HomeBloc>().add(LoadAllNotes());
       } else if (result is DataFailed) {
         emit(SharedLoadFailed());
       }

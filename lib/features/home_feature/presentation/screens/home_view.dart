@@ -25,7 +25,7 @@ class _HomeViewState extends State<HomeView> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     // Fetch latest notes when screen is loaded or refreshed
-    context.read<HomeBloc>().add(GetAllNotesEvent());
+    context.read<HomeBloc>().add(LoadAllNotes());
   }
 
   @override

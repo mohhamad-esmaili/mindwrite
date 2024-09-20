@@ -47,7 +47,8 @@ class SliverHomeAppbar extends StatelessWidget {
                             children: [
                               IconButton(
                                 onPressed: () => sharedBloc.add(
-                                    DeleteNoteEvent(sharedBloc.selectedItems)),
+                                  DeleteNoteEvent(sharedBloc.selectedItems),
+                                ),
                                 icon: Icon(
                                   Icons.clear,
                                   color: themeData.iconTheme.color,
@@ -56,12 +57,20 @@ class SliverHomeAppbar extends StatelessWidget {
                               Text(sharedBloc.selectedItems.length.toString()),
                               Spacer(),
                               IconButton(
-                                onPressed: () =>
-                                    BlocProvider.of<SharedBloc>(context).add(
-                                        DeleteNoteEvent(
-                                            sharedBloc.selectedItems)),
+                                onPressed: () => sharedBloc.add(
+                                  DeleteNoteEvent(sharedBloc.selectedItems),
+                                ),
                                 icon: Icon(
                                   Icons.delete_rounded,
+                                  color: themeData.iconTheme.color,
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: () => sharedBloc.add(
+                                  PinNotesEvent(sharedBloc.selectedItems),
+                                ),
+                                icon: Icon(
+                                  Icons.push_pin_rounded,
                                   color: themeData.iconTheme.color,
                                 ),
                               ),

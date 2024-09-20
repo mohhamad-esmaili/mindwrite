@@ -24,18 +24,18 @@ class TapItem extends SharedEvent {
 class ExitSelectionMode extends SharedEvent {}
 
 class DeleteNoteEvent extends SharedEvent {
-  List<NoteModel> selectedNotes;
+  final List<NoteModel> selectedNotes;
 
-  DeleteNoteEvent(this.selectedNotes);
+  const DeleteNoteEvent(this.selectedNotes);
 
   @override
   List<Object> get props => [selectedNotes];
 }
 
 class RestoreNoteEvent extends SharedEvent {
-  List<NoteModel> selectedNotes;
+  final List<NoteModel> selectedNotes;
 
-  RestoreNoteEvent(this.selectedNotes);
+  const RestoreNoteEvent(this.selectedNotes);
 
   @override
   List<Object> get props => [selectedNotes];
@@ -46,4 +46,13 @@ class ToggleArchiveEvent extends SharedEvent {
   const ToggleArchiveEvent(this.note);
   @override
   List<Object> get props => [note];
+}
+
+class PinNotesEvent extends SharedEvent {
+  final List<NoteModel> selectedNotes;
+
+  const PinNotesEvent(this.selectedNotes);
+
+  @override
+  List<Object> get props => [selectedNotes];
 }

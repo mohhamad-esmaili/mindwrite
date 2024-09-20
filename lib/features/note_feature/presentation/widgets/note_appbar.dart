@@ -26,7 +26,7 @@ class NoteAppbar extends StatelessWidget {
                     context.read<NoteBloc>().add(SaveNoteEvent(state.note));
                     context.read<NoteBloc>().add(const ClearNoteDataEvent());
 
-                    context.read<HomeBloc>().add(GetAllNotesEvent());
+                    context.read<HomeBloc>().add(LoadAllNotes());
                   }
 
                   context.go('/home');

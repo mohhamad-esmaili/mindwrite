@@ -5,4 +5,5 @@ abstract class SharedRepository {
   Future<DataState<NoteModel>> toggleArchiveStatusToBox(NoteModel note);
   Future<DataState<List<NoteModel>>> restoreNoteToBox(List<NoteModel> notes);
   Future<DataState<List<NoteModel>>> deleteNote(List<NoteModel> notes);
+  Future<DataState<List<NoteModel>>> pinToggle(List<NoteModel> notes);
 }
