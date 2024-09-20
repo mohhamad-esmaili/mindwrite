@@ -1,4 +1,5 @@
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:mindwrite/features/shared_bloc/data/model/background_model.dart';
 import 'package:mindwrite/features/shared_bloc/data/model/note_model.dart';
 import 'package:mindwrite/locator.dart';
 
@@ -25,6 +26,22 @@ class SharedLocalDatabase {
       );
 
       NoteModel updatedNote = existingNote.copyWith(pin: !existingNote.pin);
+
+      await noteBox.put(updatedNote.id, updatedNote);
+    }
+  }
+
+  Future<void> changeNotePaletteToBox(List<NoteModel> notes) async {
+    List<NoteModel> existingNotes = noteBox.values.toList();
+
+    for (NoteModel noteToPin in notes) {
+      NoteModel? existingNote = existingNotes.firstWhere(
+        (element) => element.id == noteToPin.id,
+      );
+      print(noteToPin.noteBackground!.color);
+      NoteModel updatedNote = existingNote.copyWith(
+        noteBackground: BackgroundModel(color: noteToPin.noteBackground!.color),
+      );
 
       await noteBox.put(updatedNote.id, updatedNote);
     }

@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mindwrite/core/resources/data_state.dart';
 import 'package:mindwrite/features/archive_feature/presentation/bloc/archive_bloc.dart';
@@ -7,8 +8,10 @@ import 'package:mindwrite/features/archive_feature/presentation/bloc/archive_eve
 import 'package:mindwrite/features/delete_feature/presentation/bloc/delete_bloc.dart';
 import 'package:mindwrite/features/delete_feature/presentation/bloc/delete_event.dart';
 import 'package:mindwrite/features/home_feature/presentation/bloc/home_bloc.dart';
+import 'package:mindwrite/features/shared_bloc/data/model/background_model.dart';
 import 'package:mindwrite/features/shared_bloc/data/model/note_model.dart';
 import 'package:mindwrite/features/shared_bloc/domain/usecases/change_archive_usecase.dart';
+import 'package:mindwrite/features/shared_bloc/domain/usecases/change_paletter_usecase.dart';
 import 'package:mindwrite/features/shared_bloc/domain/usecases/delete_note_usecase.dart';
 import 'package:mindwrite/features/shared_bloc/domain/usecases/pin_note_usecase.dart';
 import 'package:mindwrite/features/shared_bloc/domain/usecases/restore_note_usecase.dart';
@@ -24,6 +27,7 @@ class SharedBloc extends Bloc<SharedEvent, SharedState> {
   DeleteNoteUsecase deleteNoteUsecase;
   RestoreDeletedNoteUsecase restoreDeletedNoteUsecase;
   PinToggleNoteUsecase pinToggleNoteUsecase;
+  ChangePaletterUsecase changePaletteNoteEvent;
   SharedBloc(
     this.isSelectionMode,
     this.selectedItems,
@@ -31,6 +35,7 @@ class SharedBloc extends Bloc<SharedEvent, SharedState> {
     this.deleteNoteUsecase,
     this.restoreDeletedNoteUsecase,
     this.pinToggleNoteUsecase,
+    this.changePaletteNoteEvent,
   ) : super(SharedInitial(selectedItems, isSelectionMode)) {
     /// when have long press on notes, this will comes up
     on<LongPressItem>((event, emit) {
@@ -120,6 +125,26 @@ class SharedBloc extends Bloc<SharedEvent, SharedState> {
     on<PinNotesEvent>((event, emit) async {
       emit(SharedLoading());
       var result = await pinToggleNoteUsecase(selectedItems);
+      if (result is DataSuccess<List<NoteModel>>) {
+        isSelectionMode = false;
+        selectedItems.clear();
+
+        emit(SharedInitial(selectedItems, isSelectionMode));
+        locator<HomeBloc>().add(LoadAllNotes());
+      } else if (result is DataFailed) {
+        emit(SharedLoadFailed());
+      }
+    });
+    on<ChangePaletteNoteEvent>((event, emit) async {
+      emit(SharedLoading());
+      print(selectedItems.first.noteBackground!.color);
+      for (int i = 0; i < selectedItems.length; i++) {
+        selectedItems[i] = selectedItems[i].copyWith(
+            noteBackground: BackgroundModel(color: event.selectedColor));
+      }
+      print(selectedItems.first.noteBackground!.color);
+
+      var result = await changePaletteNoteEvent(selectedItems);
       if (result is DataSuccess<List<NoteModel>>) {
         isSelectionMode = false;
         selectedItems.clear();

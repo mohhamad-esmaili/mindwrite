@@ -49,4 +49,15 @@ class SharedRepositoryImp extends SharedRepository {
       return DataFailed(e.toString());
     }
   }
+
+  @override
+  Future<DataState<List<NoteModel>>> changePalette(
+      List<NoteModel> notes) async {
+    try {
+      await sharedLocalDatabase.changeNotePaletteToBox(notes);
+      return DataSuccess(notes);
+    } catch (e) {
+      return DataFailed(e.toString());
+    }
+  }
 }

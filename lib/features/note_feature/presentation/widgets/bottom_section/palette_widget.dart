@@ -13,7 +13,7 @@ class PaletteButtonWidget extends StatelessWidget {
     return BlocBuilder<NoteBloc, NoteState>(
       builder: (context, state) {
         if (state is NoteInitial) {
-          Color initialColor = state.note.noteBackground!.color;
+          Color initialColor = state.note.noteBackground!.color!;
           String? initialBG = state.note.noteBackground!.backgroundPath;
           return Container(
             color: initialColor == Colors.transparent
@@ -35,7 +35,8 @@ class PaletteButtonWidget extends StatelessWidget {
                       itemCount: NoteConstants.noteColors.length,
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (BuildContext context, int index) {
-                        Color itemColor = NoteConstants.noteColors[index].color;
+                        Color itemColor =
+                            NoteConstants.noteColors[index].color!;
                         bool isFirstItem = index == 0;
                         return InkWell(
                           onTap: () {

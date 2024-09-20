@@ -56,3 +56,11 @@ class PinNotesEvent extends SharedEvent {
   @override
   List<Object> get props => [selectedNotes];
 }
+
+class ChangePaletteNoteEvent extends SharedEvent {
+  final Color selectedColor;
+  const ChangePaletteNoteEvent(this.selectedColor);
+
+  @override
+  List<Object> get props => [selectedColor];
+}

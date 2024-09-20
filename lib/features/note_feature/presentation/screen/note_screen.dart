@@ -20,7 +20,7 @@ class NoteView extends StatelessWidget {
         return const CircularIndicatorWidget();
       }
       if (state is NoteInitial) {
-        Color initialColor = state.note.noteBackground!.color;
+        Color initialColor = state.note.noteBackground!.color!;
         String? initialBG = state.note.noteBackground!.backgroundPath;
         int descriptionLines = state.descriptionLines ?? 1;
 

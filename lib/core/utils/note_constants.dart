@@ -4,7 +4,7 @@ import 'package:mindwrite/features/shared_bloc/data/model/background_model.dart'
 
 class NoteConstants {
   static List<BackgroundModel> noteColors = [
-    BackgroundModel(color: const Color.fromRGBO(19, 19, 19, 1)),
+    BackgroundModel(color: Colors.transparent),
     BackgroundModel(color: const Color.fromRGBO(105, 42, 24, 1)),
     BackgroundModel(color: const Color.fromRGBO(124, 74, 3, 1)),
     BackgroundModel(color: const Color.fromRGBO(38, 77, 59, 1)),

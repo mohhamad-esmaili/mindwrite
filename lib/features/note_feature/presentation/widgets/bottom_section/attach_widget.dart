@@ -16,7 +16,7 @@ class AtachButtonWidget extends StatelessWidget {
     return BlocBuilder<NoteBloc, NoteState>(
       builder: (context, state) {
         if (state is NoteInitial) {
-          Color initialColor = state.note.noteBackground!.color;
+          Color initialColor = state.note.noteBackground!.color!;
           return Container(
             color: initialColor == Colors.transparent
                 ? Colors.grey[800]

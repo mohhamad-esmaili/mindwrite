@@ -124,7 +124,7 @@ class _MasonaryBuilderState extends State<MasonaryBuilder> {
                             ? AppColorConstants.secondaryColor
                             : (note.noteBackground!.color == Colors.transparent
                                 ? Colors.grey
-                                : note.noteBackground!.color),
+                                : note.noteBackground!.color!),
                         width: isSelected ? 3 : 1,
                       ),
                     ),

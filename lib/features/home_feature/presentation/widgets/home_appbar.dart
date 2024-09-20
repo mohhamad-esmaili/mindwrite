@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:mindwrite/core/utils/color_constants.dart';
+import 'package:mindwrite/core/widgets/snackbar_widget.dart';
 import 'package:mindwrite/features/home_feature/presentation/bloc/home_bloc.dart';
 import 'package:mindwrite/features/shared_bloc/presentation/bloc/shared_bloc.dart';
 
@@ -62,6 +63,15 @@ class SliverHomeAppbar extends StatelessWidget {
                                 ),
                                 icon: Icon(
                                   Icons.delete_rounded,
+                                  color: themeData.iconTheme.color,
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: () =>
+                                    SnackbarService.showPaletteSelector(
+                                        context: context),
+                                icon: Icon(
+                                  Icons.palette_outlined,
                                   color: themeData.iconTheme.color,
                                 ),
                               ),

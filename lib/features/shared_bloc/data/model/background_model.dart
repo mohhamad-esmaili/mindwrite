@@ -6,7 +6,7 @@ part 'background_model.g.dart';
 @HiveType(typeId: 2)
 class BackgroundModel {
   @HiveField(0)
-  Color color;
+  Color? color;
   @HiveField(1)
   String? backgroundPath;
   BackgroundModel({this.color = Colors.transparent, this.backgroundPath});
@@ -14,10 +14,9 @@ class BackgroundModel {
   BackgroundModel copyWith({
     Color? color,
     String? backgroundPath,
-    required BackgroundModel noteBackground,
   }) {
     return BackgroundModel(
-      color: color ?? this.color,
+      color: color ?? Colors.transparent,
       backgroundPath: backgroundPath ?? this.backgroundPath,
     );
   }
