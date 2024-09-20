@@ -4,10 +4,9 @@
 # MindWrite
 This app is a best practice of Clean architectue with Bloc and playing with technologies like equatable, image_picker, get_it, go_router, hive and more..</p>
 
-
-<img src="https://img.shields.io/badge/Flutter-%2302569B.svg?style=for-the-badge&logo=Flutter&logoColor=white)" alt="Flutter Badge"/>
-<img src="https://img.shields.io/badge/Dart-%2302569B.svg?style=for-the-badge&logo=dart&logoColor=white)" alt="Dart Badge"/>
-
+<div>
+<img src="https://img.shields.io/badge/Flutter-%2302569B.svg?style=for-the-badge&logo=Flutter&logoColor=white)" alt="Flutter Badge"/> <img src="https://img.shields.io/badge/Dart-%2302569B.svg?style=for-the-badge&logo=dart&logoColor=white)" alt="Dart Badge"/>
+</div>
 
 
 ### Available Features:
