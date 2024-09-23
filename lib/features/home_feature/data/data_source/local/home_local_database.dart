@@ -3,7 +3,7 @@ import 'package:mindwrite/features/shared_bloc/data/model/note_model.dart';
 import 'package:mindwrite/locator.dart';
 
 class HomeLocalDataBase {
-  Box<NoteModel> box = locator();
+  Box<NoteModel> box = locator(instanceName: "note_box");
   Future<List<NoteModel>> getListOfNotes() async {
     List<NoteModel> result = box.values
         .where(

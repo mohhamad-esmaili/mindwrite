@@ -2,7 +2,7 @@ import 'dart:typed_data';
 
 import 'package:equatable/equatable.dart';
 import 'package:mindwrite/features/shared_bloc/data/model/background_model.dart';
-import 'package:mindwrite/features/shared_bloc/data/model/label_model.dart';
+import 'package:mindwrite/features/label_feature/data/model/label_model.dart';
 
 class NoteModelEntity extends Equatable {
   final String? id;

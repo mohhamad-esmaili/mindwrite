@@ -16,16 +16,23 @@ class LabelModelAdapter extends TypeAdapter<LabelModel> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
+
     return LabelModel(
-      labelName: fields[0] as String,
+      id: fields[0] as String?,
+      createdDate: fields[1] as DateTime?,
+      labelName: fields[2] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, LabelModel obj) {
     writer
-      ..writeByte(1)
+      ..writeByte(3)
       ..writeByte(0)
+      ..write(obj.id)
+      ..writeByte(1)
+      ..write(obj.createdDate)
+      ..writeByte(2)
       ..write(obj.labelName);
   }
 

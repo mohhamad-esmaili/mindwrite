@@ -8,6 +8,7 @@ import 'package:mindwrite/features/archive_feature/presentation/bloc/archive_eve
 import 'package:mindwrite/features/delete_feature/presentation/bloc/delete_bloc.dart';
 import 'package:mindwrite/features/delete_feature/presentation/bloc/delete_event.dart';
 import 'package:mindwrite/features/home_feature/presentation/bloc/home_bloc.dart';
+import 'package:mindwrite/features/label_feature/presentation/bloc/label_bloc.dart';
 import 'package:mindwrite/features/note_feature/presentation/bloc/note_bloc.dart';
 import 'package:mindwrite/features/shared_bloc/presentation/bloc/shared_bloc.dart';
 
@@ -45,6 +46,9 @@ class Root extends StatelessWidget {
         BlocProvider(
           create: (context) =>
               locator<DeleteBloc>()..add(const GetAllDeleted()),
+        ),
+        BlocProvider(
+          create: (context) => locator<LabelBloc>()..add(LoadLabelsEvent()),
         ),
       ],
       child: MaterialApp.router(

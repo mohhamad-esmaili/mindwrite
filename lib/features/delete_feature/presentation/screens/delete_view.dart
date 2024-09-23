@@ -20,8 +20,6 @@ class DeleteView extends StatefulWidget {
 }
 
 class _DeleteViewState extends State<DeleteView> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -33,7 +31,6 @@ class _DeleteViewState extends State<DeleteView> {
   Widget build(BuildContext context) {
     SharedBloc sharedBloc = BlocProvider.of<SharedBloc>(context);
     return Scaffold(
-      key: _scaffoldKey,
       appBar: ScreensAppbar(
         appbarTitle: "Deleted",
         sharedBloc: sharedBloc,
@@ -65,38 +62,6 @@ class _DeleteViewState extends State<DeleteView> {
                                   noteModelList: state.deletedNotes,
                                   defaultArchiveNote: true,
                                   deleteScreen: true,
-                                  // onDismissed: (index) async {
-                                  //   NoteModel selectedNote =
-                                  //       state.deletedNotes[index];
-                                  //   bool undoPressed = false;
-
-                                  //   // final archiveBloc =
-                                  //   //     context.read<DeleteBloc>();
-                                  //   // archiveBloc.add(ToggleOffArchiveEvent(
-                                  //   //     selectedNote));
-                                  //   if (context.mounted) {
-                                  //     await SnackbarService.showStatusSnackbar(
-                                  //       context: context,
-                                  //       message: "Note archived",
-                                  //       actionLabel: "Undo",
-                                  //       onAction: () {
-                                  //         undoPressed = true;
-                                  //         NoteModel simpleVersion = selectedNote
-                                  //             .copyWith(archived: false);
-                                  //         // archiveBloc.add(
-                                  //         //     ToggleOffArchiveEvent(
-                                  //         //         simpleVersion));
-                                  //       },
-                                  //       onClosed: () {
-                                  //         if (!undoPressed) {
-                                  //           // archiveBloc.add(
-                                  //           //     ToggleOffArchiveEvent(
-                                  //           //         selectedNote));
-                                  //         }
-                                  //       },
-                                  //     );
-                                  //   }
-                                  // },
                                 ),
                               ],
                             );

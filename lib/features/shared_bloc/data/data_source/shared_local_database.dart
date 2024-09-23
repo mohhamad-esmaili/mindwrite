@@ -4,7 +4,7 @@ import 'package:mindwrite/features/shared_bloc/data/model/note_model.dart';
 import 'package:mindwrite/locator.dart';
 
 class SharedLocalDatabase {
-  Box<NoteModel> noteBox = locator();
+  Box<NoteModel> noteBox = locator(instanceName: "note_box");
 
   Future<NoteModel?> toggleNoteArchiveToBox(NoteModel note) async {
     NoteModel? result = noteBox.get(note.id);

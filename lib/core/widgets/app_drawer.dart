@@ -56,6 +56,34 @@ class AppDrawer extends StatelessWidget {
                 color: AppColorConstants.drawerDividerColor,
                 thickness: 2,
               ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Labels",
+                      style: TextStyle(
+                          color: AppColorConstants.darkerWhiteTextColor,
+                          fontSize: 15),
+                    ),
+                    TextButton(
+                      onPressed: () => context.go("/label"),
+                      child: Text(
+                        "edit",
+                        style: TextStyle(
+                            color: AppColorConstants.darkerWhiteTextColor,
+                            fontSize: 15),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              Divider(
+                color: AppColorConstants.drawerDividerColor,
+                thickness: 2,
+              ),
               makeTextButton(
                 context: context,
                 title: "Archive",

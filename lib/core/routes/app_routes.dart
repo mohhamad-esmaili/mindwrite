@@ -4,6 +4,7 @@ import 'package:mindwrite/features/archive_feature/presentation/screens/archive_
 import 'package:mindwrite/features/delete_feature/presentation/screens/delete_view.dart';
 import 'package:mindwrite/features/draw_feature/presentation/screen/draw_view.dart';
 import 'package:mindwrite/features/home_feature/presentation/screens/home_view.dart';
+import 'package:mindwrite/features/label_feature/presentation/screens/label_view.dart';
 import 'package:mindwrite/features/note_feature/presentation/screen/note_screen.dart';
 import 'package:mindwrite/features/splash_feature/presentation/splash_view.dart';
 
@@ -36,7 +37,7 @@ class AppRoutes {
       ),
       GoRoute(
         path: '/create_note',
-        name: "note_view",
+        name: "create_note",
         pageBuilder: (context, state) => CustomTransitionPage(
           child: NoteView(),
           transitionDuration: const Duration(milliseconds: 500),
@@ -63,6 +64,18 @@ class AppRoutes {
         name: "archive",
         pageBuilder: (context, state) => CustomTransitionPage(
           child: const ArchiveView(),
+          transitionDuration: const Duration(milliseconds: 500),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return SlideTransition(
+                position: getOffsetAnimation(animation), child: child);
+          },
+        ),
+      ),
+      GoRoute(
+        path: '/label',
+        name: "label",
+        pageBuilder: (context, state) => CustomTransitionPage(
+          child: LabelView(),
           transitionDuration: const Duration(milliseconds: 500),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return SlideTransition(

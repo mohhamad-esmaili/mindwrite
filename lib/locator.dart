@@ -11,10 +11,17 @@ import 'package:mindwrite/features/delete_feature/data/repository/deleted_reposi
 import 'package:mindwrite/features/delete_feature/domain/repository/deleted_repository.dart';
 import 'package:mindwrite/features/delete_feature/domain/use_cases/get_deleted_usecase.dart';
 import 'package:mindwrite/features/delete_feature/presentation/bloc/delete_bloc.dart';
+import 'package:mindwrite/features/label_feature/data/repository/label_repository_imp.dart';
+import 'package:mindwrite/features/label_feature/domain/repository/label_repository.dart';
+import 'package:mindwrite/features/label_feature/domain/use_cases/delete_label_usecase.dart';
+import 'package:mindwrite/features/label_feature/domain/use_cases/edit_label_usecase.dart';
+import 'package:mindwrite/features/label_feature/domain/use_cases/load_labels_usecase.dart';
+import 'package:mindwrite/features/label_feature/domain/use_cases/save_label_usecase.dart';
+import 'package:mindwrite/features/label_feature/presentation/bloc/label_bloc.dart';
 
 import 'package:mindwrite/features/shared_bloc/data/model/background_model.dart';
 import 'package:mindwrite/features/shared_bloc/data/model/color_adapter.dart';
-import 'package:mindwrite/features/shared_bloc/data/model/label_model.dart';
+import 'package:mindwrite/features/label_feature/data/model/label_model.dart';
 import 'package:mindwrite/features/shared_bloc/data/model/note_model.dart';
 import 'package:mindwrite/features/home_feature/data/repository/home_repository_imp.dart';
 import 'package:mindwrite/features/home_feature/domain/repository/home_repository.dart';
@@ -42,11 +49,14 @@ setup() async {
   Hive.registerAdapter(ColorAdapter());
   Hive
     ..registerAdapter(NoteModelAdapter())
-    ..registerAdapter(BackgroundModelAdapter()) //
-    ..registerAdapter(LabelModelAdapter()); //
+    ..registerAdapter(BackgroundModelAdapter())
+    ..registerAdapter(LabelModelAdapter());
 
   var noteBox = await Hive.openBox<NoteModel>('note_box');
-  locator.registerSingleton<Box<NoteModel>>(noteBox);
+  var labelBox = await Hive.openBox<LabelModel>('label_box');
+  locator.registerSingleton<Box<NoteModel>>(noteBox, instanceName: "note_box");
+  locator.registerSingleton<Box<LabelModel>>(labelBox,
+      instanceName: "label_box");
 
   // Register NoteModel
   locator.registerFactory<NoteModel>(
@@ -73,6 +83,7 @@ setup() async {
   locator.registerFactory<ArchiveRepository>(() => ArchiveRepositoryImp());
   locator.registerFactory<DeletedRepository>(() => DeletedRepositoryImp());
   locator.registerFactory<SharedRepository>(() => SharedRepositoryImp());
+  locator.registerFactory<LabelRepository>(() => LabelRepositoryImp());
 
   // usecases
   locator.registerFactory(
@@ -105,6 +116,18 @@ setup() async {
   locator.registerFactory(
     () => ChangePaletterUsecase(locator<SharedRepository>()),
   );
+  locator.registerFactory(
+    () => LoadLabelsUsecase(locator<LabelRepository>()),
+  );
+  locator.registerFactory(
+    () => SaveLabelUsecase(locator<LabelRepository>()),
+  );
+  locator.registerFactory(
+    () => DeleteLabelUsecase(locator<LabelRepository>()),
+  );
+  locator.registerFactory(
+    () => EditLabelUsecase(locator<LabelRepository>()),
+  );
 
   // blocs
   locator.registerSingleton<HomeBloc>(HomeBloc(
@@ -134,5 +157,13 @@ setup() async {
     locator<RestoreDeletedNoteUsecase>(),
     locator<PinToggleNoteUsecase>(),
     locator<ChangePaletterUsecase>(),
+  ));
+  locator.registerSingleton<LabelBloc>(LabelBloc(
+    [],
+    null,
+    locator<LoadLabelsUsecase>(),
+    locator<SaveLabelUsecase>(),
+    locator<EditLabelUsecase>(),
+    locator<DeleteLabelUsecase>(),
   ));
 }
