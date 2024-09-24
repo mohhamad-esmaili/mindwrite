@@ -1,29 +1,41 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:mindwrite/core/resources/data_state.dart';
+import 'package:mindwrite/features/home_feature/domain/usecases/pinned_notes_usecase.dart';
 import 'package:mindwrite/features/label_feature/domain/use_cases/delete_label_usecase.dart';
 import 'package:mindwrite/features/label_feature/domain/use_cases/edit_label_usecase.dart';
+import 'package:mindwrite/features/label_feature/domain/use_cases/edit_note_labels.dart';
+import 'package:mindwrite/features/label_feature/domain/use_cases/load_label_notes.dart';
 import 'package:mindwrite/features/label_feature/domain/use_cases/load_labels_usecase.dart';
 import 'package:mindwrite/features/label_feature/domain/use_cases/save_label_usecase.dart';
 import 'package:mindwrite/features/label_feature/data/model/label_model.dart';
+import 'package:mindwrite/features/shared_bloc/data/model/note_model.dart';
 
 part 'label_event.dart';
 part 'label_state.dart';
 
 class LabelBloc extends Bloc<LabelEvent, LabelState> {
   List<LabelModel> labelList = [];
-  String? errorMessage;
+  List<NoteModel> labelNotes = [];
+  List<NoteModel> labelPinnedNotes = [];
   LoadLabelsUsecase loadLabelsUsecase;
+  LoadLabelNotessUsecase loadLabelNotessUsecase;
   SaveLabelUsecase saveLabelUsecase;
   EditLabelUsecase editLabelUsecase;
   DeleteLabelUsecase deleteLabelUsecase;
+  LoadPinnedNotesUsecase loadPinnedNotesUsecase;
+  EditNoteLabelsUsecase editNoteLabelsUsecase;
   LabelBloc(
     this.labelList,
-    this.errorMessage,
+    this.labelNotes,
+    this.labelPinnedNotes,
     this.loadLabelsUsecase,
+    this.loadLabelNotessUsecase,
     this.saveLabelUsecase,
     this.editLabelUsecase,
     this.deleteLabelUsecase,
+    this.loadPinnedNotesUsecase,
+    this.editNoteLabelsUsecase,
   ) : super(LabelInitial(labelList)) {
     on<LoadLabelsEvent>((event, emit) async {
       emit(LabelLoading());
@@ -35,6 +47,17 @@ class LabelBloc extends Bloc<LabelEvent, LabelState> {
         emit(LabelFailed(result.error!));
       }
     });
+    on<LoadLabelNotesEvent>((event, emit) async {
+      emit(LabelLoading());
+      final result = await loadLabelNotessUsecase(event.selectedLabel);
+      if (result is DataSuccess<List<NoteModel>>) {
+        labelPinnedNotes = await loadPinnedNotesUsecase(result);
+
+        emit(LabelNoteInitial(result.data!, labelPinnedNotes));
+      } else if (result is DataFailed) {
+        emit(LabelFailed(result.error!));
+      }
+    });
     on<SaveLabelEvent>((event, emit) async {
       emit(LabelLoading());
       final result = await saveLabelUsecase(event.createdLabel);
@@ -42,6 +65,33 @@ class LabelBloc extends Bloc<LabelEvent, LabelState> {
       if (result is DataSuccess<LabelModel>) {
         labelList.insert(0, result.data!);
         emit(LabelInitial(labelList));
+      } else if (result is DataFailed) {
+        emit(LabelFailed(result.error!));
+      }
+    });
+    on<EditNoteLabelsEvent>((event, emit) async {
+      emit(LabelLoading());
+      print(event.selectedLabel);
+      print(event.selectedNote);
+      NoteModel selectedNote = event.selectedNote;
+      List<LabelModel> updatedLabels =
+          List<LabelModel>.from(selectedNote.labels ?? []);
+
+      print(updatedLabels);
+
+      if (updatedLabels.contains(event.selectedLabel)) {
+        updatedLabels.remove(event.selectedLabel);
+      } else {
+        updatedLabels.add(event.selectedLabel);
+      }
+      print(updatedLabels);
+      NoteModel note = selectedNote.copyWith(labels: updatedLabels);
+
+      final result = await editNoteLabelsUsecase(note);
+
+      if (result is DataSuccess<NoteModel>) {
+        final loadedLabels = await loadLabelsUsecase();
+        emit(LabelInitial(loadedLabels.data!)); // New state for loaded labels
       } else if (result is DataFailed) {
         emit(LabelFailed(result.error!));
       }

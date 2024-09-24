@@ -41,7 +41,7 @@ class SharedLocalDatabase {
       NoteModel? existingNote = existingNotes.firstWhere(
         (element) => element.id == noteToPin.id,
       );
-      print(noteToPin.noteBackground!.color);
+
       NoteModel updatedNote = existingNote.copyWith(
         noteBackground: BackgroundModel(
           color: noteToPin.noteBackground!.color,
@@ -54,7 +54,6 @@ class SharedLocalDatabase {
   }
 
   Future<void> deleteNoteFromBox(List<NoteModel> noteList) async {
-    // Fetch the existing notes from Hive
     List<NoteModel> existingNotes = noteBox.values.toList();
 
     for (NoteModel noteToRestore in noteList) {

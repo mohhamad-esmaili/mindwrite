@@ -32,3 +32,19 @@ class DeleteLabelEvent extends LabelEvent {
   @override
   List<Object> get props => [selectedLabel];
 }
+
+class LoadLabelNotesEvent extends LabelEvent {
+  final LabelModel selectedLabel;
+  const LoadLabelNotesEvent({required this.selectedLabel});
+  @override
+  List<Object> get props => [selectedLabel];
+}
+
+class EditNoteLabelsEvent extends LabelEvent {
+  final LabelModel selectedLabel;
+  final NoteModel selectedNote;
+  const EditNoteLabelsEvent(
+      {required this.selectedLabel, required this.selectedNote});
+  @override
+  List<Object> get props => [selectedLabel, selectedNote];
+}

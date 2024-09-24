@@ -4,9 +4,14 @@ import 'package:mindwrite/features/archive_feature/presentation/screens/archive_
 import 'package:mindwrite/features/delete_feature/presentation/screens/delete_view.dart';
 import 'package:mindwrite/features/draw_feature/presentation/screen/draw_view.dart';
 import 'package:mindwrite/features/home_feature/presentation/screens/home_view.dart';
+import 'package:mindwrite/features/label_feature/data/model/label_model.dart';
+import 'package:mindwrite/features/label_feature/presentation/screens/label_category_view.dart';
+import 'package:mindwrite/features/label_feature/presentation/screens/label_selection.dart';
 import 'package:mindwrite/features/label_feature/presentation/screens/label_view.dart';
 import 'package:mindwrite/features/note_feature/presentation/screen/note_screen.dart';
+import 'package:mindwrite/features/shared_bloc/data/model/note_model.dart';
 import 'package:mindwrite/features/splash_feature/presentation/splash_view.dart';
+import 'package:mindwrite/locator.dart';
 
 class AppRoutes {
   static final GoRouter router = GoRouter(
@@ -36,17 +41,23 @@ class AppRoutes {
         ),
       ),
       GoRoute(
-        path: '/create_note',
-        name: "create_note",
-        pageBuilder: (context, state) => CustomTransitionPage(
-          child: NoteView(),
-          transitionDuration: const Duration(milliseconds: 500),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return SlideTransition(
-                position: getOffsetAnimation(animation), child: child);
-          },
-        ),
-      ),
+          path: '/create_note',
+          name: "create_note",
+          pageBuilder: (context, state) {
+            final selectedNote =
+                state.extra as NoteModel? ?? locator<NoteModel>();
+            return CustomTransitionPage(
+              child: NoteView(
+                selectedNote: selectedNote,
+              ),
+              transitionDuration: const Duration(milliseconds: 500),
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) {
+                return SlideTransition(
+                    position: getOffsetAnimation(animation), child: child);
+              },
+            );
+          }),
       GoRoute(
         path: '/delete',
         name: "delete",
@@ -83,6 +94,38 @@ class AppRoutes {
           },
         ),
       ),
+      GoRoute(
+          path: '/label_category',
+          name: "label_category",
+          pageBuilder: (context, state) {
+            final selectedLabel = state.extra as LabelModel;
+            return CustomTransitionPage(
+                child: LabelCategoryView(
+                  selectedLabel: selectedLabel,
+                ),
+                transitionDuration: const Duration(milliseconds: 500),
+                transitionsBuilder:
+                    (context, animation, secondaryAnimation, child) {
+                  return SlideTransition(
+                      position: getOffsetAnimation(animation), child: child);
+                });
+          }),
+      GoRoute(
+          path: '/label_selection',
+          name: "label_selection",
+          pageBuilder: (context, state) {
+            final selectedNote = state.extra as NoteModel;
+            return CustomTransitionPage(
+                child: LabelSelectionView(
+                  selectedNote: selectedNote,
+                ),
+                transitionDuration: const Duration(milliseconds: 500),
+                transitionsBuilder:
+                    (context, animation, secondaryAnimation, child) {
+                  return SlideTransition(
+                      position: getOffsetAnimation(animation), child: child);
+                });
+          }),
       GoRoute(
         path: '/draw',
         name: "draw",

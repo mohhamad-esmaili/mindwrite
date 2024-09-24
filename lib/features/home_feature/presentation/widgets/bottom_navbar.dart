@@ -8,6 +8,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mindwrite/core/utils/color_constants.dart';
 import 'package:mindwrite/core/widgets/camera_capture.dart';
 import 'package:mindwrite/features/note_feature/presentation/bloc/note_bloc.dart';
+import 'package:mindwrite/features/shared_bloc/data/model/note_model.dart';
+import 'package:mindwrite/locator.dart';
 
 class HomeBottomBar extends StatelessWidget {
   const HomeBottomBar({super.key});

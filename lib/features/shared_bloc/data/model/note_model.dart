@@ -47,7 +47,7 @@ class NoteModel extends NoteModelEntity {
     required this.title,
     required this.description,
     required this.lastUpdate,
-    this.labels,
+    this.labels = const [],
     this.noteBackground,
     this.pin = false,
     this.archived = false,

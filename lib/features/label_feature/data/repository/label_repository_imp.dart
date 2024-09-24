@@ -2,6 +2,7 @@ import 'package:mindwrite/core/resources/data_state.dart';
 import 'package:mindwrite/features/label_feature/data/data_source/local/label_local_datasource.dart';
 import 'package:mindwrite/features/label_feature/domain/repository/label_repository.dart';
 import 'package:mindwrite/features/label_feature/data/model/label_model.dart';
+import 'package:mindwrite/features/shared_bloc/data/model/note_model.dart';
 
 class LabelRepositoryImp extends LabelRepository {
   LabelLocalDatasource labelLocalDatasource = LabelLocalDatasource();
@@ -46,6 +47,29 @@ class LabelRepositoryImp extends LabelRepository {
       final result = await labelLocalDatasource.deleteLabelFromBox(label);
 
       return DataSuccess(result);
+    } catch (e) {
+      return DataFailed(e.toString());
+    }
+  }
+
+  @override
+  Future<DataState<List<NoteModel>>> loadLabelNotesFromBox(
+      LabelModel label) async {
+    try {
+      List<NoteModel> notes = await labelLocalDatasource.getLabelNotes(label);
+
+      return DataSuccess(notes);
+    } catch (e) {
+      return DataFailed(e.toString());
+    }
+  }
+
+  @override
+  Future<DataState<NoteModel>> editNoteLabels(NoteModel note) async {
+    try {
+      NoteModel notes = await labelLocalDatasource.changeNoteLabel(note);
+
+      return DataSuccess(notes);
     } catch (e) {
       return DataFailed(e.toString());
     }

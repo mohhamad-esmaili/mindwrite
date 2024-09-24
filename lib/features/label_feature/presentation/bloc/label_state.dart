@@ -14,9 +14,15 @@ final class LabelInitial extends LabelState {
   List<Object> get props => [labelList];
 }
 
-final class LabelLoading extends LabelState {}
+final class LabelNoteInitial extends LabelState {
+  final List<NoteModel> noteList;
+  final List<NoteModel> pinnednoteList;
+  const LabelNoteInitial(this.noteList, this.pinnednoteList);
+  @override
+  List<Object> get props => [noteList, pinnednoteList];
+}
 
-final class LabelLoaded extends LabelState {}
+final class LabelLoading extends LabelState {}
 
 final class LabelFailed extends LabelState {
   final String error;

@@ -15,6 +15,8 @@ import 'package:mindwrite/features/label_feature/data/repository/label_repositor
 import 'package:mindwrite/features/label_feature/domain/repository/label_repository.dart';
 import 'package:mindwrite/features/label_feature/domain/use_cases/delete_label_usecase.dart';
 import 'package:mindwrite/features/label_feature/domain/use_cases/edit_label_usecase.dart';
+import 'package:mindwrite/features/label_feature/domain/use_cases/edit_note_labels.dart';
+import 'package:mindwrite/features/label_feature/domain/use_cases/load_label_notes.dart';
 import 'package:mindwrite/features/label_feature/domain/use_cases/load_labels_usecase.dart';
 import 'package:mindwrite/features/label_feature/domain/use_cases/save_label_usecase.dart';
 import 'package:mindwrite/features/label_feature/presentation/bloc/label_bloc.dart';
@@ -128,6 +130,12 @@ setup() async {
   locator.registerFactory(
     () => EditLabelUsecase(locator<LabelRepository>()),
   );
+  locator.registerFactory(
+    () => LoadLabelNotessUsecase(locator<LabelRepository>()),
+  );
+  locator.registerFactory(
+    () => EditNoteLabelsUsecase(locator<LabelRepository>()),
+  );
 
   // blocs
   locator.registerSingleton<HomeBloc>(HomeBloc(
@@ -160,10 +168,14 @@ setup() async {
   ));
   locator.registerSingleton<LabelBloc>(LabelBloc(
     [],
-    null,
+    [],
+    [],
     locator<LoadLabelsUsecase>(),
+    locator<LoadLabelNotessUsecase>(),
     locator<SaveLabelUsecase>(),
     locator<EditLabelUsecase>(),
     locator<DeleteLabelUsecase>(),
+    locator<LoadPinnedNotesUsecase>(),
+    locator<EditNoteLabelsUsecase>(),
   ));
 }

@@ -13,6 +13,13 @@ class NoteInitialEvent extends NoteEvent {
   List<Object?> get props => [];
 }
 
+class RefreshNoteDataEvent extends NoteEvent {
+  final NoteModel? refreshedNote;
+  const RefreshNoteDataEvent({this.refreshedNote});
+  @override
+  List<Object?> get props => [refreshedNote];
+}
+
 class ChangeNoteEvent extends NoteEvent {
   final String? titleTextEditingController;
   final String? decriptionTextEditingController;

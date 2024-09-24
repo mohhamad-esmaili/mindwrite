@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mindwrite/core/enums/listmode_enum.dart';
 import 'package:mindwrite/core/utils/color_constants.dart';
 import 'package:mindwrite/core/widgets/snackbar_widget.dart';
@@ -88,7 +89,11 @@ class _MasonaryBuilderState extends State<MasonaryBuilder> {
                 widget.sharedBloc.add(LongPressItem(note));
               },
               onTap: () {
-                widget.sharedBloc.add(TapItem(note));
+                if (widget.sharedBloc.isSelectionMode == false) {
+                  context.go("/create_note", extra: note);
+                } else {
+                  widget.sharedBloc.add(TapItem(note));
+                }
               },
               child: Dismissible(
                 direction: widget.deleteScreen
@@ -172,6 +177,39 @@ class _MasonaryBuilderState extends State<MasonaryBuilder> {
                             style: const TextStyle(color: Colors.white),
                           ),
                         ),
+                        note.labels != null
+                            ? Container(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 10, horizontal: 10),
+                                child: Wrap(
+                                  spacing: 8,
+                                  children: note.labels!.map((label) {
+                                    return IntrinsicWidth(
+                                      child: Container(
+                                        margin: EdgeInsets.only(top: 5),
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 10,
+                                          vertical: 8,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white30,
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            label.labelName,
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 15),
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  }).toList(),
+                                ),
+                              )
+                            : SizedBox.shrink(),
                         note.noteBackground!.color != Colors.transparent &&
                                 note.noteBackground!.backgroundPath != null
                             ? Container(

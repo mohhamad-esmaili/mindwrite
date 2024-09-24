@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mindwrite/features/label_feature/presentation/screens/label_selection.dart';
 import 'package:mindwrite/features/note_feature/presentation/bloc/note_bloc.dart';
 import 'package:mindwrite/features/shared_bloc/presentation/bloc/shared_bloc.dart';
 
@@ -36,6 +37,13 @@ class ThreeDotsButtonWidget extends StatelessWidget {
                 // shared plus has error here to build
                 _makeSettingButton(
                     onPress: () {}, label: "Send", icon: Icons.share_rounded),
+                _makeSettingButton(
+                    onPress: () {
+                      context.go("/label_selection", extra: state.note);
+                      context.pop();
+                    },
+                    label: "Labels",
+                    icon: Icons.label_outline_rounded),
               ],
             ),
           );

@@ -36,6 +36,16 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
       emit(NoteInitial(note));
     });
 
+    on<RefreshNoteDataEvent>((event, emit) {
+      if (event.refreshedNote != null) {
+        note = event.refreshedNote!;
+      } else {
+        note = defaultNote;
+      }
+
+      emit(NoteInitial(note));
+    });
+
     /// change background and note color
     on<ChangeNoteColorEvent>((event, emit) {
       note = note.copyWith(
@@ -76,9 +86,7 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
 
     /// save note with new id to avoid conflict
     on<SaveNoteEvent>((event, emit) async {
-      const Uuid uuid = Uuid();
-      NoteModel updatedId = event.noteModel.copyWith(id: uuid.v4());
-      final result = await saveUseCase.call(updatedId);
+      final result = await saveUseCase.call(event.noteModel);
       if (result is DataSuccess) {
         note = defaultNote;
         emit(NoteInitial(locator<NoteModel>()));

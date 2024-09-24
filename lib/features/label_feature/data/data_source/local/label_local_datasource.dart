@@ -1,10 +1,12 @@
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:mindwrite/features/label_feature/data/model/label_model.dart';
+import 'package:mindwrite/features/shared_bloc/data/model/note_model.dart';
 
 import 'package:mindwrite/locator.dart';
 
 class LabelLocalDatasource {
   Box<LabelModel> labelBox = locator(instanceName: 'label_box');
+  Box<NoteModel> noteBox = locator(instanceName: "note_box");
 
   Future<List<LabelModel>> loadLabelFromBox() async {
     return labelBox.values.toList();
@@ -25,7 +27,7 @@ class LabelLocalDatasource {
 
   Future<List<LabelModel>> editLabelToBox(LabelModel label) async {
     List<LabelModel> loadedList = labelBox.values.toList();
-    print(label.labelName);
+
     bool labelNameExist =
         loadedList.any((element) => element.labelName == label.labelName);
     bool labelExists = loadedList.any((element) => element.id == label.id);
@@ -43,5 +45,25 @@ class LabelLocalDatasource {
     await labelBox.delete(label.id);
 
     return label;
+  }
+
+  Future<List<NoteModel>> getLabelNotes(LabelModel label) async {
+    List<NoteModel> result = noteBox.values.toList();
+
+    List<NoteModel> matchedNotes = [];
+
+    for (NoteModel note in result) {
+      if (note.labels != null && note.labels!.contains(label)) {
+        matchedNotes.add(note);
+      }
+    }
+
+    return matchedNotes;
+  }
+
+  Future<NoteModel> changeNoteLabel(NoteModel note) async {
+    await noteBox.put(note.id, note);
+
+    return note;
   }
 }

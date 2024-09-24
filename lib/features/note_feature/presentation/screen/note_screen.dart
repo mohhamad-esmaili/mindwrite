@@ -1,25 +1,57 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:mindwrite/core/widgets/circular_indicator_widget.dart';
+import 'package:mindwrite/features/label_feature/data/model/label_model.dart';
 import 'package:mindwrite/features/note_feature/presentation/bloc/note_bloc.dart';
 import 'package:mindwrite/features/note_feature/presentation/widgets/bottom_section/bottombar_section.dart';
 import 'package:mindwrite/features/note_feature/presentation/widgets/note_appbar.dart';
 import 'package:mindwrite/features/note_feature/presentation/widgets/notedraw_section.dart';
+import 'package:mindwrite/features/shared_bloc/data/model/note_model.dart';
 
-class NoteView extends StatelessWidget {
-  NoteView({super.key});
+class NoteView extends StatefulWidget {
+  final NoteModel? selectedNote;
+  const NoteView({super.key, this.selectedNote});
 
-  final TextEditingController titleController = TextEditingController();
-  final TextEditingController descriptionController = TextEditingController();
+  @override
+  NoteViewState createState() => NoteViewState();
+}
+
+class NoteViewState extends State<NoteView> {
+  late TextEditingController titleController;
+  late TextEditingController descriptionController;
+
+  @override
+  void initState() {
+    super.initState();
+    titleController = TextEditingController(text: widget.selectedNote!.title);
+    descriptionController =
+        TextEditingController(text: widget.selectedNote!.description);
+  }
+
+  @override
+  void dispose() {
+    titleController.dispose();
+    descriptionController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    context
+        .read<NoteBloc>()
+        .add(RefreshNoteDataEvent(refreshedNote: widget.selectedNote));
     return BlocBuilder<NoteBloc, NoteState>(builder: (context, state) {
       if (state is NoteSaving) {
         return const CircularIndicatorWidget();
       }
       if (state is NoteInitial) {
+        print("______");
+        print(widget.selectedNote!.id);
+        print("===========");
+        print(state.note.id);
+        print("+++++++++++++++++++++++++++++++++++++++++");
         Color initialColor = state.note.noteBackground!.color!;
         String? initialBG = state.note.noteBackground!.backgroundPath;
         int descriptionLines = state.descriptionLines ?? 1;
@@ -130,6 +162,52 @@ class NoteView extends StatelessWidget {
                                       ),
                                     ),
                                   ),
+                                  state.note.labels != null
+                                      ? Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 10),
+                                          child: Wrap(
+                                            spacing: 8,
+                                            children:
+                                                state.note.labels!.map((label) {
+                                              return IntrinsicWidth(
+                                                child: InkWell(
+                                                  onTap: () => context.go(
+                                                      "/label_selection",
+                                                      extra: state.note),
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  child: Container(
+                                                    margin:
+                                                        const EdgeInsets.only(
+                                                            top: 5),
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                      horizontal: 10,
+                                                      vertical: 8,
+                                                    ),
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.white30,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                        10,
+                                                      ),
+                                                    ),
+                                                    child: Center(
+                                                      child: Text(
+                                                        label.labelName,
+                                                        style: const TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 15),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              );
+                                            }).toList(),
+                                          ),
+                                        )
+                                      : const SizedBox.shrink(),
                                   initialColor != Colors.transparent &&
                                           initialBG != null
                                       ? Container(
