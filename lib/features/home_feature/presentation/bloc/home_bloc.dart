@@ -30,9 +30,29 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
               (element) => element.pin == false,
             )
             .toList();
+        allLoadedNotes = noteWithoutPin;
+        pinnedNotes = pinnedNotes;
         emit(HomeLoaded(noteWithoutPin, pinnedNotes!));
       } else if (result is DataFailed) {
         emit(HomeLoading(result.error!));
+      }
+    });
+    on<SearchNotesEvent>((event, emit) async {
+      emit(const HomeLoading("loading"));
+      if (event.searchString.isNotEmpty) {
+        List<NoteModel> updateList = [];
+        List<NoteModel> updatedPinList = [];
+        updateList = allLoadedNotes.where((note) {
+          return note.title!.contains(event.searchString);
+        }).toList();
+        if (pinnedNotes != null) {
+          updatedPinList = pinnedNotes!.where((note) {
+            return note.title!.contains(event.searchString);
+          }).toList();
+        }
+        emit(HomeLoaded(updateList, updatedPinList));
+      } else {
+        emit(HomeLoaded(allLoadedNotes, pinnedNotes!));
       }
     });
   }

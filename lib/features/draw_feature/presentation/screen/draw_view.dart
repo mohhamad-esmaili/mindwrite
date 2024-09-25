@@ -7,16 +7,13 @@ import 'package:go_router/go_router.dart';
 import 'package:mindwrite/core/widgets/snackbar_widget.dart';
 
 import 'package:mindwrite/features/note_feature/presentation/bloc/note_bloc.dart';
+import 'package:mindwrite/features/shared_bloc/data/model/note_model.dart';
 import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
 
-class DrawView extends StatefulWidget {
-  const DrawView({super.key});
+class DrawView extends StatelessWidget {
+  final NoteModel? selctedNote;
+  DrawView({super.key, this.selctedNote});
 
-  @override
-  DrawViewState createState() => DrawViewState();
-}
-
-class DrawViewState extends State<DrawView> {
   final GlobalKey<SfSignaturePadState> _signaturePadKey = GlobalKey();
 
   Future<Uint8List?> captureSignature() async {
@@ -79,9 +76,7 @@ class DrawViewState extends State<DrawView> {
 
               if (!isEmpty) {
                 if (context.mounted && imageBytes != null) {
-                  // context.read<NoteBloc>().add(ChangeDrawingLists(imageBytes));
-                  BlocProvider.of<NoteBloc>(context)
-                      .add(ChangeDrawingLists(imageBytes));
+                  context.read<NoteBloc>().add(ChangeDrawingLists(imageBytes));
                 }
               } else if (context.mounted) {
                 SnackbarService.showStatusSnackbar(
@@ -91,7 +86,8 @@ class DrawViewState extends State<DrawView> {
               if (context.mounted) {
                 _signaturePadKey.currentState!.clear();
 
-                context.go('/create_note');
+                context.go('/create_note',
+                    extra: context.read<NoteBloc>().note);
               }
             },
             icon: const Icon(

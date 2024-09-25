@@ -35,141 +35,156 @@ class MasonaryBuilder extends StatefulWidget {
   State<MasonaryBuilder> createState() => _MasonaryBuilderState();
 }
 
-class _MasonaryBuilderState extends State<MasonaryBuilder> {
+class _MasonaryBuilderState extends State<MasonaryBuilder>
+    with AutomaticKeepAliveClientMixin {
   final Map<String, double> _opacityMap = {};
-
+  @override
+  bool get wantKeepAlive => true;
+  final PageStorageBucket _bucket = PageStorageBucket();
   @override
   Widget build(BuildContext context) {
-    if (widget.noteModelList.isEmpty &&
-        context.read<HomeBloc>().pinnedNotes!.isEmpty) {
-      _buildEmptyStatus();
-    }
-    return BlocBuilder<SharedBloc, SharedState>(
-      bloc: widget.sharedBloc,
-      builder: (context, state) {
-        return MasonryGridView.count(
-          crossAxisCount:
-              widget.sharedBloc.listMode == ListModeEnum.multiple ? 2 : 1,
-          mainAxisSpacing: 8,
-          crossAxisSpacing: 10,
-          shrinkWrap: true,
-          padding: const EdgeInsets.all(8.0),
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: widget.noteModelList.length,
-          itemBuilder: (context, index) {
-            final NoteModel note = widget.noteModelList[index];
-            final double opacity = _opacityMap[note.id] ?? 1.0;
+    super.build(context);
+    return PageStorage(
+      bucket: _bucket,
+      child: widget.noteModelList.isEmpty
+          ? _buildEmptyStatus()
+          : BlocBuilder<SharedBloc, SharedState>(
+              bloc: widget.sharedBloc,
+              builder: (context, state) {
+                return MasonryGridView.count(
+                  crossAxisCount:
+                      widget.sharedBloc.listMode == ListModeEnum.multiple
+                          ? 2
+                          : 1,
+                  mainAxisSpacing: 8,
+                  crossAxisSpacing: 10,
+                  shrinkWrap: true,
+                  padding: const EdgeInsets.all(8.0),
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: widget.noteModelList.length,
+                  itemBuilder: (context, index) {
+                    final NoteModel note = widget.noteModelList[index];
+                    final double opacity = _opacityMap[note.id] ?? 1.0;
 
-            final bool isSelected =
-                widget.sharedBloc.selectedItems.contains(note);
+                    final bool isSelected =
+                        widget.sharedBloc.selectedItems.contains(note);
 
-            return InkWell(
-              borderRadius: BorderRadius.circular(12),
-              enableFeedback: isSelected ? false : true,
-              highlightColor: Colors.white12,
-              splashColor: Colors.white12,
-              onLongPress: () {
-                widget.sharedBloc.add(LongPressItem(note));
+                    return InkWell(
+                      borderRadius: BorderRadius.circular(12),
+                      enableFeedback: isSelected ? false : true,
+                      highlightColor: Colors.white12,
+                      splashColor: Colors.white12,
+                      onLongPress: () {
+                        widget.sharedBloc.add(LongPressItem(note));
+                      },
+                      onTap: () {
+                        if (widget.sharedBloc.isSelectionMode == false) {
+                          context
+                              .read<NoteBloc>()
+                              .add(RefreshNoteDataEvent(refreshedNote: note));
+                          context.go("/create_note", extra: note);
+                        } else {
+                          widget.sharedBloc.add(TapItem(note));
+                        }
+                      },
+                      child: Dismissible(
+                        direction: widget.deleteScreen
+                            ? DismissDirection.none
+                            : DismissDirection.horizontal,
+                        key: Key('dismiss_${note.id}_$index'),
+                        onDismissed: (direction) async {
+                          bool undoPressed = false;
+
+                          NoteModel selectedNote = widget.noteModelList[index];
+
+                          setState(() {
+                            widget.noteModelList.removeAt(index);
+                            _opacityMap.remove(selectedNote.id);
+                          });
+
+                          await SnackbarService.showStatusSnackbar(
+                            context: context,
+                            message: "Note archived",
+                            actionLabel: "Undo",
+                            onAction: () {
+                              undoPressed = true;
+
+                              NoteModel simpleVersion = selectedNote.copyWith(
+                                  archived: widget.defaultArchiveNote);
+                              widget.sharedBloc
+                                  .add(ToggleArchiveEvent([simpleVersion]));
+
+                              setState(() {
+                                widget.noteModelList
+                                    .insert(index, selectedNote);
+                                _opacityMap[selectedNote.id!] = 1.0;
+                              });
+                            },
+                            onClosed: () {
+                              if (!undoPressed) {
+                                widget.sharedBloc
+                                    .add(ToggleArchiveEvent([selectedNote]));
+                              }
+                            },
+                          );
+                        },
+                        child: AnimatedOpacity(
+                          opacity: opacity,
+                          duration: const Duration(milliseconds: 300),
+                          child: _buildNoteTile(note, isSelected),
+                        ),
+                        // Detect the dismiss progress and apply fade effect
+                        onUpdate: (details) {
+                          setState(() {
+                            _opacityMap[note.id!] =
+                                (1.0 - (details.progress + 0.2))
+                                    .clamp(0.0, 1.0);
+                          });
+                        },
+                      ),
+                    )
+                        .animate()
+                        .fade(duration: const Duration(milliseconds: 300))
+                        .slide(
+                            duration: const Duration(milliseconds: 500),
+                            begin: const Offset(0, 0.3),
+                            end: Offset.zero,
+                            curve: Curves.easeOut);
+                  },
+                );
               },
-              onTap: () {
-                if (widget.sharedBloc.isSelectionMode == false) {
-                  context
-                      .read<NoteBloc>()
-                      .add(RefreshNoteDataEvent(refreshedNote: note));
-                  context.go("/create_note", extra: note);
-                } else {
-                  widget.sharedBloc.add(TapItem(note));
-                }
-              },
-              child: Dismissible(
-                direction: widget.deleteScreen
-                    ? DismissDirection.none
-                    : DismissDirection.horizontal,
-                key: Key('dismiss_${note.id}_$index'),
-                onDismissed: (direction) async {
-                  bool undoPressed = false;
-
-                  NoteModel selectedNote = widget.noteModelList[index];
-
-                  setState(() {
-                    widget.noteModelList.removeAt(index);
-                    _opacityMap.remove(selectedNote.id);
-                  });
-
-                  await SnackbarService.showStatusSnackbar(
-                    context: context,
-                    message: "Note archived",
-                    actionLabel: "Undo",
-                    onAction: () {
-                      undoPressed = true;
-
-                      NoteModel simpleVersion = selectedNote.copyWith(
-                          archived: widget.defaultArchiveNote);
-                      widget.sharedBloc
-                          .add(ToggleArchiveEvent([simpleVersion]));
-
-                      setState(() {
-                        widget.noteModelList.insert(index, selectedNote);
-                        _opacityMap[selectedNote.id!] = 1.0;
-                      });
-                    },
-                    onClosed: () {
-                      if (!undoPressed) {
-                        widget.sharedBloc
-                            .add(ToggleArchiveEvent([selectedNote]));
-                      }
-                    },
-                  );
-                },
-                child: AnimatedOpacity(
-                  opacity: opacity,
-                  duration: const Duration(milliseconds: 300),
-                  child: _buildNoteTile(note, isSelected),
-                ),
-                // Detect the dismiss progress and apply fade effect
-                onUpdate: (details) {
-                  setState(() {
-                    _opacityMap[note.id!] =
-                        (1.0 - (details.progress + 0.2)).clamp(0.0, 1.0);
-                  });
-                },
-              ),
-            ).animate().fade(duration: const Duration(milliseconds: 300)).slide(
-                duration: const Duration(milliseconds: 500),
-                begin: const Offset(0, 0.3),
-                end: Offset.zero,
-                curve: Curves.easeOut);
-          },
-        );
-      },
+            ),
     );
   }
 
-  Widget _buildEmptyStatus() => Container(
-        height: 150,
-        width: double.infinity,
-        margin: const EdgeInsetsDirectional.all(10),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15), color: Colors.white12),
-        child: const Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.sentiment_dissatisfied,
-                size: 40,
+  Widget _buildEmptyStatus() {
+    print("is in build");
+    return Container(
+      height: 150,
+      width: double.infinity,
+      margin: const EdgeInsetsDirectional.all(10),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15), color: Colors.white12),
+      child: const Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.sentiment_dissatisfied,
+              size: 40,
+            ),
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text(
+                "There is no note yet",
+                style: TextStyle(color: Colors.white, fontSize: 20),
               ),
-              Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text(
-                  "There is no note yet",
-                  style: TextStyle(color: Colors.white, fontSize: 20),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
-      ).animate().fade(duration: const Duration(milliseconds: 300));
+      ),
+    ).animate().fade(duration: const Duration(milliseconds: 300));
+  }
 
   Widget _buildNoteTile(NoteModel note, bool isSelected) => AnimatedContainer(
         duration: const Duration(milliseconds: 100),

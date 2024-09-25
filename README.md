@@ -21,6 +21,7 @@ intl: ^0.19.0
 get_it: ^7.7.0
 equatable: ^2.0.5
 go_router: ^14.2.7
+share_plus: ^10.0.2
 hive_flutter: ^1.1.0
 flutter_bloc: ^8.1.6
 image_picker: ^1.1.2

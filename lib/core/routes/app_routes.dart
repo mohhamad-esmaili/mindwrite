@@ -193,7 +193,7 @@ class AppRoutes {
         name: "draw",
         pageBuilder: (context, state) {
           return CustomTransitionPage(
-            child: const DrawView(),
+            child: DrawView(),
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) {
               return ScaleTransition(
