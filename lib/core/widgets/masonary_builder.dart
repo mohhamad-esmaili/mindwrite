@@ -4,10 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mindwrite/core/enums/listmode_enum.dart';
-import 'package:mindwrite/core/gen/assets.gen.dart';
-import 'package:mindwrite/core/routes/app_routes.dart';
 import 'package:mindwrite/core/utils/color_constants.dart';
 import 'package:mindwrite/core/widgets/snackbar_widget.dart';
+import 'package:mindwrite/features/home_feature/presentation/bloc/home_bloc.dart';
 import 'package:mindwrite/features/note_feature/presentation/bloc/note_bloc.dart';
 import 'package:mindwrite/features/shared_bloc/data/model/note_model.dart';
 import 'package:mindwrite/features/shared_bloc/presentation/bloc/shared_bloc.dart';
@@ -41,32 +40,9 @@ class _MasonaryBuilderState extends State<MasonaryBuilder> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.noteModelList.isEmpty) {
-      return Container(
-        height: 150,
-        width: double.infinity,
-        margin: EdgeInsetsDirectional.all(10),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15), color: Colors.white12),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.sentiment_dissatisfied,
-                size: 40,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  "There is no note yet",
-                  style: TextStyle(color: Colors.white, fontSize: 20),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ).animate().fade(duration: Duration(milliseconds: 300));
+    if (widget.noteModelList.isEmpty &&
+        context.read<HomeBloc>().pinnedNotes!.isEmpty) {
+      _buildEmptyStatus();
     }
     return BlocBuilder<SharedBloc, SharedState>(
       bloc: widget.sharedBloc,
@@ -148,97 +124,7 @@ class _MasonaryBuilderState extends State<MasonaryBuilder> {
                 child: AnimatedOpacity(
                   opacity: opacity,
                   duration: const Duration(milliseconds: 300),
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 100),
-                    curve: Curves.easeInOut,
-                    decoration: BoxDecoration(
-                      color: note.noteBackground!.color,
-                      image: note.noteBackground!.backgroundPath != null
-                          ? DecorationImage(
-                              image: AssetImage(
-                                  note.noteBackground!.backgroundPath!),
-                              fit: BoxFit.cover,
-                            )
-                          : null,
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        color: isSelected
-                            ? AppColorConstants.secondaryColor
-                            : (note.noteBackground!.color == Colors.transparent
-                                ? Colors.grey
-                                : note.noteBackground!.color!),
-                        width: isSelected ? 3 : 1,
-                      ),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            note.title!,
-                            maxLines: 4,
-                            style: const TextStyle(color: Colors.white),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            note.description!,
-                            maxLines: 15,
-                            style: const TextStyle(color: Colors.white),
-                          ),
-                        ),
-                        note.labels != null
-                            ? Container(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 10, horizontal: 10),
-                                child: Wrap(
-                                  spacing: 8,
-                                  children: note.labels!.map((label) {
-                                    return IntrinsicWidth(
-                                      child: Container(
-                                        margin: EdgeInsets.only(top: 5),
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: 10,
-                                          vertical: 8,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color: Colors.white30,
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
-                                        child: Center(
-                                          child: Text(
-                                            label.labelName,
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 15),
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  }).toList(),
-                                ),
-                              )
-                            : SizedBox.shrink(),
-                        note.noteBackground!.color != Colors.transparent &&
-                                note.noteBackground!.backgroundPath != null
-                            ? Container(
-                                width: 25,
-                                height: 25,
-                                margin:
-                                    const EdgeInsets.only(left: 10, bottom: 10),
-                                decoration: BoxDecoration(
-                                  color: note.noteBackground!.color,
-                                  border: Border.all(color: Colors.grey),
-                                  shape: BoxShape.circle,
-                                ),
-                              )
-                            : const SizedBox.shrink(),
-                      ],
-                    ),
-                  ),
+                  child: _buildNoteTile(note, isSelected),
                 ),
                 // Detect the dismiss progress and apply fade effect
                 onUpdate: (details) {
@@ -248,9 +134,9 @@ class _MasonaryBuilderState extends State<MasonaryBuilder> {
                   });
                 },
               ),
-            ).animate().fade(duration: Duration(milliseconds: 300)).slide(
-                duration: Duration(milliseconds: 500),
-                begin: Offset(0, 0.3),
+            ).animate().fade(duration: const Duration(milliseconds: 300)).slide(
+                duration: const Duration(milliseconds: 500),
+                begin: const Offset(0, 0.3),
                 end: Offset.zero,
                 curve: Curves.easeOut);
           },
@@ -258,4 +144,118 @@ class _MasonaryBuilderState extends State<MasonaryBuilder> {
       },
     );
   }
+
+  Widget _buildEmptyStatus() => Container(
+        height: 150,
+        width: double.infinity,
+        margin: const EdgeInsetsDirectional.all(10),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15), color: Colors.white12),
+        child: const Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.sentiment_dissatisfied,
+                size: 40,
+              ),
+              Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text(
+                  "There is no note yet",
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ).animate().fade(duration: const Duration(milliseconds: 300));
+
+  Widget _buildNoteTile(NoteModel note, bool isSelected) => AnimatedContainer(
+        duration: const Duration(milliseconds: 100),
+        curve: Curves.easeInOut,
+        decoration: BoxDecoration(
+          color: note.noteBackground!.color,
+          image: note.noteBackground!.backgroundPath != null
+              ? DecorationImage(
+                  image: AssetImage(note.noteBackground!.backgroundPath!),
+                  fit: BoxFit.cover,
+                )
+              : null,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: isSelected
+                ? AppColorConstants.secondaryColor
+                : (note.noteBackground!.color == Colors.transparent
+                    ? Colors.grey
+                    : note.noteBackground!.color!),
+            width: isSelected ? 3 : 1,
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                note.title!,
+                maxLines: 4,
+                style: const TextStyle(color: Colors.white),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                note.description!,
+                maxLines: 15,
+                style: const TextStyle(color: Colors.white),
+              ),
+            ),
+            note.labels != null
+                ? Container(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 10),
+                    child: Wrap(
+                      spacing: 8,
+                      children: note.labels!.map((label) {
+                        return IntrinsicWidth(
+                          child: Container(
+                            margin: const EdgeInsets.only(top: 5),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 8,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.white30,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Center(
+                              child: Text(
+                                label.labelName,
+                                style:
+                                    TextStyle(color: Colors.grey, fontSize: 15),
+                              ),
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  )
+                : const SizedBox.shrink(),
+            note.noteBackground!.color != Colors.transparent &&
+                    note.noteBackground!.backgroundPath != null
+                ? Container(
+                    width: 25,
+                    height: 25,
+                    margin: const EdgeInsets.only(left: 10, bottom: 10),
+                    decoration: BoxDecoration(
+                      color: note.noteBackground!.color,
+                      border: Border.all(color: Colors.grey),
+                      shape: BoxShape.circle,
+                    ),
+                  )
+                : const SizedBox.shrink(),
+          ],
+        ),
+      );
 }

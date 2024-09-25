@@ -63,7 +63,7 @@ class DrawViewState extends State<DrawView> {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      canPop: true,
+      canPop: false,
       onPopInvoked: (_) {
         context.go('/create_note');
       },

@@ -41,6 +41,7 @@ syncfusion_flutter_signaturepad: ^26.2.14
 - [x] add and take image to notes
 - [x] pin and ordering lists
 - [x] label making
+- [x] send and share + make copy
 
 ### Todo :
 
@@ -51,7 +52,6 @@ syncfusion_flutter_signaturepad: ^26.2.14
 - [ ] persian version
 - [ ] recording
 - [ ] tick boxes in notes
-- [ ] send and share + make copy
 - [ ] do and redo buttons
 - [ ] light theme
 
