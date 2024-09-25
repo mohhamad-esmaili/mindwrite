@@ -21,9 +21,9 @@ class LabelCategoryView extends StatefulWidget {
 class _LabelCategoryViewState extends State<LabelCategoryView> {
   @override
   void didChangeDependencies() {
+    super.didChangeDependencies();
     BlocProvider.of<LabelBloc>(context)
         .add(LoadLabelNotesEvent(selectedLabel: widget.selectedLabel));
-    super.didChangeDependencies();
   }
 
   @override
@@ -35,7 +35,8 @@ class _LabelCategoryViewState extends State<LabelCategoryView> {
       appBar: ScreensAppbar(
         appbarTitle: widget.selectedLabel.labelName,
         sharedBloc: sharedBloc,
-        isRestoreMode: false,
+        onDelete: () => BlocProvider.of<LabelBloc>(context)
+            .add(LoadLabelNotesEvent(selectedLabel: widget.selectedLabel)),
       ),
       drawer: AppDrawer(
         selectedLabel: widget.selectedLabel.labelName,

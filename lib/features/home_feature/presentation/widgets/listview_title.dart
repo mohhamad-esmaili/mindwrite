@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 class ListviewTitle extends StatelessWidget {
   final String title;
@@ -12,6 +13,6 @@ class ListviewTitle extends StatelessWidget {
         title,
         style: const TextStyle(fontSize: 15, color: Colors.white),
       ),
-    );
+    ).animate().fade(duration: Duration(milliseconds: 300));
   }
 }

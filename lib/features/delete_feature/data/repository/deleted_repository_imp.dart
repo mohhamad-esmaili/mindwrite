@@ -17,4 +17,16 @@ class DeletedRepositoryImp extends DeletedRepository {
       return DataFailed(e.toString());
     }
   }
+
+  @override
+  Future<DataState<List<NoteModel>>> deleteNotesForever(
+      List<NoteModel> selectedNotes) async {
+    try {
+      List<NoteModel> allValues =
+          await deletedLocalDatabase.deleteNoteForever(selectedNotes);
+      return DataSuccess(allValues);
+    } catch (e) {
+      return DataFailed(e.toString());
+    }
+  }
 }

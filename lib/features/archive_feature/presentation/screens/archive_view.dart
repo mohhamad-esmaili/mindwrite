@@ -35,7 +35,6 @@ class _ArchiveViewState extends State<ArchiveView> {
       appBar: ScreensAppbar(
         appbarTitle: "Archive",
         sharedBloc: sharedBloc,
-        isRestoreMode: false,
       ),
       drawer: const AppDrawer(),
       extendBodyBehindAppBar: true,

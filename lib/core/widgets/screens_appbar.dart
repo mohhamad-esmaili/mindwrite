@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mindwrite/core/enums/listmode_enum.dart';
+import 'package:mindwrite/core/widgets/pop_menu_widget.dart';
 import 'package:mindwrite/core/widgets/snackbar_widget.dart';
 import 'package:mindwrite/features/shared_bloc/presentation/bloc/shared_bloc.dart';
 
 class ScreensAppbar extends StatelessWidget implements PreferredSizeWidget {
   final String appbarTitle;
   final SharedBloc sharedBloc;
-  final bool isRestoreMode;
-  // final Function(List<NoteModel> selectedItems) deleteNoteFunction;
+  final Function? onDelete;
   @override
   final Size preferredSize;
   const ScreensAppbar({
     super.key,
     required this.appbarTitle,
     required this.sharedBloc,
-    required this.isRestoreMode,
-    // required this.deleteNoteFunction
+    this.onDelete,
   }) : preferredSize = const Size.fromHeight(kToolbarHeight);
 
   @override
@@ -39,16 +38,15 @@ class ScreensAppbar extends StatelessWidget implements PreferredSizeWidget {
                 ),
                 title: Text(state.selectedItems.length.toString()),
                 actions: [
-                  if (!isRestoreMode)
-                    IconButton(
-                      onPressed: () => sharedBloc.add(
-                        PinNotesEvent(sharedBloc.selectedItems),
-                      ),
-                      icon: Icon(
-                        Icons.push_pin_rounded,
-                        color: themeData.iconTheme.color,
-                      ),
+                  IconButton(
+                    onPressed: () => sharedBloc.add(
+                      PinNotesEvent(sharedBloc.selectedItems),
                     ),
+                    icon: Icon(
+                      Icons.push_pin_rounded,
+                      color: themeData.iconTheme.color,
+                    ),
+                  ),
                   IconButton(
                     onPressed: () =>
                         SnackbarService.showPaletteSelector(context: context),
@@ -57,23 +55,19 @@ class ScreensAppbar extends StatelessWidget implements PreferredSizeWidget {
                       color: themeData.iconTheme.color,
                     ),
                   ),
-                  IconButton(
-                    onPressed: () {
-                      sharedBloc.add(DeleteNoteEvent(state.selectedItems));
-                      SnackbarService.showStatusSnackbar(
-                          message: "Notes Deleted", context: context);
-                    },
-                    icon: const Icon(Icons.delete_outline_rounded),
-                  ),
-                  if (isRestoreMode)
-                    IconButton(
-                      onPressed: () {
-                        sharedBloc.add(RestoreNoteEvent(state.selectedItems));
-                        SnackbarService.showStatusSnackbar(
-                            message: "Notes restored", context: context);
-                      },
-                      icon: const Icon(Icons.restore),
-                    )
+                  // IconButton(
+                  //   onPressed: () {
+                  //     sharedBloc.add(DeleteNoteEvent(state.selectedItems));
+                  //     if (onDelete != null) {
+                  //       // update state if note where deleted
+                  //       onDelete!();
+                  //     }
+                  //     SnackbarService.showStatusSnackbar(
+                  //         message: "Notes Deleted", context: context);
+                  //   },
+                  //   icon: const Icon(Icons.delete_outline_rounded),
+                  // ),
+                  PopMenuWidget().buildPopupMenu(context, sharedBloc),
                 ],
               );
             }

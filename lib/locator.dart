@@ -9,6 +9,7 @@ import 'package:mindwrite/features/archive_feature/domain/use_cases/get_archived
 import 'package:mindwrite/features/archive_feature/presentation/bloc/archive_bloc.dart';
 import 'package:mindwrite/features/delete_feature/data/repository/deleted_repository_imp.dart';
 import 'package:mindwrite/features/delete_feature/domain/repository/deleted_repository.dart';
+import 'package:mindwrite/features/delete_feature/domain/use_cases/delete_notes_forever_usecase.dart';
 import 'package:mindwrite/features/delete_feature/domain/use_cases/get_deleted_usecase.dart';
 import 'package:mindwrite/features/delete_feature/presentation/bloc/delete_bloc.dart';
 import 'package:mindwrite/features/label_feature/data/repository/label_repository_imp.dart';
@@ -104,6 +105,9 @@ setup() async {
     () => GetDeletedUsecase(locator<DeletedRepository>()),
   );
   locator.registerFactory(
+    () => DeleteNotesForeverUsecase(locator<DeletedRepository>()),
+  );
+  locator.registerFactory(
     () => DeleteNoteUsecase(locator<SharedRepository>()),
   );
   locator.registerFactory(
@@ -154,6 +158,7 @@ setup() async {
   locator.registerSingleton<DeleteBloc>(DeleteBloc(
     [],
     locator<GetDeletedUsecase>(),
+    locator<DeleteNotesForeverUsecase>(),
   ));
 
   locator.registerSingleton<SharedBloc>(SharedBloc(

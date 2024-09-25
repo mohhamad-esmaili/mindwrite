@@ -9,7 +9,6 @@ import 'package:mindwrite/features/shared_bloc/data/model/note_model.dart';
 
 import 'package:mindwrite/features/note_feature/domain/use_cases/save_note_usecase.dart';
 import 'package:mindwrite/locator.dart';
-import 'package:uuid/uuid.dart';
 import 'dart:typed_data';
 part 'note_event.dart';
 part 'note_state.dart';

@@ -36,7 +36,7 @@ class HomeBottomBar extends StatelessWidget {
             ),
             IconButton(
               onPressed: () {
-                context.go("/create_note");
+                context.read<NoteBloc>().add(NoteInitialEvent());
                 context.go("/draw");
               },
               icon: const Icon(

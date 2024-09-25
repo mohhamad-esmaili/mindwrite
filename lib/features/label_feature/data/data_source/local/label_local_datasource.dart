@@ -48,7 +48,10 @@ class LabelLocalDatasource {
   }
 
   Future<List<NoteModel>> getLabelNotes(LabelModel label) async {
-    List<NoteModel> result = noteBox.values.toList();
+    List<NoteModel> result = noteBox.values
+        .toList()
+        .where((element) => element.isDeleted == false)
+        .toList();
 
     List<NoteModel> matchedNotes = [];
 

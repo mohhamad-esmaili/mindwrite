@@ -39,19 +39,14 @@ class NoteViewState extends State<NoteView> {
 
   @override
   Widget build(BuildContext context) {
-    context
-        .read<NoteBloc>()
-        .add(RefreshNoteDataEvent(refreshedNote: widget.selectedNote));
+    // context
+    //     .read<NoteBloc>()
+    //     .add(RefreshNoteDataEvent(refreshedNote: widget.selectedNote));
     return BlocBuilder<NoteBloc, NoteState>(builder: (context, state) {
       if (state is NoteSaving) {
         return const CircularIndicatorWidget();
       }
       if (state is NoteInitial) {
-        print("______");
-        print(widget.selectedNote!.id);
-        print("===========");
-        print(state.note.id);
-        print("+++++++++++++++++++++++++++++++++++++++++");
         Color initialColor = state.note.noteBackground!.color!;
         String? initialBG = state.note.noteBackground!.backgroundPath;
         int descriptionLines = state.descriptionLines ?? 1;

@@ -16,7 +16,7 @@ class FloatingButtonWidget extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 10),
       child: FloatingActionButton(
           onPressed: () {
-            context.read<NoteBloc>().add(NoteInitialEvent());
+            context.read<NoteBloc>().add(const NoteInitialEvent());
             context.go('/create_note');
           },
           backgroundColor: const Color.fromRGBO(41, 42, 44, 1),

@@ -6,15 +6,22 @@ import 'package:mindwrite/locator.dart';
 class SharedLocalDatabase {
   Box<NoteModel> noteBox = locator(instanceName: "note_box");
 
-  Future<NoteModel?> toggleNoteArchiveToBox(NoteModel note) async {
-    NoteModel? result = noteBox.get(note.id);
+  Future<List<NoteModel>?> toggleNoteArchiveToBox(List<NoteModel> notes) async {
+    List<NoteModel> updatedNotes = [];
 
-    if (result != null) {
-      NoteModel updatedNote = result.copyWith(archived: !note.archived);
+    for (var note in notes) {
+      NoteModel? result = noteBox.get(note.id);
 
-      await noteBox.put(result.id, updatedNote);
-    } else {}
-    return result;
+      if (result != null) {
+        NoteModel updatedNote = result.copyWith(archived: !result.archived);
+
+        await noteBox.put(result.id, updatedNote);
+
+        updatedNotes.add(updatedNote);
+      }
+    }
+
+    return updatedNotes;
   }
 
   Future<void> pinToggleToBox(List<NoteModel> notes) async {

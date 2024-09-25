@@ -42,10 +42,10 @@ class RestoreNoteEvent extends SharedEvent {
 }
 
 class ToggleArchiveEvent extends SharedEvent {
-  final NoteModel note;
-  const ToggleArchiveEvent(this.note);
+  final List<NoteModel> notes;
+  const ToggleArchiveEvent(this.notes);
   @override
-  List<Object> get props => [note];
+  List<Object> get props => [notes];
 }
 
 class PinNotesEvent extends SharedEvent {

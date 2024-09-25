@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mindwrite/core/enums/listmode_enum.dart';
+import 'package:mindwrite/core/gen/assets.gen.dart';
+import 'package:mindwrite/core/routes/app_routes.dart';
 import 'package:mindwrite/core/utils/color_constants.dart';
 import 'package:mindwrite/core/widgets/snackbar_widget.dart';
+import 'package:mindwrite/features/note_feature/presentation/bloc/note_bloc.dart';
 import 'package:mindwrite/features/shared_bloc/data/model/note_model.dart';
 import 'package:mindwrite/features/shared_bloc/presentation/bloc/shared_bloc.dart';
 
@@ -39,7 +43,7 @@ class _MasonaryBuilderState extends State<MasonaryBuilder> {
   Widget build(BuildContext context) {
     if (widget.noteModelList.isEmpty) {
       return Container(
-        height: 100,
+        height: 150,
         width: double.infinity,
         margin: EdgeInsetsDirectional.all(10),
         decoration: BoxDecoration(
@@ -52,14 +56,17 @@ class _MasonaryBuilderState extends State<MasonaryBuilder> {
                 Icons.sentiment_dissatisfied,
                 size: 40,
               ),
-              Text(
-                "There is no note yet",
-                style: TextStyle(color: Colors.white, fontSize: 20),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  "There is no note yet",
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
               ),
             ],
           ),
         ),
-      );
+      ).animate().fade(duration: Duration(milliseconds: 300));
     }
     return BlocBuilder<SharedBloc, SharedState>(
       bloc: widget.sharedBloc,
@@ -90,6 +97,9 @@ class _MasonaryBuilderState extends State<MasonaryBuilder> {
               },
               onTap: () {
                 if (widget.sharedBloc.isSelectionMode == false) {
+                  context
+                      .read<NoteBloc>()
+                      .add(RefreshNoteDataEvent(refreshedNote: note));
                   context.go("/create_note", extra: note);
                 } else {
                   widget.sharedBloc.add(TapItem(note));
@@ -119,7 +129,8 @@ class _MasonaryBuilderState extends State<MasonaryBuilder> {
 
                       NoteModel simpleVersion = selectedNote.copyWith(
                           archived: widget.defaultArchiveNote);
-                      widget.sharedBloc.add(ToggleArchiveEvent(simpleVersion));
+                      widget.sharedBloc
+                          .add(ToggleArchiveEvent([simpleVersion]));
 
                       setState(() {
                         widget.noteModelList.insert(index, selectedNote);
@@ -128,7 +139,8 @@ class _MasonaryBuilderState extends State<MasonaryBuilder> {
                     },
                     onClosed: () {
                       if (!undoPressed) {
-                        widget.sharedBloc.add(ToggleArchiveEvent(selectedNote));
+                        widget.sharedBloc
+                            .add(ToggleArchiveEvent([selectedNote]));
                       }
                     },
                   );
@@ -236,7 +248,11 @@ class _MasonaryBuilderState extends State<MasonaryBuilder> {
                   });
                 },
               ),
-            );
+            ).animate().fade(duration: Duration(milliseconds: 300)).slide(
+                duration: Duration(milliseconds: 500),
+                begin: Offset(0, 0.3),
+                end: Offset.zero,
+                curve: Curves.easeOut);
           },
         );
       },

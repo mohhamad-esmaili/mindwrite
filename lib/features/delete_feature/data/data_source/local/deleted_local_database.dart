@@ -10,4 +10,14 @@ class DeletedLocalDatabase {
 
     return result;
   }
+
+  Future<List<NoteModel>> deleteNoteForever(
+      List<NoteModel> selectedNotes) async {
+    for (var element in selectedNotes) {
+      box.delete(element.id);
+    }
+    List<NoteModel> result = box.values.toList();
+    result = result.where((element) => element.isDeleted == true).toList();
+    return result;
+  }
 }

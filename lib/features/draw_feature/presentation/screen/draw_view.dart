@@ -79,7 +79,9 @@ class DrawViewState extends State<DrawView> {
 
               if (!isEmpty) {
                 if (context.mounted && imageBytes != null) {
-                  context.read<NoteBloc>().add(ChangeDrawingLists(imageBytes));
+                  // context.read<NoteBloc>().add(ChangeDrawingLists(imageBytes));
+                  BlocProvider.of<NoteBloc>(context)
+                      .add(ChangeDrawingLists(imageBytes));
                 }
               } else if (context.mounted) {
                 SnackbarService.showStatusSnackbar(
@@ -88,6 +90,7 @@ class DrawViewState extends State<DrawView> {
 
               if (context.mounted) {
                 _signaturePadKey.currentState!.clear();
+
                 context.go('/create_note');
               }
             },

@@ -12,8 +12,6 @@ class SaveLabelUsecase implements UseCase<DataState<void>, LabelModel> {
     try {
       final result = await labelRepository.saveLabelToBox(label);
       if (result is DataFailed) {
-        // Handle failure (e.g., show error message)
-        print("Error saving label: ${result.error}");
         return DataFailed('label exist');
       }
       return DataSuccess(result.data);

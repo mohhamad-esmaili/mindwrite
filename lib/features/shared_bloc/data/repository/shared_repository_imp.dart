@@ -31,10 +31,11 @@ class SharedRepositoryImp extends SharedRepository {
   }
 
   @override
-  Future<DataState<NoteModel>> toggleArchiveStatusToBox(NoteModel note) async {
+  Future<DataState<List<NoteModel>>> toggleArchiveStatusToBox(
+      List<NoteModel> notes) async {
     try {
-      await sharedLocalDatabase.toggleNoteArchiveToBox(note);
-      return DataSuccess(note);
+      await sharedLocalDatabase.toggleNoteArchiveToBox(notes);
+      return DataSuccess(notes);
     } catch (e) {
       return DataFailed(e.toString());
     }

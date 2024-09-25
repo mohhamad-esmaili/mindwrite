@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:mindwrite/core/enums/listmode_enum.dart';
 import 'package:mindwrite/core/utils/color_constants.dart';
+import 'package:mindwrite/core/widgets/pop_menu_widget.dart';
 import 'package:mindwrite/core/widgets/snackbar_widget.dart';
 import 'package:mindwrite/features/home_feature/presentation/bloc/home_bloc.dart';
 import 'package:mindwrite/features/shared_bloc/presentation/bloc/shared_bloc.dart';
@@ -58,12 +60,21 @@ class SliverHomeAppbar extends StatelessWidget {
                               ),
                               Text(sharedBloc.selectedItems.length.toString()),
                               Spacer(),
+                              // IconButton(
+                              //   onPressed: () => sharedBloc.add(
+                              //     DeleteNoteEvent(sharedBloc.selectedItems),
+                              //   ),
+                              //   icon: Icon(
+                              //     Icons.delete_rounded,
+                              //     color: themeData.iconTheme.color,
+                              //   ),
+                              // ),
                               IconButton(
                                 onPressed: () => sharedBloc.add(
-                                  DeleteNoteEvent(sharedBloc.selectedItems),
+                                  PinNotesEvent(sharedBloc.selectedItems),
                                 ),
                                 icon: Icon(
-                                  Icons.delete_rounded,
+                                  Icons.push_pin_rounded,
                                   color: themeData.iconTheme.color,
                                 ),
                               ),
@@ -76,15 +87,8 @@ class SliverHomeAppbar extends StatelessWidget {
                                   color: themeData.iconTheme.color,
                                 ),
                               ),
-                              IconButton(
-                                onPressed: () => sharedBloc.add(
-                                  PinNotesEvent(sharedBloc.selectedItems),
-                                ),
-                                icon: Icon(
-                                  Icons.push_pin_rounded,
-                                  color: themeData.iconTheme.color,
-                                ),
-                              ),
+                              PopMenuWidget()
+                                  .buildPopupMenu(context, sharedBloc),
                             ],
                           )
                         : Row(
@@ -184,7 +188,7 @@ class TemporaryLoadingIndicatorState extends State<TemporaryLoadingIndicator> {
           : const Text(
               "Search your notes",
               key: ValueKey<bool>(false),
-            ),
+            ).animate().fade(duration: Duration(milliseconds: 300)),
     );
   }
 }

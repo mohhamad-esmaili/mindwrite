@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart'; // Import the package
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:mindwrite/core/widgets/circular_indicator_widget.dart';
 import 'package:mindwrite/features/label_feature/data/model/label_model.dart';
 import 'package:mindwrite/features/label_feature/presentation/bloc/label_bloc.dart';
+import 'package:mindwrite/features/note_feature/presentation/bloc/note_bloc.dart';
 import 'package:mindwrite/features/shared_bloc/data/model/note_model.dart';
 
 class LabelSelectionView extends StatefulWidget {
@@ -45,15 +47,19 @@ class _LabelSelectionViewState extends State<LabelSelectionView> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
+            context
+                .read<NoteBloc>()
+                .add(RefreshNoteDataEvent(refreshedNote: updatedNote));
             context.go("/create_note", extra: updatedNote);
           },
         ),
-        // Replace the title with a TextField for searching labels
         title: TextField(
           controller: _searchController,
+          maxLength: 20,
           decoration: const InputDecoration(
             hintText: 'Search labels...',
             border: InputBorder.none,
+            counterText: "",
             hintStyle: TextStyle(color: Colors.white),
           ),
           style: const TextStyle(color: Colors.white),
@@ -80,30 +86,18 @@ class _LabelSelectionViewState extends State<LabelSelectionView> {
                 LabelModel selectedLabel = filteredLabels[index];
                 bool isSelected = allLabels.contains(selectedLabel);
 
-                return ListTile(
-                  onTap: () {
-                    setState(() {
-                      if (!isSelected) {
-                        allLabels.add(selectedLabel);
-                      } else {
-                        allLabels.remove(selectedLabel);
-                      }
-
-                      updatedNote = updatedNote.copyWith(labels: allLabels);
-                    });
-                  },
-                  minLeadingWidth: 40,
-                  minTileHeight: 60,
-                  leading: Icon(
-                    Icons.label_outline_rounded,
-                    color: Theme.of(context).iconTheme.color,
-                  ),
-                  title: Text(
-                    selectedLabel.labelName,
-                    style: const TextStyle(color: Colors.white),
-                  ),
-                  trailing: IconButton(
-                    onPressed: () {
+                return Animate(
+                  effects: const [
+                    FadeEffect(duration: Duration(milliseconds: 300)),
+                    SlideEffect(
+                      duration: Duration(milliseconds: 500),
+                      begin: Offset(0, 0.3),
+                      end: Offset.zero,
+                      curve: Curves.easeOut,
+                    ),
+                  ],
+                  child: ListTile(
+                    onTap: () {
                       setState(() {
                         if (!isSelected) {
                           allLabels.add(selectedLabel);
@@ -112,13 +106,42 @@ class _LabelSelectionViewState extends State<LabelSelectionView> {
                         }
 
                         updatedNote = updatedNote.copyWith(labels: allLabels);
+                        _searchController.clear();
+                        FocusScope.of(context).unfocus();
+                        searchQuery = '';
                       });
                     },
-                    icon: Icon(
-                      isSelected
-                          ? Icons.check_box
-                          : Icons.check_box_outline_blank_rounded,
-                      color: Colors.white,
+                    minLeadingWidth: 40,
+                    minTileHeight: 60,
+                    leading: Icon(
+                      Icons.label_outline_rounded,
+                      color: Theme.of(context).iconTheme.color,
+                    ),
+                    title: Text(
+                      selectedLabel.labelName,
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                    trailing: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          if (!isSelected) {
+                            allLabels.add(selectedLabel);
+                          } else {
+                            allLabels.remove(selectedLabel);
+                          }
+
+                          updatedNote = updatedNote.copyWith(labels: allLabels);
+                          _searchController.clear();
+                          FocusScope.of(context).unfocus();
+                          searchQuery = '';
+                        });
+                      },
+                      icon: Icon(
+                        isSelected
+                            ? Icons.check_box
+                            : Icons.check_box_outline_blank_rounded,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 );

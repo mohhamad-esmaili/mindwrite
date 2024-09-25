@@ -69,7 +69,7 @@ class NoteAppbar extends StatelessWidget {
                         onAction: () {
                           context
                               .read<SharedBloc>()
-                              .add(ToggleArchiveEvent(state.note));
+                              .add(ToggleArchiveEvent([state.note]));
                         },
                         onClosed: null);
                   } else {

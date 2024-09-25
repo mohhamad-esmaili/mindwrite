@@ -41,7 +41,6 @@ class LabelBloc extends Bloc<LabelEvent, LabelState> {
       emit(LabelLoading());
       final result = await loadLabelsUsecase();
       if (result is DataSuccess<List<LabelModel>>) {
-        print(result.data);
         emit(LabelInitial(result.data!));
       } else if (result is DataFailed) {
         emit(LabelFailed(result.error!));
@@ -71,27 +70,22 @@ class LabelBloc extends Bloc<LabelEvent, LabelState> {
     });
     on<EditNoteLabelsEvent>((event, emit) async {
       emit(LabelLoading());
-      print(event.selectedLabel);
-      print(event.selectedNote);
       NoteModel selectedNote = event.selectedNote;
       List<LabelModel> updatedLabels =
           List<LabelModel>.from(selectedNote.labels ?? []);
-
-      print(updatedLabels);
 
       if (updatedLabels.contains(event.selectedLabel)) {
         updatedLabels.remove(event.selectedLabel);
       } else {
         updatedLabels.add(event.selectedLabel);
       }
-      print(updatedLabels);
       NoteModel note = selectedNote.copyWith(labels: updatedLabels);
 
       final result = await editNoteLabelsUsecase(note);
 
       if (result is DataSuccess<NoteModel>) {
         final loadedLabels = await loadLabelsUsecase();
-        emit(LabelInitial(loadedLabels.data!)); // New state for loaded labels
+        emit(LabelInitial(loadedLabels.data!));
       } else if (result is DataFailed) {
         emit(LabelFailed(result.error!));
       }
@@ -100,7 +94,7 @@ class LabelBloc extends Bloc<LabelEvent, LabelState> {
     on<EditLabelEvent>((event, emit) async {
       emit(LabelLoading());
       final result = await editLabelUsecase(event.selectedLabel);
-      print(result.data!);
+
       if (result is DataSuccess<List<LabelModel>>) {
         emit(LabelInitial(result.data!));
       } else if (result is DataFailed) {

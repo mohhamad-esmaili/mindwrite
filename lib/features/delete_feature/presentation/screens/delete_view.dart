@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_animate/flutter_animate.dart'; // import flutter_animate
 
 import 'package:mindwrite/core/widgets/app_drawer.dart';
 import 'package:mindwrite/core/widgets/masonary_builder.dart';
@@ -23,18 +24,67 @@ class _DeleteViewState extends State<DeleteView> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Fetch latest notes when screen is loaded or refreshed
     context.read<DeleteBloc>().add(const GetAllDeleted());
   }
 
   @override
   Widget build(BuildContext context) {
     SharedBloc sharedBloc = BlocProvider.of<SharedBloc>(context);
+
     return Scaffold(
-      appBar: ScreensAppbar(
-        appbarTitle: "Deleted",
-        sharedBloc: sharedBloc,
-        isRestoreMode: true,
+      appBar: AppBar(
+        title: Text("Deleted"),
+        actions: [
+          BlocBuilder<SharedBloc, SharedState>(
+            bloc: sharedBloc,
+            builder: (context, state) {
+              return AnimatedSwitcher(
+                duration: const Duration(milliseconds: 300),
+                transitionBuilder: (Widget child, Animation<double> animation) {
+                  return FadeTransition(opacity: animation, child: child);
+                },
+                child: sharedBloc.isSelectionMode
+                    ? Row(
+                        key: const ValueKey('restoreMode'),
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              sharedBloc.add(
+                                  RestoreNoteEvent(sharedBloc.selectedItems));
+                              SnackbarService.showStatusSnackbar(
+                                  message: "Notes restored", context: context);
+                            },
+                            icon: const Icon(Icons.restore),
+                          ),
+                          popupMenu(
+                            'Delete forever',
+                            () => context.read<DeleteBloc>().add(
+                                  DeleteNotesEvent(sharedBloc.selectedItems),
+                                ),
+                          )
+                        ],
+                      )
+                    : Row(
+                        key: const ValueKey('defaultMode'),
+                        children: [
+                          popupMenu('Empty bin', () {
+                            if (context
+                                .read<DeleteBloc>()
+                                .allDeletedNotes
+                                .isNotEmpty) {
+                              context.read<DeleteBloc>().add(DeleteNotesEvent(
+                                  context.read<DeleteBloc>().allDeletedNotes));
+                            } else {
+                              SnackbarService.showStatusSnackbar(
+                                  message: "Already empty", context: context);
+                            }
+                          }),
+                        ],
+                      ),
+              );
+            },
+          ).animate().fade(duration: 300.ms), // Flutter_animate fade animation
+        ],
       ),
       drawer: const AppDrawer(),
       extendBodyBehindAppBar: true,
@@ -88,4 +138,21 @@ class _DeleteViewState extends State<DeleteView> {
       ),
     );
   }
+
+  // Adjusted popupMenu function
+  Widget popupMenu(String buttonName, VoidCallback onPress) =>
+      PopupMenuButton<int>(
+        onSelected: (item) => onPress(),
+        icon: Icon(Icons.more_vert, color: Theme.of(context).iconTheme.color),
+        color: Theme.of(context).scaffoldBackgroundColor,
+        itemBuilder: (context) => [
+          PopupMenuItem<int>(
+            value: 0,
+            child: Text(
+              buttonName,
+              style: const TextStyle(color: Colors.white),
+            ),
+          ),
+        ],
+      );
 }

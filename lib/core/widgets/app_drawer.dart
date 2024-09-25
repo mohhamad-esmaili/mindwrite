@@ -153,6 +153,16 @@ class AppDrawer extends StatelessWidget {
                 currentPathName: currentPathName,
                 buttonPath: '/delete',
               ),
+              makeTextButton(
+                context: context,
+                title: "About & feedback",
+                onpress: () {
+                  context.go('/about');
+                },
+                buttonIcon: Icons.info_outlined,
+                currentPathName: currentPathName,
+                buttonPath: '/about',
+              ),
             ],
           ),
         ),

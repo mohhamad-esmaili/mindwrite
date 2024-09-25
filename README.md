@@ -40,11 +40,11 @@ syncfusion_flutter_signaturepad: ^26.2.14
 - [x] palette colors and background image for notes 
 - [x] add and take image to notes
 - [x] pin and ordering lists
+- [x] label making
 
 ### Todo :
 
 - [ ] text to speech
-- [ ] label making
 - [ ] settings
 - [ ] reminders
 - [ ] date picker

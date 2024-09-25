@@ -20,3 +20,10 @@ class ToggleOffDeleteEvent extends DeleteEvent {
   @override
   List<Object> get props => [note];
 }
+
+class DeleteNotesEvent extends DeleteEvent {
+  final List<NoteModel> selectedNotes;
+  const DeleteNotesEvent(this.selectedNotes);
+  @override
+  List<Object> get props => [selectedNotes];
+}

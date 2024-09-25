@@ -4,15 +4,15 @@ import 'package:mindwrite/features/delete_feature/domain/repository/deleted_repo
 
 import 'package:mindwrite/features/shared_bloc/data/model/note_model.dart';
 
-class GetDeletedUsecase
-    implements UseCase<DataState<List<NoteModel>>, NoteModel> {
+class DeleteNotesForeverUsecase
+    implements UseCase<DataState<List<NoteModel>>, List<NoteModel>> {
   final DeletedRepository deletedRepository;
-  GetDeletedUsecase(this.deletedRepository);
+  DeleteNotesForeverUsecase(this.deletedRepository);
 
   @override
-  Future<DataState<List<NoteModel>>> call([void param]) async {
+  Future<DataState<List<NoteModel>>> call(List<NoteModel> selectedNotes) async {
     try {
-      final result = await deletedRepository.loadDeletedNotesFromBox();
+      final result = await deletedRepository.deleteNotesForever(selectedNotes);
 
       return DataSuccess(result.data);
     } catch (e) {

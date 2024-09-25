@@ -9,6 +9,7 @@ import 'package:mindwrite/features/archive_feature/presentation/bloc/archive_eve
 import 'package:mindwrite/features/delete_feature/presentation/bloc/delete_bloc.dart';
 import 'package:mindwrite/features/delete_feature/presentation/bloc/delete_event.dart';
 import 'package:mindwrite/features/home_feature/presentation/bloc/home_bloc.dart';
+import 'package:mindwrite/features/label_feature/presentation/bloc/label_bloc.dart';
 import 'package:mindwrite/features/shared_bloc/data/model/background_model.dart';
 import 'package:mindwrite/features/shared_bloc/data/model/note_model.dart';
 import 'package:mindwrite/features/shared_bloc/domain/usecases/change_archive_usecase.dart';
@@ -84,7 +85,7 @@ class SharedBloc extends Bloc<SharedEvent, SharedState> {
 
     on<DeleteNoteEvent>((event, emit) async {
       emit(SharedLoading());
-      print(selectedItems);
+
       var result = await deleteNoteUsecase(selectedItems);
       if (result is DataSuccess<List<NoteModel>>) {
         isSelectionMode = false;
@@ -92,8 +93,6 @@ class SharedBloc extends Bloc<SharedEvent, SharedState> {
         emit(SharedInitial(selectedItems, isSelectionMode, listMode));
         locator<ArchiveBloc>().add(const GetAllArchive());
         locator<HomeBloc>().add(LoadAllNotes());
-
-        print(selectedItems.length);
       } else if (result is DataFailed) {
         emit(SharedLoadFailed());
       }
@@ -114,12 +113,12 @@ class SharedBloc extends Bloc<SharedEvent, SharedState> {
     });
 
     on<ToggleArchiveEvent>((event, emit) async {
-      var result = await toggleArchiveUsecase(event.note);
+      var result = await toggleArchiveUsecase(event.notes);
       locator<HomeBloc>().add(LoadAllNotes());
       locator<ArchiveBloc>().add(const GetAllArchive());
 
       if (result is DataSuccess<NoteModel>) {
-        emit(SharedInitial([], false, listMode));
+        emit(SharedInitial(const [], false, listMode));
       } else if (result is DataFailed) {
         emit(SharedLoadFailed());
       }
