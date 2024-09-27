@@ -6,40 +6,41 @@ import 'package:mindwrite/features/shared_bloc/presentation/bloc/shared_bloc.dar
 
 class PopMenuWidget {
   Widget buildPopupMenu(BuildContext context, SharedBloc sharedBloc) {
+    ThemeData themeData = Theme.of(context);
     return PopupMenuButton<int>(
       onSelected: (item) => _onMenuItemSelected(context, item, sharedBloc),
-      icon: Icon(Icons.more_vert, color: Theme.of(context).iconTheme.color),
-      color: Theme.of(context).scaffoldBackgroundColor,
-      menuPadding: EdgeInsets.all(10),
+      icon: Icon(Icons.more_vert, color: themeData.iconTheme.color),
+      color: themeData.scaffoldBackgroundColor,
+      menuPadding: const EdgeInsets.all(10),
       itemBuilder: (context) => [
-        const PopupMenuItem<int>(
+        PopupMenuItem<int>(
           value: 0,
           child: Text(
             'Archive',
-            style: TextStyle(color: Colors.white),
+            style: themeData.textTheme.labelMedium,
           ),
         ),
-        const PopupMenuItem<int>(
+        PopupMenuItem<int>(
           value: 1,
           child: Text(
             'Delete',
-            style: TextStyle(color: Colors.white),
+            style: themeData.textTheme.labelMedium,
           ),
         ),
         if (sharedBloc.selectedItems.length == 1)
-          const PopupMenuItem<int>(
+          PopupMenuItem<int>(
             value: 2,
             child: Text(
               'Make a copy',
-              style: TextStyle(color: Colors.white),
+              style: themeData.textTheme.labelMedium,
             ),
           ),
         if (sharedBloc.selectedItems.length == 1)
-          const PopupMenuItem<int>(
+          PopupMenuItem<int>(
             value: 3,
             child: Text(
               'Send',
-              style: TextStyle(color: Colors.white),
+              style: themeData.textTheme.labelMedium,
             ),
           ),
       ],

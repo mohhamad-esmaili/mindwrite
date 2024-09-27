@@ -37,7 +37,9 @@ import 'package:mindwrite/features/note_feature/domain/use_cases/save_note_useca
 import 'package:mindwrite/features/note_feature/presentation/bloc/note_bloc.dart';
 import 'package:mindwrite/features/shared_bloc/domain/usecases/change_archive_usecase.dart';
 import 'package:mindwrite/features/shared_bloc/domain/usecases/change_paletter_usecase.dart';
+import 'package:mindwrite/features/shared_bloc/domain/usecases/load_theme_usecase.dart';
 import 'package:mindwrite/features/shared_bloc/domain/usecases/pin_note_usecase.dart';
+import 'package:mindwrite/features/shared_bloc/domain/usecases/toggle_theme_usecase.dart';
 import 'package:mindwrite/features/shared_bloc/presentation/bloc/shared_bloc.dart';
 import 'package:mindwrite/features/shared_bloc/data/repository/shared_repository_imp.dart';
 import 'package:mindwrite/features/shared_bloc/domain/repository/shared_repository.dart';
@@ -57,9 +59,11 @@ setup() async {
 
   var noteBox = await Hive.openBox<NoteModel>('note_box');
   var labelBox = await Hive.openBox<LabelModel>('label_box');
+  var appBox = await Hive.openBox('app_box');
   locator.registerSingleton<Box<NoteModel>>(noteBox, instanceName: "note_box");
   locator.registerSingleton<Box<LabelModel>>(labelBox,
       instanceName: "label_box");
+  locator.registerSingleton<Box>(appBox, instanceName: "app_box");
 
   // Register NoteModel
   locator.registerFactory<NoteModel>(
@@ -109,6 +113,12 @@ setup() async {
   );
   locator.registerFactory(
     () => DeleteNoteUsecase(locator<SharedRepository>()),
+  );
+  locator.registerFactory(
+    () => LoadThemeUsecase(locator<SharedRepository>()),
+  );
+  locator.registerFactory(
+    () => ToggleThemeUsecase(locator<SharedRepository>()),
   );
   locator.registerFactory(
     () => RestoreDeletedNoteUsecase(locator<SharedRepository>()),
@@ -170,6 +180,8 @@ setup() async {
     locator<RestoreDeletedNoteUsecase>(),
     locator<PinToggleNoteUsecase>(),
     locator<ChangePaletterUsecase>(),
+    locator<LoadThemeUsecase>(),
+    locator<ToggleThemeUsecase>(),
   ));
   locator.registerSingleton<LabelBloc>(LabelBloc(
     [],

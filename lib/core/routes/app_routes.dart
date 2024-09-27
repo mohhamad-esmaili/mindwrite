@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart'; // Import the package
+// Import the package
 import 'package:go_router/go_router.dart';
 import 'package:mindwrite/features/archive_feature/presentation/screens/archive_view.dart';
 import 'package:mindwrite/features/delete_feature/presentation/screens/delete_view.dart';
@@ -12,6 +12,7 @@ import 'package:mindwrite/features/label_feature/presentation/screens/label_view
 import 'package:mindwrite/features/note_feature/presentation/screen/note_screen.dart';
 import 'package:mindwrite/features/shared_bloc/data/model/note_model.dart';
 import 'package:mindwrite/features/shared_bloc/presentation/screens/about_view.dart';
+import 'package:mindwrite/features/shared_bloc/presentation/screens/settings_view.dart';
 import 'package:mindwrite/features/splash_feature/presentation/splash_view.dart';
 import 'package:mindwrite/locator.dart';
 
@@ -127,7 +128,7 @@ class AppRoutes {
         name: "label",
         pageBuilder: (context, state) {
           return CustomTransitionPage(
-            child: LabelView(),
+            child: const LabelView(),
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) {
               return ScaleTransition(
@@ -194,6 +195,26 @@ class AppRoutes {
         pageBuilder: (context, state) {
           return CustomTransitionPage(
             child: DrawView(),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              return ScaleTransition(
+                scale:
+                    Tween<double>(begin: 0.8, end: 1.0).animate(CurvedAnimation(
+                  parent: animation,
+                  curve: Curves.easeInOut,
+                )),
+                child: child,
+              );
+            },
+          );
+        },
+      ),
+      GoRoute(
+        path: '/setting',
+        name: "setting",
+        pageBuilder: (context, state) {
+          return CustomTransitionPage(
+            child: const SettingsView(),
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) {
               return ScaleTransition(

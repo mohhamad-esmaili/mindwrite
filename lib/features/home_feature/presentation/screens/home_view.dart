@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mindwrite/core/widgets/masonary_builder.dart';
-import 'package:mindwrite/core/widgets/screens_appbar.dart';
 import 'package:mindwrite/features/shared_bloc/presentation/bloc/shared_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mindwrite/core/widgets/app_drawer.dart';
@@ -31,11 +30,10 @@ class _HomeViewState extends State<HomeView> {
     SharedBloc sharedBloc = BlocProvider.of<SharedBloc>(context);
 
     return Scaffold(
-      resizeToAvoidBottomInset: true, // Ensure resizing when keyboard appears
+      resizeToAvoidBottomInset: true,
       key: _scaffoldKey,
       drawer: const AppDrawer(),
       extendBodyBehindAppBar: true,
-      backgroundColor: Colors.transparent,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.only(top: 20),

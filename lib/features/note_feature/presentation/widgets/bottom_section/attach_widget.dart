@@ -27,6 +27,7 @@ class AtachButtonWidget extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 _makeSettingButton(
+                  context: context,
                   onPress: () async {
                     Uint8List? selectedImage = await CameraCapture.openCamera(
                         context, ImageSource.camera);
@@ -44,6 +45,7 @@ class AtachButtonWidget extends StatelessWidget {
                   icon: Icons.photo_camera_outlined,
                 ),
                 _makeSettingButton(
+                  context: context,
                   onPress: () async {
                     Uint8List? selectedImage = await CameraCapture.openCamera(
                         context, ImageSource.gallery);
@@ -62,6 +64,7 @@ class AtachButtonWidget extends StatelessWidget {
                   icon: Icons.image_outlined,
                 ),
                 _makeSettingButton(
+                  context: context,
                   onPress: () {
                     context.pop();
                     context.go('/draw');
@@ -79,23 +82,26 @@ class AtachButtonWidget extends StatelessWidget {
   }
 
   Widget _makeSettingButton({
+    required BuildContext context,
     required Function onPress,
     required String label,
     required IconData icon,
-  }) =>
-      TextButton.icon(
-        onPressed: () => onPress(),
-        icon: Icon(icon, color: Colors.white),
-        label: Text(
-          label,
-          style: const TextStyle(color: Colors.white),
-        ),
-        style: TextButton.styleFrom(
-          alignment: Alignment.centerLeft,
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-          shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.zero)),
-          overlayColor: Colors.white.withOpacity(0.1),
-        ),
-      );
+  }) {
+    ThemeData themeData = Theme.of(context);
+    return TextButton.icon(
+      onPressed: () => onPress(),
+      icon: Icon(icon, color: themeData.iconTheme.color),
+      label: Text(
+        label,
+        style: themeData.textTheme.labelMedium,
+      ),
+      style: TextButton.styleFrom(
+        alignment: Alignment.centerLeft,
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.zero)),
+        overlayColor: Colors.white.withOpacity(0.1),
+      ),
+    );
+  }
 }

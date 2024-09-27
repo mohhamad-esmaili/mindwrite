@@ -22,7 +22,7 @@ class LabelRepositoryImp extends LabelRepository {
     try {
       final result = await labelLocalDatasource.saveLabelToBox(label);
       if (result == null) {
-        return DataFailed("label exist");
+        return const DataFailed("label exist");
       }
       return DataSuccess(result);
     } catch (e) {

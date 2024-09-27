@@ -11,8 +11,8 @@ class ListviewTitle extends StatelessWidget {
       padding: const EdgeInsets.only(left: 15, top: 10, bottom: 10),
       child: Text(
         title,
-        style: const TextStyle(fontSize: 15, color: Colors.white),
+        style: Theme.of(context).textTheme.labelMedium,
       ),
-    ).animate().fade(duration: Duration(milliseconds: 300));
+    ).animate().fade(duration:const  Duration(milliseconds: 300));
   }
 }

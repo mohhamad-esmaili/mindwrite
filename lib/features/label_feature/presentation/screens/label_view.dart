@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mindwrite/core/widgets/circular_indicator_widget.dart';
 import 'package:mindwrite/features/label_feature/presentation/bloc/label_bloc.dart';
 import 'package:mindwrite/features/label_feature/data/model/label_model.dart';
 import 'package:mindwrite/features/label_feature/presentation/widgets/label_builder.dart';
@@ -56,10 +55,10 @@ class _LabelViewState extends State<LabelView> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Edit Labels"),
+          title: const Text("Edit Labels"),
           leading: IconButton(
             onPressed: () => context.go('/home'),
-            icon: Icon(Icons.arrow_back_rounded),
+            icon: const Icon(Icons.arrow_back_rounded),
           ),
         ),
         body: SafeArea(
@@ -80,11 +79,11 @@ class _LabelViewState extends State<LabelView> {
                 children: [
                   // Label creation field
                   AnimatedContainer(
-                    duration: Duration(milliseconds: 300),
+                    duration: const Duration(milliseconds: 300),
                     decoration: BoxDecoration(
                       color: themeData.scaffoldBackgroundColor,
                       border: isTyping
-                          ? Border.symmetric(
+                          ? const Border.symmetric(
                               horizontal:
                                   BorderSide(color: Colors.white24, width: 1),
                             )
@@ -100,7 +99,7 @@ class _LabelViewState extends State<LabelView> {
                           });
                         },
                         maxLength: 20,
-                        style: TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.white),
                         onSubmitted: (value) {
                           if (value.isNotEmpty) {
                             context.read<LabelBloc>().add(
@@ -120,11 +119,11 @@ class _LabelViewState extends State<LabelView> {
                           errorText: errorText,
                           counterText: "",
                           border:
-                              OutlineInputBorder(borderSide: BorderSide.none),
+                              const OutlineInputBorder(borderSide: BorderSide.none),
                           enabledBorder:
-                              OutlineInputBorder(borderSide: BorderSide.none),
+                              const OutlineInputBorder(borderSide: BorderSide.none),
                           disabledBorder:
-                              OutlineInputBorder(borderSide: BorderSide.none),
+                              const OutlineInputBorder(borderSide: BorderSide.none),
                         ),
                       ),
                       leading: isTyping

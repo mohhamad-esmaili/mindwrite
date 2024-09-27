@@ -74,7 +74,7 @@ class _LabelBuilderState extends State<LabelBuilder> {
             _initializeControllersAndFocusNodes(state.labelList);
           } else if (state is LabelFailed) {
             if (mounted) {
-              Future.delayed(Duration(seconds: 2)).then((value) {
+              Future.delayed(const Duration(seconds: 2)).then((value) {
                 if (context.mounted) {
                   context.read<LabelBloc>().add(
                         LoadLabelsEvent(),

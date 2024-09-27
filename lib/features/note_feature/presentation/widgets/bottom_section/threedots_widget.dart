@@ -3,11 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mindwrite/core/usecase/copy_clipboard.dart';
 import 'package:mindwrite/core/widgets/share_service.dart';
-import 'package:mindwrite/core/widgets/snackbar_widget.dart';
-import 'package:mindwrite/features/label_feature/presentation/screens/label_selection.dart';
+
 import 'package:mindwrite/features/note_feature/presentation/bloc/note_bloc.dart';
 import 'package:mindwrite/features/shared_bloc/presentation/bloc/shared_bloc.dart';
-import 'package:share_plus/share_plus.dart';
 
 /// this widget contains left three dots icon which allow us to share or delete note
 class ThreeDotsButtonWidget extends StatelessWidget {
@@ -21,7 +19,7 @@ class ThreeDotsButtonWidget extends StatelessWidget {
           Color initialColor = state.note.noteBackground!.color!;
           return Container(
             color: initialColor == Colors.transparent
-                ? Colors.grey[800]
+                ? Theme.of(context).appBarTheme.backgroundColor
                 : initialColor,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -29,6 +27,7 @@ class ThreeDotsButtonWidget extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 _makeSettingButton(
+                  context: context,
                   onPress: () {
                     BlocProvider.of<SharedBloc>(context)
                         .add(DeleteNoteEvent([state.note]));
@@ -39,6 +38,7 @@ class ThreeDotsButtonWidget extends StatelessWidget {
                   icon: Icons.delete,
                 ),
                 _makeSettingButton(
+                  context: context,
                   onPress: () {
                     if (state.note.title != null) {
                       CopyClipboardService.copyNoteToClipboard(
@@ -51,6 +51,7 @@ class ThreeDotsButtonWidget extends StatelessWidget {
                   icon: Icons.copy_rounded,
                 ),
                 _makeSettingButton(
+                  context: context,
                   onPress: () {
                     ShareService.sendTo(state.note, context);
                     context.pop();
@@ -59,6 +60,7 @@ class ThreeDotsButtonWidget extends StatelessWidget {
                   icon: Icons.share_rounded,
                 ),
                 _makeSettingButton(
+                  context: context,
                   onPress: () {
                     context.go("/label_selection", extra: state.note);
                     context.pop();
@@ -76,23 +78,26 @@ class ThreeDotsButtonWidget extends StatelessWidget {
   }
 
   Widget _makeSettingButton({
+    required BuildContext context,
     required Function onPress,
     required String label,
     required IconData icon,
-  }) =>
-      TextButton.icon(
-        onPressed: () => onPress(),
-        icon: Icon(icon, color: Colors.white),
-        label: Text(
-          label,
-          style: const TextStyle(color: Colors.white),
-        ),
-        style: TextButton.styleFrom(
-          alignment: Alignment.centerLeft,
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-          shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.zero)),
-          overlayColor: Colors.white.withOpacity(0.1),
-        ),
-      );
+  }) {
+    ThemeData themeData = Theme.of(context);
+    return TextButton.icon(
+      onPressed: () => onPress(),
+      icon: Icon(icon, color: themeData.iconTheme.color),
+      label: Text(
+        label,
+        style: themeData.textTheme.labelMedium,
+      ),
+      style: TextButton.styleFrom(
+        alignment: Alignment.centerLeft,
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.zero)),
+        overlayColor: Colors.white.withOpacity(0.1),
+      ),
+    );
+  }
 }

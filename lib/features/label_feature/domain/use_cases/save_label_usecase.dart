@@ -12,7 +12,7 @@ class SaveLabelUsecase implements UseCase<DataState<void>, LabelModel> {
     try {
       final result = await labelRepository.saveLabelToBox(label);
       if (result is DataFailed) {
-        return DataFailed('label exist');
+        return const DataFailed('label exist');
       }
       return DataSuccess(result.data);
     } catch (e) {

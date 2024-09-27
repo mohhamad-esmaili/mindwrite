@@ -16,6 +16,7 @@ class AppDrawer extends StatelessWidget {
     final currentPathName = GoRouterState.of(context).path;
     final SharedBloc sharedBloc = BlocProvider.of<SharedBloc>(context);
     BlocProvider.of<LabelBloc>(context).add(LoadLabelsEvent());
+    ThemeData themeData = Theme.of(context);
     return Drawer(
       child: Scrollbar(
         child: SafeArea(
@@ -31,14 +32,14 @@ class AppDrawer extends StatelessWidget {
                       TextSpan(
                         text: 'Mind ',
                         style: TextStyle(
-                            color: AppColorConstants.primaryDarkColor,
+                            color: themeData.textTheme.titleMedium!.color,
                             fontWeight: FontWeight.bold,
                             fontSize: 30),
                       ),
                       TextSpan(
                         text: 'Write',
                         style: TextStyle(
-                            color: AppColorConstants.primaryDarkColor,
+                            color: themeData.textTheme.titleMedium!.color,
                             fontWeight: FontWeight.bold,
                             fontSize: 25),
                       ),
@@ -70,17 +71,13 @@ class AppDrawer extends StatelessWidget {
                   children: [
                     Text(
                       "Labels",
-                      style: TextStyle(
-                          color: AppColorConstants.darkerWhiteTextColor,
-                          fontSize: 15),
+                      style: themeData.textTheme.titleMedium,
                     ),
                     TextButton(
                       onPressed: () => context.go("/label"),
                       child: Text(
                         "edit",
-                        style: TextStyle(
-                            color: AppColorConstants.darkerWhiteTextColor,
-                            fontSize: 15),
+                        style: themeData.textTheme.titleMedium,
                       ),
                     )
                   ],
@@ -109,7 +106,7 @@ class AppDrawer extends StatelessWidget {
                       },
                     );
                   } else {
-                    return SizedBox.shrink();
+                    return const SizedBox.shrink();
                   }
                 },
               ),
@@ -155,6 +152,16 @@ class AppDrawer extends StatelessWidget {
               ),
               makeTextButton(
                 context: context,
+                title: "Settings",
+                onpress: () {
+                  context.go('/setting');
+                },
+                buttonIcon: Icons.settings,
+                currentPathName: currentPathName,
+                buttonPath: '/setting',
+              ),
+              makeTextButton(
+                context: context,
                 title: "About & feedback",
                 onpress: () {
                   context.go('/about');
@@ -179,29 +186,31 @@ class AppDrawer extends StatelessWidget {
     required String buttonPath,
     LabelModel? selectedLabel,
     String? labelPath,
-  }) =>
-      TextButton.icon(
-        onPressed: () {
-          ScaffoldMessenger.of(context).clearSnackBars();
-          onpress();
-          context.pop();
-        },
-        icon: Icon(
-          buttonIcon,
-          color: Theme.of(context).iconTheme.color,
-        ),
-        label: Text(
-          title,
-          style: TextStyle(
-              color: AppColorConstants.darkerWhiteTextColor, fontSize: 15),
-        ),
-        style: TextButton.styleFrom(
-          alignment: Alignment.centerLeft,
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 13),
-          backgroundColor: currentPathName == buttonPath ||
-                  (selectedLabel != null && labelPath == currentPathName)
-              ? Theme.of(context).primaryColor
-              : Colors.transparent,
-        ),
-      );
+  }) {
+    bool isSelected = currentPathName == buttonPath ||
+        (selectedLabel != null && labelPath == currentPathName);
+    return TextButton.icon(
+      onPressed: () {
+        ScaffoldMessenger.of(context).clearSnackBars();
+        onpress();
+        context.pop();
+      },
+      icon: Icon(
+        buttonIcon,
+        color: Theme.of(context).iconTheme.color,
+      ),
+      label: Text(
+        title,
+        style: isSelected
+            ? TextStyle(color: AppColorConstants.whiteTextColor, fontSize: 15)
+            : Theme.of(context).textTheme.titleMedium,
+      ),
+      style: TextButton.styleFrom(
+        alignment: Alignment.centerLeft,
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 13),
+        backgroundColor:
+            isSelected ? Theme.of(context).primaryColor : Colors.transparent,
+      ),
+    );
+  }
 }

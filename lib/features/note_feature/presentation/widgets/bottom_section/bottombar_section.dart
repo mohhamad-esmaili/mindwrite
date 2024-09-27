@@ -11,17 +11,17 @@ class BottombarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ThemeData themeData = Theme.of(context);
     return Container(
-      color: Colors.transparent,
       padding: EdgeInsets.only(
         bottom: MediaQuery.of(context).viewInsets.bottom,
       ),
       child: Row(
         children: [
           IconButton(
-            icon: const Icon(
+            icon: Icon(
               Icons.add_box_outlined,
-              color: Colors.white,
+              color: themeData.iconTheme.color,
             ),
             onPressed: () => showModalBottomSheet<void>(
               context: context,
@@ -33,9 +33,9 @@ class BottombarWidget extends StatelessWidget {
             ),
           ),
           IconButton(
-            icon: const Icon(
+            icon: Icon(
               Icons.palette_outlined,
-              color: Colors.white,
+              color: themeData.iconTheme.color,
             ),
             onPressed: () => showModalBottomSheet<void>(
               context: context,
@@ -53,15 +53,16 @@ class BottombarWidget extends StatelessWidget {
               child: Text(
                 DateFormater.changeDateEdited(noteDateTime),
 
-                style: const TextStyle(
-                  color: Colors.white,
-                ),
+                style: themeData.textTheme.labelSmall,
                 // textAlign: TextAlign.center,
               ),
             ),
           ),
           IconButton(
-            icon: const Icon(Icons.more_vert_rounded, color: Colors.white),
+            icon: Icon(
+              Icons.more_vert_rounded,
+              color: themeData.iconTheme.color,
+            ),
             onPressed: () => showModalBottomSheet<void>(
               context: context,
               shape: const RoundedRectangleBorder(

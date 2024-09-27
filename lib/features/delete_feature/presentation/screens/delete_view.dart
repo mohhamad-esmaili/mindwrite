@@ -4,13 +4,11 @@ import 'package:flutter_animate/flutter_animate.dart'; // import flutter_animate
 
 import 'package:mindwrite/core/widgets/app_drawer.dart';
 import 'package:mindwrite/core/widgets/masonary_builder.dart';
-import 'package:mindwrite/core/widgets/screens_appbar.dart';
 import 'package:mindwrite/core/widgets/snackbar_widget.dart';
 import 'package:mindwrite/features/delete_feature/presentation/bloc/delete_bloc.dart';
 import 'package:mindwrite/features/delete_feature/presentation/bloc/delete_event.dart';
 import 'package:mindwrite/features/delete_feature/presentation/bloc/delete_state.dart';
 
-import 'package:mindwrite/features/shared_bloc/data/model/note_model.dart';
 import 'package:mindwrite/features/shared_bloc/presentation/bloc/shared_bloc.dart';
 
 class DeleteView extends StatefulWidget {
@@ -33,7 +31,7 @@ class _DeleteViewState extends State<DeleteView> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Deleted"),
+        title: const Text("Deleted"),
         actions: [
           BlocBuilder<SharedBloc, SharedState>(
             bloc: sharedBloc,
@@ -83,12 +81,11 @@ class _DeleteViewState extends State<DeleteView> {
                       ),
               );
             },
-          ).animate().fade(duration: 300.ms), // Flutter_animate fade animation
+          ).animate().fade(duration: 300.ms),
         ],
       ),
       drawer: const AppDrawer(),
       extendBodyBehindAppBar: true,
-      backgroundColor: Colors.transparent,
       body: SafeArea(
         child: Column(
           children: [
@@ -140,19 +137,21 @@ class _DeleteViewState extends State<DeleteView> {
   }
 
   // Adjusted popupMenu function
-  Widget popupMenu(String buttonName, VoidCallback onPress) =>
-      PopupMenuButton<int>(
-        onSelected: (item) => onPress(),
-        icon: Icon(Icons.more_vert, color: Theme.of(context).iconTheme.color),
-        color: Theme.of(context).scaffoldBackgroundColor,
-        itemBuilder: (context) => [
-          PopupMenuItem<int>(
-            value: 0,
-            child: Text(
-              buttonName,
-              style: const TextStyle(color: Colors.white),
-            ),
+  Widget popupMenu(String buttonName, VoidCallback onPress) {
+    ThemeData themeData = Theme.of(context);
+    return PopupMenuButton<int>(
+      onSelected: (item) => onPress(),
+      icon: Icon(Icons.more_vert, color: themeData.iconTheme.color),
+      color: themeData.scaffoldBackgroundColor,
+      itemBuilder: (context) => [
+        PopupMenuItem<int>(
+          value: 0,
+          child: Text(
+            buttonName,
+            style: themeData.textTheme.labelMedium,
           ),
-        ],
-      );
+        ),
+      ],
+    );
+  }
 }

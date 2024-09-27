@@ -78,7 +78,7 @@ class ScreensAppbar extends StatelessWidget implements PreferredSizeWidget {
             actions: [
               IconButton(
                 onPressed: () => sharedBloc.add(
-                  ChangeCrossAxisCountEvent(),
+                  const ChangeCrossAxisCountEvent(),
                 ),
                 icon: Icon(
                   sharedBloc.listMode == ListModeEnum.single

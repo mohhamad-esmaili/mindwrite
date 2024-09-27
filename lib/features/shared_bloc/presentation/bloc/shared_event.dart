@@ -71,3 +71,7 @@ class ChangeCrossAxisCountEvent extends SharedEvent {
   @override
   List<Object> get props => [];
 }
+
+class LoadThemeMode extends SharedEvent {}
+
+class ToggleTheme extends SharedEvent {}

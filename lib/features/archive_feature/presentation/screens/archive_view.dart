@@ -38,7 +38,6 @@ class _ArchiveViewState extends State<ArchiveView> {
       ),
       drawer: const AppDrawer(),
       extendBodyBehindAppBar: true,
-      backgroundColor: Colors.transparent,
       body: SafeArea(
         child: Column(
           children: [

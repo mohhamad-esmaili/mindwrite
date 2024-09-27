@@ -30,7 +30,7 @@ class Root extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => locator<SharedBloc>(),
+          create: (context) => locator<SharedBloc>()..add(LoadThemeMode()),
         ),
         BlocProvider(
           create: (context) => locator<HomeBloc>()..add(LoadAllNotes()),
@@ -51,13 +51,19 @@ class Root extends StatelessWidget {
           create: (context) => locator<LabelBloc>()..add(LoadLabelsEvent()),
         ),
       ],
-      child: MaterialApp.router(
-        theme: ThemeConfig.darkAppTheme,
-        themeMode: ThemeMode.dark,
-        debugShowCheckedModeBanner: false,
-        routerDelegate: AppRoutes.router.routerDelegate,
-        routeInformationParser: AppRoutes.router.routeInformationParser,
-        routeInformationProvider: AppRoutes.router.routeInformationProvider,
+      child: BlocBuilder<SharedBloc, SharedState>(
+        builder: (context, state) {
+          return MaterialApp.router(
+            theme: state.themeMode == ThemeMode.light
+                ? ThemeConfig.lightAppTheme
+                : ThemeConfig.darkAppTheme,
+            themeMode: state.themeMode,
+            debugShowCheckedModeBanner: false,
+            routerDelegate: AppRoutes.router.routerDelegate,
+            routeInformationParser: AppRoutes.router.routeInformationParser,
+            routeInformationProvider: AppRoutes.router.routeInformationProvider,
+          );
+        },
       ),
     );
   }

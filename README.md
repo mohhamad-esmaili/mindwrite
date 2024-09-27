@@ -43,16 +43,19 @@ syncfusion_flutter_signaturepad: ^26.2.14
 - [x] pin and ordering lists
 - [x] label making
 - [x] send and share + make copy
+- [x] light theme
+- [x] settings
 
 ### Todo :
 
 - [ ] text to speech
-- [ ] settings
 - [ ] reminders
 - [ ] date picker
 - [ ] persian version
 - [ ] recording
 - [ ] tick boxes in notes
 - [ ] do and redo buttons
-- [ ] light theme
+- [ ] note loading and drag droping
+- [ ] back button invoke poping
+- [ ] use model entitiy instead noemodel
 

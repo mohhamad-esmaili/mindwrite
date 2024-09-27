@@ -18,7 +18,7 @@ class SnackbarService {
         title: Text(
           questionText,
           textAlign: TextAlign.center,
-          style: TextStyle(color: Colors.white),
+          style: const TextStyle(color: Colors.white),
         ),
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         actionsAlignment: MainAxisAlignment.spaceAround,
@@ -42,7 +42,7 @@ class SnackbarService {
             ),
             child: Text(
               onYesBTNText,
-              style: TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.white),
             ),
           ),
         ],
@@ -56,14 +56,14 @@ class SnackbarService {
     return showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: Text(
+        title: const Text(
           "Note Color",
           style: TextStyle(color: Colors.white),
         ),
         actionsAlignment: MainAxisAlignment.spaceAround,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         actions: [
-          Container(
+          SizedBox(
             width: 200,
             height: 200,
             child: GridView.builder(
@@ -73,10 +73,11 @@ class SnackbarService {
                 crossAxisSpacing: 8.0,
               ),
               shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemCount: NoteConstants.noteColors.length,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: NoteConstants.noteDarkColors.length,
               itemBuilder: (BuildContext context, int index) {
-                BackgroundModel selectedColor = NoteConstants.noteColors[index];
+                BackgroundModel selectedColor =
+                    NoteConstants.noteDarkColors[index];
 
                 return InkWell(
                   onTap: () {

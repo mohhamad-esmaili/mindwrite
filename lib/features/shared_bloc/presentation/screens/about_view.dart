@@ -16,7 +16,7 @@ class AboutView extends StatelessWidget {
         sharedBloc: sharedBloc,
       ),
       drawer: const AppDrawer(),
-      body: Column(
+      body: const Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [

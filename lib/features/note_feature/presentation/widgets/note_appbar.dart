@@ -7,13 +7,15 @@ import 'package:mindwrite/features/note_feature/presentation/bloc/note_bloc.dart
 import 'package:mindwrite/features/shared_bloc/presentation/bloc/shared_bloc.dart';
 
 class NoteAppbar extends StatelessWidget {
-  final Color initialColor;
   final TextEditingController titleController;
+
+  final Color initialColor;
   const NoteAppbar(
       {super.key, required this.initialColor, required this.titleController});
 
   @override
   Widget build(BuildContext context) {
+    ThemeData themeData = Theme.of(context);
     return BlocBuilder<NoteBloc, NoteState>(
       builder: (context, state) {
         if (state is NoteInitial) {
@@ -31,9 +33,9 @@ class NoteAppbar extends StatelessWidget {
 
                   context.go('/home');
                 },
-                icon: const Icon(
+                icon: Icon(
                   Icons.arrow_back_rounded,
-                  color: Colors.white,
+                  color: themeData.iconTheme.color,
                 )),
             actions: [
               BlocBuilder<NoteBloc, NoteState>(builder: (context, state) {
@@ -48,7 +50,7 @@ class NoteAppbar extends StatelessWidget {
                       state.note.pin
                           ? Icons.push_pin_rounded
                           : Icons.push_pin_outlined,
-                      color: Colors.white,
+                      color: themeData.iconTheme.color,
                     ),
                   );
                 } else {
@@ -81,7 +83,10 @@ class NoteAppbar extends StatelessWidget {
                         onClosed: null);
                   }
                 },
-                icon: const Icon(Icons.archive_outlined),
+                icon: Icon(
+                  Icons.archive_outlined,
+                  color: themeData.iconTheme.color,
+                ),
               ),
             ],
           );

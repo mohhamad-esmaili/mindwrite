@@ -8,8 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mindwrite/core/utils/color_constants.dart';
 import 'package:mindwrite/core/widgets/camera_capture.dart';
 import 'package:mindwrite/features/note_feature/presentation/bloc/note_bloc.dart';
-import 'package:mindwrite/features/shared_bloc/data/model/note_model.dart';
-import 'package:mindwrite/locator.dart';
+import 'package:mindwrite/features/shared_bloc/presentation/bloc/shared_bloc.dart';
 
 class HomeBottomBar extends StatelessWidget {
   const HomeBottomBar({super.key});
@@ -19,7 +18,9 @@ class HomeBottomBar extends StatelessWidget {
     return Hero(
       tag: 'note',
       child: BottomAppBar(
-        color: AppColorConstants.appbarDarkColor,
+        color: context.read<SharedBloc>().themeMode == ThemeMode.light
+            ? AppColorConstants.appbarLightColor
+            : AppColorConstants.appbarDarkColor,
         notchMargin: 10,
         padding: const EdgeInsets.all(5),
         height: 70,
@@ -36,7 +37,7 @@ class HomeBottomBar extends StatelessWidget {
             ),
             IconButton(
               onPressed: () {
-                context.read<NoteBloc>().add(NoteInitialEvent());
+                context.read<NoteBloc>().add(const NoteInitialEvent());
                 context.go("/draw");
               },
               icon: const Icon(
@@ -50,7 +51,7 @@ class HomeBottomBar extends StatelessWidget {
                     context, ImageSource.gallery);
 
                 if (context.mounted && selectedImage != null) {
-                  context.read<NoteBloc>().add(NoteInitialEvent());
+                  context.read<NoteBloc>().add(const NoteInitialEvent());
                   context
                       .read<NoteBloc>()
                       .add(ChangeDrawingLists(selectedImage));

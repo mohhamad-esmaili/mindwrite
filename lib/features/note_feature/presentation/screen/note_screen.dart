@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mindwrite/core/utils/note_constants.dart';
 
 import 'package:mindwrite/core/widgets/circular_indicator_widget.dart';
-import 'package:mindwrite/features/label_feature/data/model/label_model.dart';
 import 'package:mindwrite/features/note_feature/presentation/bloc/note_bloc.dart';
 import 'package:mindwrite/features/note_feature/presentation/widgets/bottom_section/bottombar_section.dart';
 import 'package:mindwrite/features/note_feature/presentation/widgets/note_appbar.dart';
@@ -39,16 +40,19 @@ class NoteViewState extends State<NoteView> {
 
   @override
   Widget build(BuildContext context) {
-    // context
-    //     .read<NoteBloc>()
-    //     .add(RefreshNoteDataEvent(refreshedNote: widget.selectedNote));
+    ThemeData themeData = Theme.of(context);
     return BlocBuilder<NoteBloc, NoteState>(builder: (context, state) {
       if (state is NoteSaving) {
         return const CircularIndicatorWidget();
       }
       if (state is NoteInitial) {
-        Color initialColor = state.note.noteBackground!.color!;
+        // this change the color of note when change palette
+        Color initialColor =
+            state.note.noteBackground!.color! == Colors.transparent
+                ? Theme.of(context).scaffoldBackgroundColor
+                : state.note.noteBackground!.color!;
         String? initialBG = state.note.noteBackground!.backgroundPath;
+
         int descriptionLines = state.descriptionLines ?? 1;
 
         return Scaffold(
@@ -113,18 +117,21 @@ class NoteViewState extends State<NoteView> {
                                                   titleController.text,
                                             ),
                                           ),
+                                      style: themeData.textTheme.labelMedium,
                                       maxLines: null,
                                       minLines: 1,
                                       keyboardType: TextInputType.multiline,
-                                      decoration: const InputDecoration(
+                                      decoration: InputDecoration(
                                         hintText: "Title",
                                         hintStyle:
-                                            TextStyle(color: Colors.white),
+                                            themeData.textTheme.labelMedium,
                                         disabledBorder: InputBorder.none,
                                         border: InputBorder.none,
                                       ),
                                     ),
-                                  ),
+                                  ).animate().fade(
+                                      duration:
+                                          const Duration(milliseconds: 300)),
                                   AnimatedContainer(
                                     duration: const Duration(milliseconds: 300),
                                     height: descriptionLines * 24.0 + 16.0,
@@ -148,15 +155,18 @@ class NoteViewState extends State<NoteView> {
                                       maxLines: null,
                                       minLines: 1,
                                       keyboardType: TextInputType.multiline,
-                                      decoration: const InputDecoration(
+                                      style: themeData.textTheme.labelMedium,
+                                      decoration: InputDecoration(
                                         hintText: "Description",
                                         hintStyle:
-                                            TextStyle(color: Colors.white),
+                                            themeData.textTheme.labelMedium,
                                         disabledBorder: InputBorder.none,
                                         border: InputBorder.none,
                                       ),
                                     ),
-                                  ),
+                                  ).animate().fade(
+                                      duration:
+                                          const Duration(milliseconds: 300)),
                                   state.note.labels != null
                                       ? Container(
                                           padding: const EdgeInsets.symmetric(
@@ -201,9 +211,14 @@ class NoteViewState extends State<NoteView> {
                                               );
                                             }).toList(),
                                           ),
-                                        )
+                                        ).animate().fade(
+                                          duration:
+                                              const Duration(milliseconds: 300))
                                       : const SizedBox.shrink(),
                                   initialColor != Colors.transparent &&
+                                          initialColor !=
+                                              NoteConstants
+                                                  .noteLightColors[0].color &&
                                           initialBG != null
                                       ? Container(
                                           width: 40,
@@ -215,7 +230,9 @@ class NoteViewState extends State<NoteView> {
                                                 Border.all(color: Colors.grey),
                                             shape: BoxShape.circle,
                                           ),
-                                        )
+                                        ).animate().fade(
+                                          duration:
+                                              const Duration(milliseconds: 300))
                                       : const SizedBox.shrink(),
                                 ],
                               ),

@@ -41,7 +41,9 @@ class SliverHomeAppbar extends StatelessWidget {
                   borderRadius: sharedBloc.isSelectionMode
                       ? BorderRadius.circular(10)
                       : BorderRadius.circular(100),
-                  color: AppColorConstants.appbarDarkColor,
+                  color: sharedState.themeMode == ThemeMode.light
+                      ? AppColorConstants.appbarLightColor
+                      : AppColorConstants.appbarDarkColor,
                 ),
                 child: AnimatedSwitcher(
                   duration: const Duration(milliseconds: 300),
@@ -65,7 +67,10 @@ class SliverHomeAppbar extends StatelessWidget {
           onPressed: () => sharedBloc.add(ExitSelectionMode()),
           icon: Icon(Icons.clear, color: themeData.iconTheme.color),
         ),
-        Text(sharedBloc.selectedItems.length.toString()),
+        Text(
+          sharedBloc.selectedItems.length.toString(),
+          style: themeData.textTheme.labelMedium,
+        ),
         const Spacer(),
         IconButton(
           onPressed: () =>
@@ -91,14 +96,17 @@ class SliverHomeAppbar extends StatelessWidget {
           onPressed: () => scaffoldKey.currentState!.openDrawer(),
           icon: Icon(Icons.menu, color: themeData.iconTheme.color),
         ),
-        TemporaryLoadingIndicator(isLoading: isLoading),
-        SizedBox(
+        TemporaryLoadingIndicator(
+          isLoading: isLoading,
+          themeData: themeData,
+        ),
+        const SizedBox(
           width: 200,
           child: SearchTextField(),
         ),
         const Spacer(),
         IconButton(
-          onPressed: () => sharedBloc.add(ChangeCrossAxisCountEvent()),
+          onPressed: () => sharedBloc.add(const ChangeCrossAxisCountEvent()),
           icon: Icon(
             sharedBloc.listMode == ListModeEnum.single
                 ? Icons.auto_awesome_mosaic_rounded
@@ -112,9 +120,10 @@ class SliverHomeAppbar extends StatelessWidget {
 }
 
 class TemporaryLoadingIndicator extends StatelessWidget {
+  final ThemeData themeData;
   final bool isLoading;
-
-  const TemporaryLoadingIndicator({super.key, required this.isLoading});
+  const TemporaryLoadingIndicator(
+      {super.key, required this.themeData, required this.isLoading});
 
   @override
   Widget build(BuildContext context) {
@@ -125,27 +134,28 @@ class TemporaryLoadingIndicator extends StatelessWidget {
                 key: const ValueKey<bool>(true),
                 children: [
                   LoadingAnimationWidget.staggeredDotsWave(
-                    color: Theme.of(context).appBarTheme.iconTheme!.color!,
+                    color: themeData.appBarTheme.iconTheme!.color!,
                     size: 30,
                   ),
                   const SizedBox(width: 10),
-                  const Text("Mind write"),
+                  Text(
+                    "Mind write",
+                    style: themeData.textTheme.labelMedium,
+                  ),
                 ],
               )
-            : const SizedBox
-                .shrink() // Returns an empty widget when not loading
-        );
+            : const SizedBox.shrink());
   }
 }
 
 class SearchTextField extends StatefulWidget {
-  const SearchTextField({Key? key}) : super(key: key);
+  const SearchTextField({super.key});
 
   @override
-  _SearchTextFieldState createState() => _SearchTextFieldState();
+  SearchTextFieldState createState() => SearchTextFieldState();
 }
 
-class _SearchTextFieldState extends State<SearchTextField> {
+class SearchTextFieldState extends State<SearchTextField> {
   late TextEditingController _searchController;
 
   @override
@@ -165,16 +175,19 @@ class _SearchTextFieldState extends State<SearchTextField> {
 
   @override
   Widget build(BuildContext context) {
+    ThemeData themeData = Theme.of(context);
     return TextField(
       controller: _searchController,
       textDirection: TextDirection.ltr,
       decoration: InputDecoration(
         hintText: "Search your notes",
-        hintStyle: TextStyle(color: Colors.grey),
+        hintStyle: TextStyle(
+            color: Colors.grey,
+            fontSize: themeData.textTheme.labelMedium!.fontSize),
         border: InputBorder.none,
       ),
-      style: TextStyle(color: Colors.white),
+      style: themeData.textTheme.labelMedium,
       cursorColor: Colors.white,
-    ).animate().fade(duration: Duration(milliseconds: 300));
+    ).animate().fade(duration: const Duration(milliseconds: 300));
   }
 }

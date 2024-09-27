@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mindwrite/core/utils/color_constants.dart';
 import 'package:mindwrite/core/utils/note_constants.dart';
 import 'package:mindwrite/features/note_feature/presentation/bloc/note_bloc.dart';
+import 'package:mindwrite/features/shared_bloc/presentation/bloc/shared_bloc.dart';
 
 /// contain color palette and background image changer
 class PaletteButtonWidget extends StatelessWidget {
@@ -10,6 +11,9 @@ class PaletteButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ThemeData themeData = Theme.of(context);
+    bool isDarkMode =
+        context.read<SharedBloc>().themeMode == ThemeMode.light ? false : true;
     return BlocBuilder<NoteBloc, NoteState>(
       builder: (context, state) {
         if (state is NoteInitial) {
@@ -17,26 +21,30 @@ class PaletteButtonWidget extends StatelessWidget {
           String? initialBG = state.note.noteBackground!.backgroundPath;
           return Container(
             color: initialColor == Colors.transparent
-                ? Colors.grey[800]
+                ? themeData.appBarTheme.backgroundColor
                 : initialColor,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Padding(
-                  padding: EdgeInsets.only(left: 20, top: 5),
-                  child: Text("Colors"),
+                Padding(
+                  padding: const EdgeInsets.only(left: 20, top: 5),
+                  child: Text(
+                    "Colors",
+                    style: themeData.textTheme.labelMedium,
+                  ),
                 ),
                 Container(
                   height: 90,
                   color: initialColor,
                   child: Center(
                     child: ListView.builder(
-                      itemCount: NoteConstants.noteColors.length,
+                      itemCount: NoteConstants.noteDarkColors.length,
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (BuildContext context, int index) {
-                        Color itemColor =
-                            NoteConstants.noteColors[index].color!;
+                        Color itemColor = isDarkMode
+                            ? NoteConstants.noteDarkColors[index].color!
+                            : NoteConstants.noteLightColors[index].color!;
                         bool isFirstItem = index == 0;
                         return InkWell(
                           onTap: () {
@@ -55,7 +63,7 @@ class PaletteButtonWidget extends StatelessWidget {
                                 color: initialColor == itemColor
                                     ? AppColorConstants.noteSelectionColor
                                     : Colors.grey,
-                                width: 1,
+                                width: initialColor == itemColor ? 3 : 1,
                               ),
                             ),
                             child: AnimatedSwitcher(
@@ -98,9 +106,12 @@ class PaletteButtonWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-                const Padding(
-                  padding: EdgeInsets.only(left: 20, bottom: 5),
-                  child: Text("Background"),
+                Padding(
+                  padding: const EdgeInsets.only(left: 20, bottom: 5),
+                  child: Text(
+                    "Background",
+                    style: themeData.textTheme.labelMedium,
+                  ),
                 ),
                 Container(
                   height: 90,
@@ -116,17 +127,18 @@ class PaletteButtonWidget extends StatelessWidget {
                           itemCount: NoteConstants.noteDarkBackgrounds.length,
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (BuildContext context, int index) {
-                            String? itemBackGround = NoteConstants
-                                .noteDarkBackgrounds[index].backgroundPath;
+                            String? itemBackGround = isDarkMode
+                                ? NoteConstants
+                                    .noteDarkBackgrounds[index].backgroundPath
+                                : NoteConstants
+                                    .noteLightBackgrounds[index].backgroundPath;
                             bool isFirstItem = index == 0;
 
                             return InkWell(
                               onTap: () {
                                 BlocProvider.of<NoteBloc>(context).add(
                                     ChangeNoteColorEvent(
-                                        initialColor,
-                                        NoteConstants.noteDarkBackgrounds[index]
-                                            .backgroundPath));
+                                        initialColor, itemBackGround));
                               },
                               child: Stack(
                                 children: [

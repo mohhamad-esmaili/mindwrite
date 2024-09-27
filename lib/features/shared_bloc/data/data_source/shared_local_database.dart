@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:mindwrite/features/shared_bloc/data/model/background_model.dart';
 import 'package:mindwrite/features/shared_bloc/data/model/note_model.dart';
@@ -5,6 +6,25 @@ import 'package:mindwrite/locator.dart';
 
 class SharedLocalDatabase {
   Box<NoteModel> noteBox = locator(instanceName: "note_box");
+  Box appBox = locator(instanceName: "app_box");
+
+  Future<ThemeMode> getThemeMode() async {
+    bool isDarkMode = await appBox.get("isDarkMode") ?? false;
+    if (isDarkMode) {
+      return ThemeMode.dark;
+    }
+    return ThemeMode.light;
+  }
+
+  Future<ThemeMode> toggleDarkMode() async {
+    bool isDarkMode = appBox.get("isDarkMode", defaultValue: false);
+
+    isDarkMode = !isDarkMode;
+
+    await appBox.put("isDarkMode", isDarkMode);
+
+    return isDarkMode ? ThemeMode.dark : ThemeMode.light;
+  }
 
   Future<List<NoteModel>?> toggleNoteArchiveToBox(List<NoteModel> notes) async {
     List<NoteModel> updatedNotes = [];
