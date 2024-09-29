@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:mindwrite/locator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:mindwrite/core/config/theme_config.dart';
 import 'package:mindwrite/core/routes/app_routes.dart';
+import 'package:mindwrite/core/config/theme_config.dart';
 import 'package:mindwrite/features/archive_feature/presentation/bloc/archive_bloc.dart';
 import 'package:mindwrite/features/archive_feature/presentation/bloc/archive_event.dart';
 import 'package:mindwrite/features/delete_feature/presentation/bloc/delete_bloc.dart';
@@ -12,7 +13,6 @@ import 'package:mindwrite/features/label_feature/presentation/bloc/label_bloc.da
 import 'package:mindwrite/features/note_feature/presentation/bloc/note_bloc.dart';
 import 'package:mindwrite/features/shared_bloc/presentation/bloc/shared_bloc.dart';
 
-import 'package:mindwrite/locator.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

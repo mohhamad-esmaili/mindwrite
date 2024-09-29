@@ -33,7 +33,7 @@ class SharedLocalDatabase {
       NoteModel? result = noteBox.get(note.id);
 
       if (result != null) {
-        NoteModel updatedNote = result.copyWith(archived: !result.archived);
+        NoteModel updatedNote = result.copyWith(archived: !note.archived);
 
         await noteBox.put(result.id, updatedNote);
 

@@ -40,7 +40,7 @@ class _LabelSelectionViewState extends State<LabelSelectionView> {
   @override
   Widget build(BuildContext context) {
     context.read<LabelBloc>().add(LoadLabelsEvent());
-
+    ThemeData themeData = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: true,
@@ -56,13 +56,13 @@ class _LabelSelectionViewState extends State<LabelSelectionView> {
         title: TextField(
           controller: _searchController,
           maxLength: 20,
-          decoration: const InputDecoration(
+          decoration: InputDecoration(
             hintText: 'Search labels...',
             border: InputBorder.none,
             counterText: "",
-            hintStyle: TextStyle(color: Colors.white),
+            hintStyle: themeData.textTheme.labelMedium,
           ),
-          style: const TextStyle(color: Colors.white),
+          style: themeData.textTheme.labelMedium,
           onChanged: (query) {
             setState(() {
               searchQuery = query.toLowerCase();
@@ -119,7 +119,7 @@ class _LabelSelectionViewState extends State<LabelSelectionView> {
                     ),
                     title: Text(
                       selectedLabel.labelName,
-                      style: const TextStyle(color: Colors.white),
+                      style: themeData.textTheme.labelMedium,
                     ),
                     trailing: IconButton(
                       onPressed: () {
@@ -140,7 +140,7 @@ class _LabelSelectionViewState extends State<LabelSelectionView> {
                         isSelected
                             ? Icons.check_box
                             : Icons.check_box_outline_blank_rounded,
-                        color: Colors.white,
+                        color: themeData.iconTheme.color,
                       ),
                     ),
                   ),

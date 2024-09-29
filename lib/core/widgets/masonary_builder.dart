@@ -111,6 +111,7 @@ class _MasonaryBuilderState extends State<MasonaryBuilder>
 
                               NoteModel simpleVersion = selectedNote.copyWith(
                                   archived: widget.defaultArchiveNote);
+                              print([simpleVersion.archived]);
                               widget.sharedBloc
                                   .add(ToggleArchiveEvent([simpleVersion]));
 
@@ -122,6 +123,7 @@ class _MasonaryBuilderState extends State<MasonaryBuilder>
                             },
                             onClosed: () {
                               if (!undoPressed) {
+                                print([selectedNote.archived]);
                                 widget.sharedBloc
                                     .add(ToggleArchiveEvent([selectedNote]));
                               }
@@ -192,13 +194,15 @@ class _MasonaryBuilderState extends State<MasonaryBuilder>
 
   Widget _buildNoteTile(BuildContext context, NoteModel note,
       SharedBloc sharedBloc, bool isSelected) {
+    Color initialColor = BackgroundChanger()
+            .colorBackGroundChanger(note.noteBackground!, context) ??
+        Colors.transparent;
     ThemeData themeData = Theme.of(context);
     return AnimatedContainer(
       duration: const Duration(milliseconds: 100),
       curve: Curves.easeInOut,
       decoration: BoxDecoration(
-        color: BackgroundChanger()
-            .colorBackGroundChanger(note.noteBackground!, context),
+        color: initialColor,
         // color: note.noteBackground!.color == Colors.transparent
         //     ? sharedBloc.themeMode == ThemeMode.light
         //         ? AppColorConstants.containerLightColor
@@ -206,7 +210,9 @@ class _MasonaryBuilderState extends State<MasonaryBuilder>
         //     : note.noteBackground!.color!,
         image: note.noteBackground!.backgroundPath != null
             ? DecorationImage(
-                image: AssetImage(note.noteBackground!.backgroundPath!),
+                image: AssetImage(BackgroundChanger().imageBackGroundChanger(
+                        note.noteBackground!, context) ??
+                    note.noteBackground!.backgroundPath!),
                 fit: BoxFit.cover,
               )
             : null,
@@ -216,7 +222,7 @@ class _MasonaryBuilderState extends State<MasonaryBuilder>
               ? AppColorConstants.secondaryColor
               : (note.noteBackground!.color == Colors.transparent
                   ? Colors.grey
-                  : note.noteBackground!.color!),
+                  : initialColor),
           width: isSelected ? 3 : 1,
         ),
       ),
@@ -274,7 +280,7 @@ class _MasonaryBuilderState extends State<MasonaryBuilder>
                   height: 25,
                   margin: const EdgeInsets.only(left: 10, bottom: 10),
                   decoration: BoxDecoration(
-                    color: note.noteBackground!.color,
+                    color: initialColor,
                     border: Border.all(color: Colors.grey),
                     shape: BoxShape.circle,
                   ),

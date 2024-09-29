@@ -42,8 +42,8 @@ class NoteConstants {
   ];
   static List<BackgroundModel> noteLightBackgrounds = [
     BackgroundModel(backgroundPath: null),
-    BackgroundModel(backgroundPath: Assets.images.foodLight.path),
     BackgroundModel(backgroundPath: Assets.images.fruitLight.path),
+    BackgroundModel(backgroundPath: Assets.images.foodLight.path),
     BackgroundModel(backgroundPath: Assets.images.poolLight.path),
     BackgroundModel(backgroundPath: Assets.images.tranLight.path),
     BackgroundModel(backgroundPath: Assets.images.parkLight.path),

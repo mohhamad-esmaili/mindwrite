@@ -90,6 +90,7 @@ class _LabelViewState extends State<LabelView> {
                           : null,
                     ),
                     child: ListTile(
+                      titleTextStyle: themeData.textTheme.labelMedium,
                       title: TextField(
                         controller: labelNameTextController,
                         focusNode: _labelFocusNode,
@@ -99,7 +100,7 @@ class _LabelViewState extends State<LabelView> {
                           });
                         },
                         maxLength: 20,
-                        style: const TextStyle(color: Colors.white),
+                        style: themeData.textTheme.labelMedium,
                         onSubmitted: (value) {
                           if (value.isNotEmpty) {
                             context.read<LabelBloc>().add(
@@ -117,13 +118,14 @@ class _LabelViewState extends State<LabelView> {
                         decoration: InputDecoration(
                           hintText: 'Label Name',
                           errorText: errorText,
+                          hintStyle: themeData.textTheme.labelMedium,
                           counterText: "",
-                          border:
-                              const OutlineInputBorder(borderSide: BorderSide.none),
-                          enabledBorder:
-                              const OutlineInputBorder(borderSide: BorderSide.none),
-                          disabledBorder:
-                              const OutlineInputBorder(borderSide: BorderSide.none),
+                          border: const OutlineInputBorder(
+                              borderSide: BorderSide.none),
+                          enabledBorder: const OutlineInputBorder(
+                              borderSide: BorderSide.none),
+                          disabledBorder: const OutlineInputBorder(
+                              borderSide: BorderSide.none),
                         ),
                       ),
                       leading: isTyping

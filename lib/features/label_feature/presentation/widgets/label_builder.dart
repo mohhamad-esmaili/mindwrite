@@ -110,11 +110,10 @@ class _LabelBuilderState extends State<LabelBuilder> {
                   title: TextField(
                     maxLength: 20,
                     controller: controller,
-                    focusNode: focusNode, // Attach each FocusNode
+                    focusNode: focusNode,
                     onTap: () {
-                      widget.labelActionFocus(); // Unfocus creation field
-                      FocusScope.of(context)
-                          .requestFocus(focusNode); // Focus this field
+                      widget.labelActionFocus();
+                      FocusScope.of(context).requestFocus(focusNode);
                       setState(() {
                         _activeIndex = index;
                       });
@@ -122,9 +121,10 @@ class _LabelBuilderState extends State<LabelBuilder> {
                     decoration: InputDecoration(
                       errorText: errorText,
                       counterText: "",
+                      hintStyle: themeData.textTheme.labelMedium,
                       border: InputBorder.none,
                     ),
-                    style: const TextStyle(color: Colors.white),
+                    style: themeData.textTheme.labelMedium,
                   ),
                   leading: AnimatedSwitcher(
                     duration: const Duration(milliseconds: 300),

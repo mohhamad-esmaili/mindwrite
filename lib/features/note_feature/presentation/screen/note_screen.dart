@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mindwrite/core/usecase/background_changer.dart';
 import 'package:mindwrite/core/utils/note_constants.dart';
 
 import 'package:mindwrite/core/widgets/circular_indicator_widget.dart';
@@ -47,11 +48,13 @@ class NoteViewState extends State<NoteView> {
       }
       if (state is NoteInitial) {
         // this change the color of note when change palette
-        Color initialColor =
-            state.note.noteBackground!.color! == Colors.transparent
-                ? Theme.of(context).scaffoldBackgroundColor
-                : state.note.noteBackground!.color!;
-        String? initialBG = state.note.noteBackground!.backgroundPath;
+        Color initialColor = state.note.noteBackground!.color! ==
+                Colors.transparent
+            ? Theme.of(context).scaffoldBackgroundColor
+            : BackgroundChanger()
+                .colorBackGroundChanger(state.note.noteBackground!, context)!;
+        String? initialBG = BackgroundChanger()
+            .imageBackGroundChanger(state.note.noteBackground!, context);
 
         int descriptionLines = state.descriptionLines ?? 1;
 

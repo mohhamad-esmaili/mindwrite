@@ -59,10 +59,10 @@ class DrawView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: false,
-      onPopInvoked: (_) {
-        context.go('/create_note');
+    return WillPopScope(
+      onWillPop: () async {
+        // Disable back button by returning false
+        return false;
       },
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -90,11 +90,19 @@ class DrawView extends StatelessWidget {
                     extra: context.read<NoteBloc>().note);
               }
             },
-            icon: const Icon(
+            icon: Icon(
               Icons.arrow_back_rounded,
-              color: Colors.white,
+              color: Theme.of(context).iconTheme.color,
             ),
           ),
+          actions: [
+            IconButton(
+                onPressed: () => _signaturePadKey.currentState!.clear(),
+                icon: Icon(
+                  Icons.refresh_rounded,
+                  color: Theme.of(context).iconTheme.color,
+                ))
+          ],
         ),
         body: SafeArea(
           child: Column(

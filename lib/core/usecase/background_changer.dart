@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:path/path.dart' as p;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mindwrite/core/utils/note_constants.dart';
 import 'package:mindwrite/features/shared_bloc/data/model/background_model.dart';
@@ -47,5 +48,40 @@ class BackgroundChanger {
       default:
         return isDarkMode ? _darkColors[0].color : _lightColors[0].color;
     }
+  }
+
+  String? imageBackGroundChanger(
+      BackgroundModel noteBackGround, BuildContext context) {
+    SharedBloc sharedBloc = context.read<SharedBloc>();
+    bool isDarkMode = sharedBloc.themeMode == ThemeMode.dark;
+
+    int imageIndex = NoteConstants.noteDarkBackgrounds.indexWhere((element) {
+      if (element.backgroundPath == null ||
+          noteBackGround.backgroundPath == null) {
+        return false;
+      }
+
+      String elementFileName = p.basename(element.backgroundPath!);
+      String backgroundFileName = p.basename(noteBackGround.backgroundPath!);
+
+      String elementFirstWord = elementFileName.split('_').first;
+      String backgroundFirstWord = backgroundFileName.split('_').first;
+
+      return elementFirstWord == backgroundFirstWord;
+    });
+
+    if (imageIndex == -1) {
+      return isDarkMode
+          ? _darkImages[0].backgroundPath
+          : _lightImages[0].backgroundPath;
+    }
+
+    if (imageIndex <= 4) {
+      return isDarkMode
+          ? _darkImages[imageIndex].backgroundPath
+          : _lightImages[imageIndex].backgroundPath;
+    }
+
+    return _darkImages[imageIndex].backgroundPath;
   }
 }

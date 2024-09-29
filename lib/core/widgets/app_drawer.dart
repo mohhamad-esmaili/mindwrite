@@ -197,7 +197,9 @@ class AppDrawer extends StatelessWidget {
       },
       icon: Icon(
         buttonIcon,
-        color: Theme.of(context).iconTheme.color,
+        color: isSelected
+            ? AppColorConstants.whiteTextColor
+            : Theme.of(context).iconTheme.color,
       ),
       label: Text(
         title,

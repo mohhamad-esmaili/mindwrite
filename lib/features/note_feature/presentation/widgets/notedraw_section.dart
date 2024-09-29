@@ -23,14 +23,14 @@ class NoteDrawSectionWidget extends StatelessWidget {
                 height: 400,
                 child: ListView.builder(
                   itemCount: allPaints.length,
-
-                  scrollDirection: Axis.horizontal, // Horizontal scrolling
+                  scrollDirection: Axis.horizontal,
                   itemBuilder: (BuildContext context, int index) {
                     Uint8List selectedPaint = allPaints[index];
                     return Container(
                       margin: const EdgeInsets.only(right: 10),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
+                        border: Border.all(color: Colors.grey[400]!, width: 2),
                         color: Colors.white,
                       ),
                       child: Stack(
@@ -72,7 +72,8 @@ class NoteDrawSectionWidget extends StatelessWidget {
               ),
             );
           } else {
-            return const SizedBox.shrink(); // Return empty if there are no drawings
+            return const SizedBox
+                .shrink(); // Return empty if there are no drawings
           }
         } else {
           return const CircularIndicatorWidget();

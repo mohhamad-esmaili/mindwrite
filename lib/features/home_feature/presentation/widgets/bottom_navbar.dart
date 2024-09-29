@@ -28,13 +28,14 @@ class HomeBottomBar extends StatelessWidget {
         clipBehavior: Clip.antiAlias,
         child: Row(
           children: [
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.check_box_outlined,
-                size: 30,
-              ),
-            ),
+            ///TODO: CHECKBOX IN NOTE
+            // IconButton(
+            //   onPressed: () {},
+            //   icon: const Icon(
+            //     Icons.check_box_outlined,
+            //     size: 30,
+            //   ),
+            // ),
             IconButton(
               onPressed: () {
                 context.read<NoteBloc>().add(const NoteInitialEvent());

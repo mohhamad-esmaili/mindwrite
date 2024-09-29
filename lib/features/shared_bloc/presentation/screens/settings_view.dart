@@ -21,97 +21,99 @@ class SettingsView extends StatelessWidget {
       drawer: const AppDrawer(),
       body: BlocBuilder<SharedBloc, SharedState>(
         builder: (context, state) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 15),
-                  child: Text(
-                    "Display options",
-                    style: themeData.textTheme.labelLarge,
-                  ),
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+                child: Text(
+                  "Display options",
+                  style: themeData.textTheme.labelLarge,
                 ),
-                InkWell(
-                  onTap: () async {
-                    return showDialog(
-                      context: context,
-                      builder: (_) => AlertDialog(
-                        title: Text(
-                          "Choose theme",
-                          textAlign: TextAlign.start,
-                          style: themeData.textTheme.labelLarge,
-                        ),
-                        backgroundColor: themeData.appBarTheme.backgroundColor,
-                        actionsAlignment: MainAxisAlignment.spaceAround,
-                        actions: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              RadioListTile<ThemeMode>(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20.0),
-                                ),
-                                activeColor: themeData.primaryColor,
-                                title: Text(
-                                  'Light Mode',
-                                  style: themeData.textTheme.labelMedium,
-                                ),
-                                value: ThemeMode.light,
-                                groupValue: state.themeMode,
-                                onChanged: (ThemeMode? mode) {
-                                  if (mode != null) {
-                                    sharedBloc.add(ToggleTheme());
-                                  }
-                                  context.pop();
-                                },
-                              ),
-                              RadioListTile<ThemeMode>(
-                                title: Text(
-                                  'Dark Mode',
-                                  style: themeData.textTheme.labelMedium,
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20.0),
-                                ),
-                                activeColor: themeData.primaryColor,
-                                value: ThemeMode.dark,
-                                groupValue: state.themeMode,
-                                onChanged: (ThemeMode? mode) {
-                                  if (mode != null) {
-                                    sharedBloc.add(ToggleTheme());
-                                  }
-                                  context.pop();
-                                },
-                              ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              TextButton(
-                                onPressed: () => context.pop(),
-                                style: TextButton.styleFrom(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 40,
-                                    vertical: 20,
-                                  ),
-                                  shadowColor: Theme.of(context).primaryColor,
-                                ),
-                                child: Text(
-                                  "Cancel",
-                                  style: TextStyle(
-                                      color: themeData.primaryColor,
-                                      fontSize: 15),
-                                ),
-                              ),
-                            ],
-                          )
-                        ],
+              ),
+              InkWell(
+                onTap: () async {
+                  return showDialog(
+                    context: context,
+                    builder: (_) => AlertDialog(
+                      title: Text(
+                        "Choose theme",
+                        textAlign: TextAlign.start,
+                        style: themeData.textTheme.labelLarge,
                       ),
-                    );
-                  },
+                      backgroundColor: themeData.appBarTheme.backgroundColor,
+                      actionsAlignment: MainAxisAlignment.spaceAround,
+                      actions: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            RadioListTile<ThemeMode>(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20.0),
+                              ),
+                              activeColor: themeData.primaryColor,
+                              title: Text(
+                                'Light Mode',
+                                style: themeData.textTheme.labelMedium,
+                              ),
+                              value: ThemeMode.light,
+                              groupValue: state.themeMode,
+                              onChanged: (ThemeMode? mode) {
+                                if (mode != null) {
+                                  sharedBloc.add(ToggleTheme());
+                                }
+                                context.pop();
+                              },
+                            ),
+                            RadioListTile<ThemeMode>(
+                              title: Text(
+                                'Dark Mode',
+                                style: themeData.textTheme.labelMedium,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20.0),
+                              ),
+                              activeColor: themeData.primaryColor,
+                              value: ThemeMode.dark,
+                              groupValue: state.themeMode,
+                              onChanged: (ThemeMode? mode) {
+                                if (mode != null) {
+                                  sharedBloc.add(ToggleTheme());
+                                }
+                                context.pop();
+                              },
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            TextButton(
+                              onPressed: () => context.pop(),
+                              style: TextButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 40,
+                                  vertical: 20,
+                                ),
+                                shadowColor: Theme.of(context).primaryColor,
+                              ),
+                              child: Text(
+                                "Cancel",
+                                style: TextStyle(
+                                    color: themeData.primaryColor,
+                                    fontSize: 15),
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  );
+                },
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 18, vertical: 20),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -123,8 +125,8 @@ class SettingsView extends StatelessWidget {
                     ],
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           );
         },
       ),

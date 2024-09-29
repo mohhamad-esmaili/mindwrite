@@ -66,8 +66,11 @@ class AppRoutes {
           final selectedNote =
               state.extra as NoteModel? ?? locator<NoteModel>();
           return CustomTransitionPage(
-            child: NoteView(
-              selectedNote: selectedNote,
+            child: PopScope(
+              canPop: false,
+              child: NoteView(
+                selectedNote: selectedNote,
+              ),
             ),
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) {
