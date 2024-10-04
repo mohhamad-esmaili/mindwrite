@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mindwrite/core/widgets/app_drawer.dart';
-import 'package:mindwrite/core/widgets/screens_appbar.dart';
 import 'package:mindwrite/features/shared_bloc/presentation/bloc/shared_bloc.dart';
 
 class SettingsView extends StatelessWidget {
@@ -15,7 +14,7 @@ class SettingsView extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Settings"),
+        title:const Text("Settings"),
       ),
       drawer: const AppDrawer(),
       body: BlocBuilder<SharedBloc, SharedState>(

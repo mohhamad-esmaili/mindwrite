@@ -114,7 +114,7 @@ class _MasonaryBuilderState extends State<MasonaryBuilder>
 
                               NoteModel simpleVersion = selectedNote.copyWith(
                                   archived: widget.defaultArchiveNote);
-                              print([simpleVersion.archived]);
+
                               widget.sharedBloc
                                   .add(ToggleArchiveEvent([simpleVersion]));
 
@@ -126,7 +126,6 @@ class _MasonaryBuilderState extends State<MasonaryBuilder>
                             },
                             onClosed: () {
                               if (!undoPressed) {
-                                print([selectedNote.archived]);
                                 widget.sharedBloc
                                     .add(ToggleArchiveEvent([selectedNote]));
                               }

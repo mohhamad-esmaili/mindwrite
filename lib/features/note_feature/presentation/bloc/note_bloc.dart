@@ -102,7 +102,6 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
         updatedId = event.noteModel.copyWith(id: uuid.v4());
       }
       final result = await saveUseCase(updatedId);
-      print(result.data);
       if (result is DataSuccess) {
         note = defaultNote;
         emit(NoteInitial(locator<NoteModel>()));
