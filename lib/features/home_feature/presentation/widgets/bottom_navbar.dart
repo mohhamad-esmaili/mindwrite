@@ -5,10 +5,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mindwrite/core/resources/note_arguments.dart';
 import 'package:mindwrite/core/utils/color_constants.dart';
 import 'package:mindwrite/core/widgets/camera_capture.dart';
 import 'package:mindwrite/features/note_feature/presentation/bloc/note_bloc.dart';
+import 'package:mindwrite/features/shared_bloc/data/model/note_model.dart';
 import 'package:mindwrite/features/shared_bloc/presentation/bloc/shared_bloc.dart';
+import 'package:mindwrite/locator.dart';
 
 class HomeBottomBar extends StatelessWidget {
   const HomeBottomBar({super.key});
@@ -57,7 +60,8 @@ class HomeBottomBar extends StatelessWidget {
                       .read<NoteBloc>()
                       .add(ChangeDrawingLists(selectedImage));
 
-                  context.go("/create_note");
+                  context.go("/create_note",
+                      extra: NoteArguments(selectedNote: locator<NoteModel>()));
                 }
               },
               icon: const Icon(

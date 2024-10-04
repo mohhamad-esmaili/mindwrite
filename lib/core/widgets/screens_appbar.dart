@@ -55,18 +55,6 @@ class ScreensAppbar extends StatelessWidget implements PreferredSizeWidget {
                       color: themeData.iconTheme.color,
                     ),
                   ),
-                  // IconButton(
-                  //   onPressed: () {
-                  //     sharedBloc.add(DeleteNoteEvent(state.selectedItems));
-                  //     if (onDelete != null) {
-                  //       // update state if note where deleted
-                  //       onDelete!();
-                  //     }
-                  //     SnackbarService.showStatusSnackbar(
-                  //         message: "Notes Deleted", context: context);
-                  //   },
-                  //   icon: const Icon(Icons.delete_outline_rounded),
-                  // ),
                   PopMenuWidget().buildPopupMenu(context, sharedBloc),
                 ],
               );

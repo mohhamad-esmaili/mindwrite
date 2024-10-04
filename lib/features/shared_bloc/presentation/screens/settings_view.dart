@@ -14,9 +14,8 @@ class SettingsView extends StatelessWidget {
     ThemeData themeData = Theme.of(context);
 
     return Scaffold(
-      appBar: ScreensAppbar(
-        appbarTitle: "Settings",
-        sharedBloc: sharedBloc,
+      appBar: AppBar(
+        title: Text("Settings"),
       ),
       drawer: const AppDrawer(),
       body: BlocBuilder<SharedBloc, SharedState>(

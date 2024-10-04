@@ -10,6 +10,8 @@ import 'package:mindwrite/features/shared_bloc/data/model/note_model.dart';
 import 'package:mindwrite/features/note_feature/domain/use_cases/save_note_usecase.dart';
 import 'package:mindwrite/locator.dart';
 import 'dart:typed_data';
+
+import 'package:uuid/uuid.dart';
 part 'note_event.dart';
 part 'note_state.dart';
 
@@ -21,8 +23,12 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
       title: null,
       description: null,
       lastUpdate: DateTime.now(),
-      noteBackground:
-          BackgroundModel(color: Colors.transparent, backgroundPath: null),
+      noteBackground: BackgroundModel(
+        darkColor: Colors.transparent,
+        darkBackgroundPath: null,
+        lightBackgroundPath: null,
+        lightColor: const Color.fromRGBO(244, 247, 252, 1),
+      ),
       id: null,
       pin: false,
       archived: false,
@@ -49,10 +55,15 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
     on<ChangeNoteColorEvent>((event, emit) {
       note = note.copyWith(
           noteBackground: BackgroundModel(
-        color: event.selectedColor == const Color(0xff131313)
+        darkColor: event.selectedDarkColor == const Color(0xff131313)
             ? Colors.transparent
-            : event.selectedColor,
-        backgroundPath: event.selectedBackGround,
+            : event.selectedDarkColor,
+        lightColor:
+            event.selectedLightColor == const Color.fromRGBO(244, 247, 252, 1)
+                ? const Color.fromRGBO(244, 247, 252, 1)
+                : event.selectedLightColor,
+        lightBackgroundPath: event.selectedLightBackGround,
+        darkBackgroundPath: event.selectedDarkBackGround,
       ));
 
       emit(NoteInitial(note));
@@ -85,7 +96,13 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
 
     /// save note with new id to avoid conflict
     on<SaveNoteEvent>((event, emit) async {
-      final result = await saveUseCase.call(event.noteModel);
+      NoteModel updatedId = event.noteModel;
+      const Uuid uuid = Uuid();
+      if (!event.isEditing) {
+        updatedId = event.noteModel.copyWith(id: uuid.v4());
+      }
+      final result = await saveUseCase(updatedId);
+      print(result.data);
       if (result is DataSuccess) {
         note = defaultNote;
         emit(NoteInitial(locator<NoteModel>()));

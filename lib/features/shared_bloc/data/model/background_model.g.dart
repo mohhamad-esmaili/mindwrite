@@ -17,19 +17,25 @@ class BackgroundModelAdapter extends TypeAdapter<BackgroundModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return BackgroundModel(
-      color: fields[0] as Color?,
-      backgroundPath: fields[1] as String?,
+      lightColor: fields[0] as Color?,
+      darkColor: fields[1] as Color?,
+      lightBackgroundPath: fields[2] as String?,
+      darkBackgroundPath: fields[3] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, BackgroundModel obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(4)
       ..writeByte(0)
-      ..write(obj.color)
+      ..write(obj.lightColor)
       ..writeByte(1)
-      ..write(obj.backgroundPath);
+      ..write(obj.darkColor)
+      ..writeByte(2)
+      ..write(obj.lightBackgroundPath)
+      ..writeByte(3)
+      ..write(obj.darkBackgroundPath);
   }
 
   @override

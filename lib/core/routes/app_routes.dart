@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 // Import the package
 import 'package:go_router/go_router.dart';
+import 'package:mindwrite/core/resources/note_arguments.dart';
 import 'package:mindwrite/features/archive_feature/presentation/screens/archive_view.dart';
 import 'package:mindwrite/features/delete_feature/presentation/screens/delete_view.dart';
 import 'package:mindwrite/features/draw_feature/presentation/screen/draw_view.dart';
@@ -63,13 +64,15 @@ class AppRoutes {
         path: '/create_note',
         name: "create_note",
         pageBuilder: (context, state) {
-          final selectedNote =
-              state.extra as NoteModel? ?? locator<NoteModel>();
+          final args = state.extra as NoteArguments;
+          final selectedNote = args.selectedNote ?? locator<NoteModel>();
+
           return CustomTransitionPage(
             child: PopScope(
               canPop: false,
               child: NoteView(
                 selectedNote: selectedNote,
+                editMode: args.editMode,
               ),
             ),
             transitionsBuilder:

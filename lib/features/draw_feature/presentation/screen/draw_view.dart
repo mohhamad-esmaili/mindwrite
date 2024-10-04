@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mindwrite/core/resources/note_arguments.dart';
 import 'package:mindwrite/core/widgets/snackbar_widget.dart';
 
 import 'package:mindwrite/features/note_feature/presentation/bloc/note_bloc.dart';
@@ -87,7 +88,9 @@ class DrawView extends StatelessWidget {
                 _signaturePadKey.currentState!.clear();
 
                 context.go('/create_note',
-                    extra: context.read<NoteBloc>().note);
+                    extra: NoteArguments(
+                        selectedNote: context.read<NoteBloc>().note,
+                        editMode: true));
               }
             },
             icon: Icon(

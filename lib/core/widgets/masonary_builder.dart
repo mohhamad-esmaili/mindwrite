@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mindwrite/core/enums/listmode_enum.dart';
+import 'package:mindwrite/core/resources/note_arguments.dart';
 import 'package:mindwrite/core/usecase/background_changer.dart';
 import 'package:mindwrite/core/utils/color_constants.dart';
 import 'package:mindwrite/core/widgets/snackbar_widget.dart';
@@ -82,7 +83,9 @@ class _MasonaryBuilderState extends State<MasonaryBuilder>
                           context
                               .read<NoteBloc>()
                               .add(RefreshNoteDataEvent(refreshedNote: note));
-                          context.go("/create_note", extra: note);
+                          context.go("/create_note",
+                              extra: NoteArguments(
+                                  selectedNote: note, editMode: true));
                         } else {
                           widget.sharedBloc.add(TapItem(note));
                         }
@@ -208,11 +211,10 @@ class _MasonaryBuilderState extends State<MasonaryBuilder>
         //         ? AppColorConstants.containerLightColor
         //         : AppColorConstants.containerDarkColor
         //     : note.noteBackground!.color!,
-        image: note.noteBackground!.backgroundPath != null
+        image: note.noteBackground!.darkBackgroundPath != null
             ? DecorationImage(
-                image: AssetImage(BackgroundChanger().imageBackGroundChanger(
-                        note.noteBackground!, context) ??
-                    note.noteBackground!.backgroundPath!),
+                image: AssetImage(BackgroundChanger()
+                    .imageBackGroundChanger(note.noteBackground!, context)!),
                 fit: BoxFit.cover,
               )
             : null,
@@ -220,7 +222,7 @@ class _MasonaryBuilderState extends State<MasonaryBuilder>
         border: Border.all(
           color: isSelected
               ? AppColorConstants.secondaryColor
-              : (note.noteBackground!.color == Colors.transparent
+              : (note.noteBackground!.darkColor == Colors.transparent
                   ? Colors.grey
                   : initialColor),
           width: isSelected ? 3 : 1,
@@ -273,8 +275,8 @@ class _MasonaryBuilderState extends State<MasonaryBuilder>
                   ),
                 )
               : const SizedBox.shrink(),
-          note.noteBackground!.color != Colors.transparent &&
-                  note.noteBackground!.backgroundPath != null
+          note.noteBackground!.darkColor != Colors.transparent &&
+                  note.noteBackground!.darkBackgroundPath != null
               ? Container(
                   width: 25,
                   height: 25,

@@ -62,12 +62,24 @@ class ChangeNoteColorsPalette extends NoteEvent {
 }
 
 class ChangeNoteColorEvent extends NoteEvent {
-  final Color selectedColor;
+  final Color? selectedLightColor;
+  final Color? selectedDarkColor;
 
-  final String? selectedBackGround;
-  const ChangeNoteColorEvent(this.selectedColor, this.selectedBackGround);
+  final String? selectedLightBackGround;
+  final String? selectedDarkBackGround;
+  const ChangeNoteColorEvent({
+    this.selectedLightColor,
+    this.selectedDarkColor,
+    this.selectedDarkBackGround,
+    this.selectedLightBackGround,
+  });
   @override
-  List<Object?> get props => [selectedColor, selectedBackGround];
+  List<Object?> get props => [
+        selectedLightColor,
+        selectedDarkColor,
+        selectedDarkBackGround,
+        selectedLightBackGround,
+      ];
 }
 
 class ChangeNotePinEvent extends NoteEvent {
@@ -86,10 +98,11 @@ class NoteArchiveEvent extends NoteEvent {
 
 class SaveNoteEvent extends NoteEvent {
   final NoteModel noteModel;
-  const SaveNoteEvent(this.noteModel);
+  final bool isEditing;
+  const SaveNoteEvent(this.noteModel, this.isEditing);
 
   @override
-  List<Object?> get props => [noteModel];
+  List<Object?> get props => [noteModel, isEditing];
 }
 
 class ChangeDrawingLists extends NoteEvent {

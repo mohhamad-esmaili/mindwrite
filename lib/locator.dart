@@ -23,7 +23,7 @@ import 'package:mindwrite/features/label_feature/domain/use_cases/save_label_use
 import 'package:mindwrite/features/label_feature/presentation/bloc/label_bloc.dart';
 
 import 'package:mindwrite/features/shared_bloc/data/model/background_model.dart';
-import 'package:mindwrite/features/shared_bloc/data/model/color_adapter.dart';
+import 'package:mindwrite/core/utils/color_adapter.dart';
 import 'package:mindwrite/features/label_feature/data/model/label_model.dart';
 import 'package:mindwrite/features/shared_bloc/data/model/note_model.dart';
 import 'package:mindwrite/features/home_feature/data/repository/home_repository_imp.dart';
@@ -68,13 +68,17 @@ setup() async {
   // Register NoteModel
   locator.registerFactory<NoteModel>(
     () => NoteModel(
-      title: null,
-      description: null,
-      id: null,
-      lastUpdate: DateTime.now(),
-      drawingsList: null,
-      noteBackground: BackgroundModel(color: Colors.transparent),
-    ),
+        title: null,
+        description: null,
+        id: null,
+        lastUpdate: DateTime.now(),
+        drawingsList: null,
+        noteBackground: BackgroundModel(
+          darkColor: Colors.transparent,
+          lightColor: const Color.fromRGBO(244, 247, 252, 1),
+          lightBackgroundPath: null,
+          darkBackgroundPath: null,
+        )),
   );
 
   locator.registerFactory<List<NoteModel>>(() => []);

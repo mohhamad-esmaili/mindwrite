@@ -71,8 +71,10 @@ class SharedLocalDatabase {
 
       NoteModel updatedNote = existingNote.copyWith(
         noteBackground: BackgroundModel(
-          color: noteToPin.noteBackground!.color,
-          backgroundPath: noteToPin.noteBackground!.backgroundPath,
+          lightColor: noteToPin.noteBackground!.lightColor,
+          darkColor: noteToPin.noteBackground!.darkColor,
+          darkBackgroundPath: noteToPin.noteBackground!.darkBackgroundPath,
+          lightBackgroundPath: noteToPin.noteBackground!.lightBackgroundPath,
         ),
       );
 

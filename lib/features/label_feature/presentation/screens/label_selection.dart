@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart'; // Import the package
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mindwrite/core/resources/note_arguments.dart';
 
 import 'package:mindwrite/core/widgets/circular_indicator_widget.dart';
 import 'package:mindwrite/features/label_feature/data/model/label_model.dart';
@@ -50,7 +51,9 @@ class _LabelSelectionViewState extends State<LabelSelectionView> {
             context
                 .read<NoteBloc>()
                 .add(RefreshNoteDataEvent(refreshedNote: updatedNote));
-            context.go("/create_note", extra: updatedNote);
+            context.go("/create_note",
+                extra:
+                    NoteArguments(selectedNote: updatedNote, editMode: true));
           },
         ),
         title: TextField(

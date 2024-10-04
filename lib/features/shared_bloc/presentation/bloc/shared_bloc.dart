@@ -175,8 +175,13 @@ class SharedBloc extends Bloc<SharedEvent, SharedState> {
       for (int i = 0; i < selectedItems.length; i++) {
         selectedItems[i] = selectedItems[i].copyWith(
           noteBackground: BackgroundModel(
-              color: event.selectedColor,
-              backgroundPath: selectedItems[i].noteBackground!.backgroundPath),
+            lightColor: event.selectedLightColor,
+            darkColor: event.selectedDarkColor,
+            lightBackgroundPath:
+                selectedItems[i].noteBackground!.lightBackgroundPath,
+            darkBackgroundPath:
+                selectedItems[i].noteBackground!.darkBackgroundPath,
+          ),
         );
       }
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mindwrite/core/usecase/background_changer.dart';
 import 'package:mindwrite/core/usecase/copy_clipboard.dart';
 import 'package:mindwrite/core/widgets/share_service.dart';
 
@@ -16,7 +17,8 @@ class ThreeDotsButtonWidget extends StatelessWidget {
     return BlocBuilder<NoteBloc, NoteState>(
       builder: (context, state) {
         if (state is NoteInitial) {
-          Color initialColor = state.note.noteBackground!.color!;
+          Color? initialColor = BackgroundChanger()
+              .colorBackGroundChanger(state.note.noteBackground!, context);
           return Container(
             color: initialColor == Colors.transparent
                 ? Theme.of(context).appBarTheme.backgroundColor

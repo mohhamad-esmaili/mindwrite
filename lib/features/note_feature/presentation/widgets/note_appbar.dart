@@ -8,10 +8,13 @@ import 'package:mindwrite/features/shared_bloc/presentation/bloc/shared_bloc.dar
 
 class NoteAppbar extends StatelessWidget {
   final TextEditingController titleController;
-
+  final bool selectedNote;
   final Color initialColor;
   const NoteAppbar(
-      {super.key, required this.initialColor, required this.titleController});
+      {super.key,
+      required this.initialColor,
+      required this.titleController,
+      required this.selectedNote});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +28,9 @@ class NoteAppbar extends StatelessWidget {
             leading: IconButton(
                 onPressed: () {
                   if (titleController.text.isNotEmpty) {
-                    context.read<NoteBloc>().add(SaveNoteEvent(state.note));
+                    context
+                        .read<NoteBloc>()
+                        .add(SaveNoteEvent(state.note, selectedNote));
                     context.read<NoteBloc>().add(const ClearNoteDataEvent());
 
                     context.read<HomeBloc>().add(LoadAllNotes());

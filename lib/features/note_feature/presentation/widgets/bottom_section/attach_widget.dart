@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mindwrite/core/usecase/background_changer.dart';
 import 'package:mindwrite/core/widgets/camera_capture.dart';
 import 'package:mindwrite/features/note_feature/presentation/bloc/note_bloc.dart';
 
@@ -16,7 +17,8 @@ class AtachButtonWidget extends StatelessWidget {
     return BlocBuilder<NoteBloc, NoteState>(
       builder: (context, state) {
         if (state is NoteInitial) {
-          Color initialColor = state.note.noteBackground!.color!;
+          Color? initialColor = BackgroundChanger()
+              .colorBackGroundChanger(state.note.noteBackground!, context);
           return Container(
             color: initialColor == Colors.transparent
                 ? Colors.grey[800]

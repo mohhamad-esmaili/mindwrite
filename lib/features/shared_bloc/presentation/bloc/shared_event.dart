@@ -58,11 +58,12 @@ class PinNotesEvent extends SharedEvent {
 }
 
 class ChangePaletteNoteEvent extends SharedEvent {
-  final Color selectedColor;
-  const ChangePaletteNoteEvent(this.selectedColor);
+  final Color selectedLightColor;
+  final Color selectedDarkColor;
+  const ChangePaletteNoteEvent(this.selectedLightColor, this.selectedDarkColor);
 
   @override
-  List<Object> get props => [selectedColor];
+  List<Object> get props => [selectedLightColor, selectedDarkColor];
 }
 
 class ChangeCrossAxisCountEvent extends SharedEvent {

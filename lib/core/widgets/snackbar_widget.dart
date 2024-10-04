@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mindwrite/core/usecase/background_changer.dart';
 import 'package:mindwrite/core/utils/note_constants.dart';
 import 'package:mindwrite/features/shared_bloc/data/model/background_model.dart';
 import 'package:mindwrite/features/shared_bloc/presentation/bloc/shared_bloc.dart';
@@ -12,37 +13,38 @@ class SnackbarService {
     required VoidCallback onYesPress,
     required String onYesBTNText,
   }) async {
+    ThemeData themeData = Theme.of(context);
     return showDialog(
       context: context,
       builder: (_) => AlertDialog(
         title: Text(
           questionText,
           textAlign: TextAlign.center,
-          style: const TextStyle(color: Colors.white),
+          style: themeData.textTheme.labelMedium,
         ),
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        backgroundColor: themeData.scaffoldBackgroundColor,
         actionsAlignment: MainAxisAlignment.spaceAround,
         actions: [
           TextButton(
             onPressed: () => context.pop(),
             style: TextButton.styleFrom(
               padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-              shadowColor: Theme.of(context).primaryColor,
+              shadowColor: themeData.primaryColor,
             ),
-            child: const Text(
+            child: Text(
               "No",
-              style: TextStyle(color: Colors.white),
+              style: themeData.textTheme.labelMedium,
             ),
           ),
           TextButton(
             onPressed: () => onYesPress(),
             style: TextButton.styleFrom(
               padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-              shadowColor: Theme.of(context).primaryColor,
+              shadowColor: themeData.primaryColor,
             ),
             child: Text(
               onYesBTNText,
-              style: const TextStyle(color: Colors.white),
+              style: themeData.textTheme.labelMedium,
             ),
           ),
         ],
@@ -56,9 +58,9 @@ class SnackbarService {
     return showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text(
+        title: Text(
           "Note Color",
-          style: TextStyle(color: Colors.white),
+          style: Theme.of(context).textTheme.labelLarge,
         ),
         actionsAlignment: MainAxisAlignment.spaceAround,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -74,26 +76,31 @@ class SnackbarService {
               ),
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              itemCount: NoteConstants.noteDarkColors.length,
+              itemCount: NoteConstants.noteColors.length,
               itemBuilder: (BuildContext context, int index) {
-                BackgroundModel selectedColor =
-                    NoteConstants.noteDarkColors[index];
+                BackgroundModel selectedColor = NoteConstants.noteColors[index];
 
                 return InkWell(
                   onTap: () {
-                    BlocProvider.of<SharedBloc>(context)
-                        .add(ChangePaletteNoteEvent(selectedColor.color!));
+                    BlocProvider.of<SharedBloc>(context).add(
+                      ChangePaletteNoteEvent(
+                        selectedColor.lightColor!,
+                        selectedColor.darkColor!,
+                      ),
+                    );
                     context.pop();
                   },
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(color: Colors.white24, width: 1),
-                      color: selectedColor.color,
+                      color: BackgroundChanger()
+                          .colorBackGroundChanger(selectedColor, context),
                     ),
                     child: index == 0
-                        ? const Icon(
+                        ? Icon(
                             Icons.invert_colors_off_rounded,
+                            color: Theme.of(context).iconTheme.color,
                           )
                         : null,
                   ),
@@ -118,7 +125,10 @@ class SnackbarService {
     await scaffoldMessenger
         .showSnackBar(
           SnackBar(
-            content: Text(message),
+            content: Text(
+              message,
+              style: Theme.of(context).textTheme.labelSmall,
+            ),
             duration: const Duration(seconds: 1),
             margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
             action: actionLabel.isNotEmpty

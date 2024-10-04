@@ -14,7 +14,8 @@ import 'package:mindwrite/features/shared_bloc/data/model/note_model.dart';
 
 class NoteView extends StatefulWidget {
   final NoteModel? selectedNote;
-  const NoteView({super.key, this.selectedNote});
+  final bool? editMode;
+  const NoteView({super.key, this.selectedNote, this.editMode = false});
 
   @override
   NoteViewState createState() => NoteViewState();
@@ -48,7 +49,7 @@ class NoteViewState extends State<NoteView> {
       }
       if (state is NoteInitial) {
         // this change the color of note when change palette
-        Color initialColor = state.note.noteBackground!.color! ==
+        Color initialColor = state.note.noteBackground!.darkColor! ==
                 Colors.transparent
             ? Theme.of(context).scaffoldBackgroundColor
             : BackgroundChanger()
@@ -81,9 +82,9 @@ class NoteViewState extends State<NoteView> {
                     SizedBox(
                       height: 50,
                       child: NoteAppbar(
-                        initialColor: Colors.transparent,
-                        titleController: titleController,
-                      ),
+                          initialColor: Colors.transparent,
+                          titleController: titleController,
+                          selectedNote: widget.editMode ?? false),
                     ),
                     Expanded(
                       child: AnimatedContainer(
@@ -221,7 +222,7 @@ class NoteViewState extends State<NoteView> {
                                   initialColor != Colors.transparent &&
                                           initialColor !=
                                               NoteConstants
-                                                  .noteLightColors[0].color &&
+                                                  .noteColors[0].lightColor &&
                                           initialBG != null
                                       ? Container(
                                           width: 40,

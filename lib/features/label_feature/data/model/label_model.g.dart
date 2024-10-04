@@ -16,7 +16,6 @@ class LabelModelAdapter extends TypeAdapter<LabelModel> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-
     return LabelModel(
       id: fields[0] as String?,
       createdDate: fields[1] as DateTime?,
