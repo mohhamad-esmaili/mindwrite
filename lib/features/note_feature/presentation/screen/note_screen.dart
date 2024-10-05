@@ -204,11 +204,10 @@ class NoteViewState extends State<NoteView> {
                                                     ),
                                                     child: Center(
                                                       child: Text(
-                                                        label.labelName,
-                                                        style: const TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 15),
-                                                      ),
+                                                          label.labelName,
+                                                          style: themeData
+                                                              .textTheme
+                                                              .labelSmall),
                                                     ),
                                                   ),
                                                 ),
