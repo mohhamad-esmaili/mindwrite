@@ -24,6 +24,7 @@ class NoteView extends StatefulWidget {
 class NoteViewState extends State<NoteView> {
   late TextEditingController titleController;
   late TextEditingController descriptionController;
+  int descriptionLines = 1; // تعداد خطوط توصیف
 
   @override
   void initState() {
@@ -31,24 +32,53 @@ class NoteViewState extends State<NoteView> {
     titleController = TextEditingController(text: widget.selectedNote!.title);
     descriptionController =
         TextEditingController(text: widget.selectedNote!.description);
+    descriptionController
+        .addListener(_calculateLines); // لیسنر برای محاسبه خطوط
   }
 
   @override
   void dispose() {
     titleController.dispose();
+    descriptionController.removeListener(_calculateLines);
     descriptionController.dispose();
     super.dispose();
+  }
+
+  // تابعی برای محاسبه تعداد خطوط واقعی
+  void _calculateLines() {
+    final span = TextSpan(
+      text: descriptionController.text,
+      style: Theme.of(context).textTheme.labelMedium,
+    );
+    final tp = TextPainter(
+      text: span,
+      maxLines: null,
+      textDirection: TextDirection.ltr,
+    );
+    tp.layout(
+        maxWidth: MediaQuery.of(context).size.width - 30); // عرض TextField
+
+    // محاسبه تعداد خطوط
+    int lines = (tp.size.height / tp.preferredLineHeight).ceil();
+
+    // اگر تعداد خطوط تغییر کرد، height را تنظیم کن
+    if (lines != descriptionLines) {
+      setState(() {
+        descriptionLines = lines;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     ThemeData themeData = Theme.of(context);
+
     return BlocBuilder<NoteBloc, NoteState>(builder: (context, state) {
       if (state is NoteSaving) {
         return const CircularIndicatorWidget();
       }
       if (state is NoteInitial) {
-        // this change the color of note when change palette
+        // تغییر رنگ متن
         Color initialColor = state.note.noteBackground!.darkColor! ==
                 Colors.transparent
             ? Theme.of(context).scaffoldBackgroundColor
@@ -56,8 +86,6 @@ class NoteViewState extends State<NoteView> {
                 .colorBackGroundChanger(state.note.noteBackground!, context)!;
         String? initialBG = BackgroundChanger()
             .imageBackGroundChanger(state.note.noteBackground!, context);
-
-        int descriptionLines = state.descriptionLines ?? 1;
 
         return Scaffold(
           backgroundColor: initialColor,
@@ -138,24 +166,12 @@ class NoteViewState extends State<NoteView> {
                                           const Duration(milliseconds: 300)),
                                   AnimatedContainer(
                                     duration: const Duration(milliseconds: 300),
-                                    height: descriptionLines * 24.0 + 16.0,
+                                    height: descriptionLines * 24.0 +
+                                        16.0, // ارتفاع متغیر
                                     child: TextField(
                                       controller: descriptionController,
                                       scrollPhysics:
                                           const NeverScrollableScrollPhysics(),
-                                      onChanged: (text) {
-                                        final int lines =
-                                            '\n'.allMatches(text).length + 1;
-                                        context.read<NoteBloc>().add(
-                                              ChangeNoteEvent(
-                                                descriptionLines: lines,
-                                                decriptionTextEditingController:
-                                                    descriptionController.text,
-                                                titleTextEditingController:
-                                                    titleController.text,
-                                              ),
-                                            );
-                                      },
                                       maxLines: null,
                                       minLines: 1,
                                       keyboardType: TextInputType.multiline,
@@ -192,15 +208,13 @@ class NoteViewState extends State<NoteView> {
                                                             top: 5),
                                                     padding: const EdgeInsets
                                                         .symmetric(
-                                                      horizontal: 10,
-                                                      vertical: 8,
-                                                    ),
+                                                        horizontal: 10,
+                                                        vertical: 8),
                                                     decoration: BoxDecoration(
                                                       color: Colors.white30,
                                                       borderRadius:
                                                           BorderRadius.circular(
-                                                        10,
-                                                      ),
+                                                              10),
                                                     ),
                                                     child: Center(
                                                       child: Text(
