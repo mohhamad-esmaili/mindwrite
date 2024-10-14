@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mindwrite/core/localization/app_localizations.dart';
-import 'package:mindwrite/core/widgets/snackbar_widget.dart'; // For Clipboard functionality
+import 'package:mindwrite/core/widgets/snackbar_widget.dart';
 
 class CopyClipboardService {
   static void copyNoteToClipboard(

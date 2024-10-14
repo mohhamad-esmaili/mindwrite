@@ -34,10 +34,12 @@ class AppLocalizations {
   String get no => translate('no');
   String get ok => translate('ok');
   String get yes => translate('yes');
-  String get undo => translate('undo');
+  String get undo => translate('Undo');
   String get edit => translate('edit');
   String get mind => translate('Mind');
   String get send => translate('Send');
+  String get couldntload => translate('Couldnt load');
+  String get nodrawingdetected => translate('No drawing detected');
   String get write => translate('Write');
   String get title => translate('Title');
   String get theme => translate('Theme');

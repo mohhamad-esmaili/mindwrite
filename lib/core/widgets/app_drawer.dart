@@ -21,9 +21,7 @@ class AppDrawer extends StatelessWidget {
     bool isRTL = Localizations.localeOf(context).languageCode == 'fa';
 
     return Directionality(
-      textDirection: isRTL
-          ? TextDirection.rtl
-          : TextDirection.ltr, // تنظیم جهت بر اساس زبان
+      textDirection: isRTL ? TextDirection.rtl : TextDirection.ltr,
       child: Drawer(
         child: Scrollbar(
           child: SafeArea(

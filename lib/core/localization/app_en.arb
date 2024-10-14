@@ -39,6 +39,7 @@
   "Description": "Description",
   "Edit labels": "Edit labels",
   "Are You Sure": "Are You Sure",
+  "Couldnt load": "Couldnt load",
   "Choose theme": "Choose theme",
   "Search labels": "Search labels",
   "Already empty": "Already empty",
@@ -54,6 +55,7 @@
   "An error occurred": "An error occurred",
   "There is no note": "There is no note yet",
   "About and feedback": "About and feedback",
+  "No drawing detected": "No drawing detected",
   "Failed to load notes": "Failed to load notes"
 
 }

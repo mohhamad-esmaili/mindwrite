@@ -13,6 +13,7 @@ class AboutView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ThemeData themeData = Theme.of(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.aboutAndFeedback),
@@ -57,7 +58,7 @@ class AboutView extends StatelessWidget {
     final Uri url = Uri.parse('https://github.com/mohhamad-esmaili/mindwrite');
     if (!await launchUrl(url) && context.mounted) {
       SnackbarService.showStatusSnackbar(
-          message: "Couldnt load", context: context);
+          message: AppLocalizations.of(context)!.couldntload, context: context);
     }
   }
 }

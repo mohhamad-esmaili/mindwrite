@@ -44,6 +44,7 @@
   "Empty bin": "خالی کردن سطل زباله",
   "About MindWrite": "درباره ذهن‌نویس",
   "Note Archived": "نوشته آرشیو شد",
+  "Couldnt load": "اطلاعات لود نشد",
   "Notes restored": "نوشته بازیابی شد",
   "Display options": "تنظیمات نمایش",
   "An error occurred": "مشکلی رخ داده",
@@ -54,5 +55,6 @@
   "About and feedback": "درباره و فیدبک",
   "Enter note title": "عنوان را وارد کنید",
   "There is no note": "هیچ نوشته‌ای ندارید",
+  "No drawing detected":  "هیچ نقاشی یافت نشد",
   "Failed to load notes": "نتونستیم نوشته‌هارو لود کنیم"
 }

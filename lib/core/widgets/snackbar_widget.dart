@@ -126,6 +126,7 @@ class SnackbarService {
     await scaffoldMessenger
         .showSnackBar(
           SnackBar(
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             content: Text(
               message,
               style: Theme.of(context).textTheme.labelSmall,

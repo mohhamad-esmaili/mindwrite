@@ -45,6 +45,7 @@ class _MasonaryBuilderState extends State<MasonaryBuilder>
   final PageStorageBucket _bucket = PageStorageBucket();
   @override
   Widget build(BuildContext context) {
+    AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     super.build(context);
     return PageStorage(
       bucket: _bucket,
@@ -108,8 +109,8 @@ class _MasonaryBuilderState extends State<MasonaryBuilder>
 
                           await SnackbarService.showStatusSnackbar(
                             context: context,
-                            message: "Note archived",
-                            actionLabel: "Undo",
+                            message: appLocalizations.notearchived,
+                            actionLabel: appLocalizations.undo,
                             onAction: () {
                               undoPressed = true;
 
