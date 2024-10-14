@@ -26,11 +26,11 @@ part 'shared_event.dart';
 part 'shared_state.dart';
 
 class SharedBloc extends Bloc<SharedEvent, SharedState> {
-  Locale appLocale = Locale('en', '');
+  Locale appLocale = const Locale('fa', '');
   bool isSelectionMode = false;
   List<NoteModel> selectedItems;
   ListModeEnum listMode = ListModeEnum.multiple;
-  ThemeMode themeMode = ThemeMode.dark;
+  ThemeMode themeMode = ThemeMode.light;
   LoadThemeUsecase loadThemeUsecase;
   ToggleThemeUsecase toggleThemeUsecase;
   LoadLanguageUsecase loadLanguageUsecase;
@@ -55,7 +55,7 @@ class SharedBloc extends Bloc<SharedEvent, SharedState> {
     this.loadLanguageUsecase,
     this.changeLanguageUsecase,
   ) : super(SharedInitial(selectedItems, isSelectionMode, listMode,
-            ThemeMode.dark, const Locale('en', ''))) {
+            ThemeMode.light, const Locale('fa', ''))) {
     on<LoadThemeMode>((event, emit) async {
       emit(const SharedLoading());
       final result = await loadThemeUsecase();
@@ -92,10 +92,7 @@ class SharedBloc extends Bloc<SharedEvent, SharedState> {
 
     on<ChangeLanguage>((event, emit) async {
       var result = await changeLanguageUsecase(event.locale);
-      print(result);
       if (result is DataSuccess<Locale>) {
-        print("________________");
-        print(result.data);
         appLocale = result.data!;
         emit(SharedInitial(
             selectedItems, isSelectionMode, listMode, themeMode, appLocale));

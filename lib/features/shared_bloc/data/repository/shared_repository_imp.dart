@@ -35,8 +35,6 @@ class SharedRepositoryImp extends SharedRepository {
   Future<DataState<Locale>> changeLanguage(Locale locale) async {
     try {
       final result = await sharedLocalDatabase.changeLanguage(locale);
-      print("+++++++++");
-      print(result);
       return DataSuccess(result);
     } catch (e) {
       return DataFailed(e.toString());

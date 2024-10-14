@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mindwrite/core/localization/app_localizations.dart';
 import 'package:mindwrite/core/resources/note_arguments.dart';
 import 'package:mindwrite/core/widgets/snackbar_widget.dart';
 
@@ -60,65 +61,65 @@ class DrawView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        // Disable back button by returning false
-        return false;
-      },
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          leading: IconButton(
-            onPressed: () async {
-              final imageBytes = await captureSignature();
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+          onPressed: () async {
+            final imageBytes = await captureSignature();
 
-              final isEmpty = await isDrawingEmpty(imageBytes);
+            final isEmpty = await isDrawingEmpty(imageBytes);
 
-              if (!isEmpty) {
-                if (context.mounted && imageBytes != null) {
-                  context.read<NoteBloc>().add(ChangeDrawingLists(imageBytes));
-                }
-              } else if (context.mounted) {
-                SnackbarService.showStatusSnackbar(
-                    message: 'No drawing detected', context: context);
+            if (!isEmpty) {
+              if (context.mounted && imageBytes != null) {
+                context.read<NoteBloc>().add(ChangeDrawingLists(imageBytes));
               }
+            } else if (context.mounted) {
+              SnackbarService.showStatusSnackbar(
+                message: AppLocalizations.of(context)!.nodrawingdetected,
+                context: context,
+              );
+            }
 
-              if (context.mounted) {
-                _signaturePadKey.currentState!.clear();
+            if (context.mounted) {
+              _signaturePadKey.currentState!.clear();
 
-                context.go('/create_note',
-                    extra: NoteArguments(
-                        selectedNote: context.read<NoteBloc>().note,
-                        editMode: true));
-              }
-            },
+              context.go(
+                '/create_note',
+                extra: NoteArguments(
+                  selectedNote: context.read<NoteBloc>().note,
+                  editMode: true,
+                ),
+              );
+            }
+          },
+          icon: Icon(
+            Icons.arrow_back_rounded,
+            color: Theme.of(context).iconTheme.color,
+          ),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () => _signaturePadKey.currentState!.clear(),
             icon: Icon(
-              Icons.arrow_back_rounded,
+              Icons.refresh_rounded,
               color: Theme.of(context).iconTheme.color,
             ),
           ),
-          actions: [
-            IconButton(
-                onPressed: () => _signaturePadKey.currentState!.clear(),
-                icon: Icon(
-                  Icons.refresh_rounded,
-                  color: Theme.of(context).iconTheme.color,
-                ))
-          ],
-        ),
-        body: SafeArea(
-          child: Column(
-            children: [
-              Expanded(
-                child: SfSignaturePad(
-                  key: _signaturePadKey,
-                  minimumStrokeWidth: 1,
-                  maximumStrokeWidth: 10,
-                ),
+        ],
+      ),
+      body: SafeArea(
+        child: Column(
+          children: [
+            Expanded(
+              child: SfSignaturePad(
+                key: _signaturePadKey,
+                minimumStrokeWidth: 1,
+                maximumStrokeWidth: 10,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

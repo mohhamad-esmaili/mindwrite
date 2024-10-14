@@ -29,19 +29,19 @@ final class SharedInitial extends SharedState {
 class SelectionModeActive extends SharedState {
   final List<NoteModel> selectedItems;
   const SelectionModeActive(this.selectedItems)
-      : super(themeMode: ThemeMode.dark, appLocale: const Locale('en', ''));
+      : super(themeMode: ThemeMode.light, appLocale: const Locale('fa', ''));
   @override
   List<Object> get props => [selectedItems];
 }
 
 class SharedLoading extends SharedState {
   const SharedLoading(
-      {super.themeMode = ThemeMode.dark,
-      super.appLocale = const Locale('en', '')});
+      {super.themeMode = ThemeMode.light,
+      super.appLocale = const Locale('fa', '')});
 }
 
 class SharedLoadFailed extends SharedState {
   const SharedLoadFailed(
-      {super.themeMode = ThemeMode.dark,
-      super.appLocale = const Locale('en', '')});
+      {super.themeMode = ThemeMode.light,
+      super.appLocale = const Locale('fa', '')});
 }

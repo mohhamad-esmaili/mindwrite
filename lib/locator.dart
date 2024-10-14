@@ -184,7 +184,7 @@ setup() async {
   ));
 
   locator.registerSingleton<SharedBloc>(SharedBloc(
-    Locale('en', ''),
+    const Locale('fa', ''),
     false,
     [],
     ListModeEnum.multiple,

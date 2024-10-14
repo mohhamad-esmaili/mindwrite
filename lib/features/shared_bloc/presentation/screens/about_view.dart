@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mindwrite/core/localization/app_localizations.dart';
 import 'package:mindwrite/core/widgets/app_drawer.dart';
-import 'package:mindwrite/core/widgets/screens_appbar.dart';
 import 'package:mindwrite/core/widgets/snackbar_widget.dart';
-import 'package:mindwrite/features/shared_bloc/presentation/bloc/shared_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AboutView extends StatelessWidget {
