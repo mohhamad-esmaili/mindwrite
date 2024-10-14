@@ -12,37 +12,21 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart' as _svg;
 import 'package:vector_graphics/vector_graphics.dart' as _vg;
 
+class $LibGen {
+  const $LibGen();
+
+  /// Directory path: lib/core
+  $LibCoreGen get core => const $LibCoreGen();
+}
+
 class $AssetsFontsGen {
   const $AssetsFontsGen();
 
-  /// File path: assets/fonts/GoogleSans-Bold.ttf
-  String get googleSansBold => 'assets/fonts/GoogleSans-Bold.ttf';
+  /// Directory path: assets/fonts/google sans
+  $AssetsFontsGoogleSansGen get googleSans => const $AssetsFontsGoogleSansGen();
 
-  /// File path: assets/fonts/GoogleSans-BoldItalic.ttf
-  String get googleSansBoldItalic => 'assets/fonts/GoogleSans-BoldItalic.ttf';
-
-  /// File path: assets/fonts/GoogleSans-Italic.ttf
-  String get googleSansItalic => 'assets/fonts/GoogleSans-Italic.ttf';
-
-  /// File path: assets/fonts/GoogleSans-Medium.ttf
-  String get googleSansMedium => 'assets/fonts/GoogleSans-Medium.ttf';
-
-  /// File path: assets/fonts/GoogleSans-MediumItalic.ttf
-  String get googleSansMediumItalic =>
-      'assets/fonts/GoogleSans-MediumItalic.ttf';
-
-  /// File path: assets/fonts/GoogleSans-Regular.ttf
-  String get googleSansRegular => 'assets/fonts/GoogleSans-Regular.ttf';
-
-  /// List of all assets
-  List<String> get values => [
-        googleSansBold,
-        googleSansBoldItalic,
-        googleSansItalic,
-        googleSansMedium,
-        googleSansMediumItalic,
-        googleSansRegular
-      ];
+  /// Directory path: assets/fonts/samim
+  $AssetsFontsSamimGen get samim => const $AssetsFontsSamimGen();
 }
 
 class $AssetsImagesGen {
@@ -124,11 +108,85 @@ class $AssetsImagesGen {
       ];
 }
 
+class $LibCoreGen {
+  const $LibCoreGen();
+
+  /// Directory path: lib/core/localization
+  $LibCoreLocalizationGen get localization => const $LibCoreLocalizationGen();
+}
+
+class $AssetsFontsGoogleSansGen {
+  const $AssetsFontsGoogleSansGen();
+
+  /// File path: assets/fonts/google sans/GoogleSans-Bold.ttf
+  String get googleSansBold => 'assets/fonts/google sans/GoogleSans-Bold.ttf';
+
+  /// File path: assets/fonts/google sans/GoogleSans-BoldItalic.ttf
+  String get googleSansBoldItalic =>
+      'assets/fonts/google sans/GoogleSans-BoldItalic.ttf';
+
+  /// File path: assets/fonts/google sans/GoogleSans-Italic.ttf
+  String get googleSansItalic =>
+      'assets/fonts/google sans/GoogleSans-Italic.ttf';
+
+  /// File path: assets/fonts/google sans/GoogleSans-Medium.ttf
+  String get googleSansMedium =>
+      'assets/fonts/google sans/GoogleSans-Medium.ttf';
+
+  /// File path: assets/fonts/google sans/GoogleSans-MediumItalic.ttf
+  String get googleSansMediumItalic =>
+      'assets/fonts/google sans/GoogleSans-MediumItalic.ttf';
+
+  /// File path: assets/fonts/google sans/GoogleSans-Regular.ttf
+  String get googleSansRegular =>
+      'assets/fonts/google sans/GoogleSans-Regular.ttf';
+
+  /// List of all assets
+  List<String> get values => [
+        googleSansBold,
+        googleSansBoldItalic,
+        googleSansItalic,
+        googleSansMedium,
+        googleSansMediumItalic,
+        googleSansRegular
+      ];
+}
+
+class $AssetsFontsSamimGen {
+  const $AssetsFontsSamimGen();
+
+  /// File path: assets/fonts/samim/Samim-Bold.ttf
+  String get samimBold => 'assets/fonts/samim/Samim-Bold.ttf';
+
+  /// File path: assets/fonts/samim/Samim-FD.ttf
+  String get samimFD => 'assets/fonts/samim/Samim-FD.ttf';
+
+  /// File path: assets/fonts/samim/Samim-Medium.ttf
+  String get samimMedium => 'assets/fonts/samim/Samim-Medium.ttf';
+
+  /// List of all assets
+  List<String> get values => [samimBold, samimFD, samimMedium];
+}
+
+class $LibCoreLocalizationGen {
+  const $LibCoreLocalizationGen();
+
+  /// File path: lib/core/localization/app_en.arb
+  String get appEn => 'lib/core/localization/app_en.arb';
+
+  /// File path: lib/core/localization/app_fa.arb
+  String get appFa => 'lib/core/localization/app_fa.arb';
+
+  /// List of all assets
+  List<String> get values => [appEn, appFa];
+}
+
 class Assets {
   Assets._();
 
   static const $AssetsFontsGen fonts = $AssetsFontsGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
+  static const $LibGen lib = $LibGen();
 }
 
 class AssetGenImage {

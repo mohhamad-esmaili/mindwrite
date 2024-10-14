@@ -76,3 +76,12 @@ class ChangeCrossAxisCountEvent extends SharedEvent {
 class LoadThemeMode extends SharedEvent {}
 
 class ToggleTheme extends SharedEvent {}
+
+class LoadAppLanguage extends SharedEvent {}
+
+class ChangeLanguage extends SharedEvent {
+  final Locale locale;
+  const ChangeLanguage(this.locale);
+  @override
+  List<Object> get props => [locale];
+}

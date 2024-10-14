@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mindwrite/core/localization/app_localizations.dart';
 
 import 'package:mindwrite/core/widgets/app_drawer.dart';
 import 'package:mindwrite/core/widgets/masonary_builder.dart';
@@ -30,10 +31,11 @@ class _ArchiveViewState extends State<ArchiveView> {
   @override
   Widget build(BuildContext context) {
     SharedBloc sharedBloc = BlocProvider.of<SharedBloc>(context);
+    AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return Scaffold(
       key: _scaffoldKey,
       appBar: ScreensAppbar(
-        appbarTitle: "Archive",
+        appbarTitle: appLocalizations.archive,
         sharedBloc: sharedBloc,
       ),
       drawer: const AppDrawer(),
@@ -65,7 +67,7 @@ class _ArchiveViewState extends State<ArchiveView> {
                           } else if (state is ArchiveLoadFailed) {
                             return Center(
                               child: Text(
-                                'Failed to load notes: ${state.error}',
+                                '${appLocalizations.failedtoloadnotes}: ${state.error}',
                                 style: const TextStyle(color: Colors.red),
                               ),
                             );

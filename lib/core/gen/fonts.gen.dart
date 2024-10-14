@@ -12,4 +12,7 @@ class FontFamily {
 
   /// Font family: Google sans
   static const String googleSans = 'Google sans';
+
+  /// Font family: Samim
+  static const String samim = 'Samim';
 }

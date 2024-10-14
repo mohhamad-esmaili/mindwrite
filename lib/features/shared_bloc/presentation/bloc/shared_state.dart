@@ -2,10 +2,11 @@ part of 'shared_bloc.dart';
 
 sealed class SharedState extends Equatable {
   final ThemeMode themeMode;
-  const SharedState({required this.themeMode});
+  final Locale appLocale;
+  const SharedState({required this.themeMode, required this.appLocale});
 
   @override
-  List<Object> get props => [themeMode];
+  List<Object> get props => [themeMode, appLocale];
 }
 
 final class SharedInitial extends SharedState {
@@ -17,24 +18,30 @@ final class SharedInitial extends SharedState {
     this.isSelectionMode,
     this.listMode,
     ThemeMode themeMode,
-  ) : super(themeMode: themeMode);
+    Locale appLocale,
+  ) : super(themeMode: themeMode, appLocale: appLocale);
 
   @override
-  List<Object> get props => [isSelectionMode, selectedItems, listMode];
+  List<Object> get props =>
+      [appLocale, isSelectionMode, selectedItems, listMode];
 }
 
 class SelectionModeActive extends SharedState {
   final List<NoteModel> selectedItems;
   const SelectionModeActive(this.selectedItems)
-      : super(themeMode: ThemeMode.dark);
+      : super(themeMode: ThemeMode.dark, appLocale: const Locale('en', ''));
   @override
   List<Object> get props => [selectedItems];
 }
 
 class SharedLoading extends SharedState {
-  const SharedLoading({super.themeMode = ThemeMode.light});
+  const SharedLoading(
+      {super.themeMode = ThemeMode.dark,
+      super.appLocale = const Locale('en', '')});
 }
 
 class SharedLoadFailed extends SharedState {
-  const SharedLoadFailed({super.themeMode = ThemeMode.light});
+  const SharedLoadFailed(
+      {super.themeMode = ThemeMode.dark,
+      super.appLocale = const Locale('en', '')});
 }

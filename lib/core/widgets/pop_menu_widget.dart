@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mindwrite/core/localization/app_localizations.dart';
 import 'package:mindwrite/core/usecase/copy_clipboard.dart';
 import 'package:mindwrite/core/widgets/share_service.dart';
 
@@ -7,6 +8,7 @@ import 'package:mindwrite/features/shared_bloc/presentation/bloc/shared_bloc.dar
 class PopMenuWidget {
   Widget buildPopupMenu(BuildContext context, SharedBloc sharedBloc) {
     ThemeData themeData = Theme.of(context);
+    AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return PopupMenuButton<int>(
       onSelected: (item) => _onMenuItemSelected(context, item, sharedBloc),
       icon: Icon(Icons.more_vert, color: themeData.iconTheme.color),
@@ -16,14 +18,14 @@ class PopMenuWidget {
         PopupMenuItem<int>(
           value: 0,
           child: Text(
-            'Archive',
+            appLocalizations.archive,
             style: themeData.textTheme.labelMedium,
           ),
         ),
         PopupMenuItem<int>(
           value: 1,
           child: Text(
-            'Delete',
+            appLocalizations.delete,
             style: themeData.textTheme.labelMedium,
           ),
         ),
@@ -31,7 +33,7 @@ class PopMenuWidget {
           PopupMenuItem<int>(
             value: 2,
             child: Text(
-              'Make a copy',
+              appLocalizations.makeACopy,
               style: themeData.textTheme.labelMedium,
             ),
           ),
@@ -39,7 +41,7 @@ class PopMenuWidget {
           PopupMenuItem<int>(
             value: 3,
             child: Text(
-              'Send',
+              appLocalizations.send,
               style: themeData.textTheme.labelMedium,
             ),
           ),

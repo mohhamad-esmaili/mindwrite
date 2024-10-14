@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_animate/flutter_animate.dart'; // import flutter_animate
+import 'package:mindwrite/core/localization/app_localizations.dart';
 
 import 'package:mindwrite/core/widgets/app_drawer.dart';
 import 'package:mindwrite/core/widgets/masonary_builder.dart';
@@ -28,10 +29,10 @@ class _DeleteViewState extends State<DeleteView> {
   @override
   Widget build(BuildContext context) {
     SharedBloc sharedBloc = BlocProvider.of<SharedBloc>(context);
-
+    AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Deleted"),
+        title: Text(appLocalizations.deleted),
         actions: [
           BlocBuilder<SharedBloc, SharedState>(
             bloc: sharedBloc,
@@ -50,12 +51,13 @@ class _DeleteViewState extends State<DeleteView> {
                               sharedBloc.add(
                                   RestoreNoteEvent(sharedBloc.selectedItems));
                               SnackbarService.showStatusSnackbar(
-                                  message: "Notes restored", context: context);
+                                  message: appLocalizations.noterestored,
+                                  context: context);
                             },
                             icon: const Icon(Icons.restore),
                           ),
                           popupMenu(
-                            'Delete forever',
+                            appLocalizations.deleteforever,
                             () => context.read<DeleteBloc>().add(
                                   DeleteNotesEvent(sharedBloc.selectedItems),
                                 ),
@@ -65,7 +67,7 @@ class _DeleteViewState extends State<DeleteView> {
                     : Row(
                         key: const ValueKey('defaultMode'),
                         children: [
-                          popupMenu('Empty bin', () {
+                          popupMenu(appLocalizations.emptybin, () {
                             if (context
                                 .read<DeleteBloc>()
                                 .allDeletedNotes
@@ -74,7 +76,8 @@ class _DeleteViewState extends State<DeleteView> {
                                   context.read<DeleteBloc>().allDeletedNotes));
                             } else {
                               SnackbarService.showStatusSnackbar(
-                                  message: "Already empty", context: context);
+                                  message: appLocalizations.alreadyempty,
+                                  context: context);
                             }
                           }),
                         ],
@@ -115,7 +118,7 @@ class _DeleteViewState extends State<DeleteView> {
                           } else if (state is DeleteLoadFailed) {
                             return Center(
                               child: Text(
-                                'Failed to load notes: ${state.error}',
+                                '${appLocalizations.failedtoloadnotes}: ${state.error}',
                                 style: const TextStyle(color: Colors.red),
                               ),
                             );

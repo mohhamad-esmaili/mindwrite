@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mindwrite/core/localization/app_localizations.dart';
 import 'package:mindwrite/core/usecase/background_changer.dart';
 import 'package:mindwrite/core/utils/color_constants.dart';
 import 'package:mindwrite/core/utils/note_constants.dart';
@@ -13,6 +14,7 @@ class PaletteButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ThemeData themeData = Theme.of(context);
+    AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     bool isDarkMode =
         context.read<SharedBloc>().themeMode == ThemeMode.light ? false : true;
     return BlocBuilder<NoteBloc, NoteState>(
@@ -31,9 +33,9 @@ class PaletteButtonWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(left: 20, top: 5),
+                  padding: const EdgeInsets.only(left: 20, top: 5, right: 20),
                   child: Text(
-                    "Colors",
+                    appLocalizations.colors,
                     style: themeData.textTheme.labelMedium,
                   ),
                 ),
@@ -119,9 +121,10 @@ class PaletteButtonWidget extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 20, bottom: 5),
+                  padding:
+                      const EdgeInsets.only(left: 20, bottom: 5, right: 20),
                   child: Text(
-                    "Background",
+                    appLocalizations.backgrounds,
                     style: themeData.textTheme.labelMedium,
                   ),
                 ),

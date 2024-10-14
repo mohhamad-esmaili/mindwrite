@@ -12,8 +12,10 @@ import 'package:mindwrite/features/home_feature/presentation/bloc/home_bloc.dart
 import 'package:mindwrite/features/shared_bloc/data/model/background_model.dart';
 import 'package:mindwrite/features/shared_bloc/data/model/note_model.dart';
 import 'package:mindwrite/features/shared_bloc/domain/usecases/change_archive_usecase.dart';
+import 'package:mindwrite/features/shared_bloc/domain/usecases/change_language_usecase.dart';
 import 'package:mindwrite/features/shared_bloc/domain/usecases/change_paletter_usecase.dart';
 import 'package:mindwrite/features/shared_bloc/domain/usecases/delete_note_usecase.dart';
+import 'package:mindwrite/features/shared_bloc/domain/usecases/load_language_usecase.dart';
 import 'package:mindwrite/features/shared_bloc/domain/usecases/load_theme_usecase.dart';
 import 'package:mindwrite/features/shared_bloc/domain/usecases/pin_note_usecase.dart';
 import 'package:mindwrite/features/shared_bloc/domain/usecases/restore_note_usecase.dart';
@@ -24,18 +26,22 @@ part 'shared_event.dart';
 part 'shared_state.dart';
 
 class SharedBloc extends Bloc<SharedEvent, SharedState> {
+  Locale appLocale = Locale('en', '');
   bool isSelectionMode = false;
   List<NoteModel> selectedItems;
   ListModeEnum listMode = ListModeEnum.multiple;
   ThemeMode themeMode = ThemeMode.dark;
   LoadThemeUsecase loadThemeUsecase;
   ToggleThemeUsecase toggleThemeUsecase;
+  LoadLanguageUsecase loadLanguageUsecase;
+  ChangeLanguageUsecase changeLanguageUsecase;
   ToggleArchiveUsecase toggleArchiveUsecase;
   DeleteNoteUsecase deleteNoteUsecase;
   RestoreDeletedNoteUsecase restoreDeletedNoteUsecase;
   PinToggleNoteUsecase pinToggleNoteUsecase;
   ChangePaletterUsecase changePaletteNoteEvent;
   SharedBloc(
+    this.appLocale,
     this.isSelectionMode,
     this.selectedItems,
     this.listMode,
@@ -46,16 +52,18 @@ class SharedBloc extends Bloc<SharedEvent, SharedState> {
     this.changePaletteNoteEvent,
     this.loadThemeUsecase,
     this.toggleThemeUsecase,
-  ) : super(SharedInitial(
-            selectedItems, isSelectionMode, listMode, ThemeMode.dark)) {
+    this.loadLanguageUsecase,
+    this.changeLanguageUsecase,
+  ) : super(SharedInitial(selectedItems, isSelectionMode, listMode,
+            ThemeMode.dark, const Locale('en', ''))) {
     on<LoadThemeMode>((event, emit) async {
       emit(const SharedLoading());
       final result = await loadThemeUsecase();
 
       if (result is DataSuccess<ThemeMode>) {
         themeMode = result.data!;
-        emit(
-            SharedInitial(selectedItems, isSelectionMode, listMode, themeMode));
+        emit(SharedInitial(
+            selectedItems, isSelectionMode, listMode, themeMode, appLocale));
       } else {
         emit(const SharedLoadFailed());
       }
@@ -66,7 +74,34 @@ class SharedBloc extends Bloc<SharedEvent, SharedState> {
       final newThemeMode = await toggleThemeUsecase();
 
       themeMode = newThemeMode.data!;
-      emit(SharedInitial(selectedItems, isSelectionMode, listMode, themeMode));
+      emit(SharedInitial(
+          selectedItems, isSelectionMode, listMode, themeMode, appLocale));
+    });
+    on<LoadAppLanguage>((event, emit) async {
+      emit(const SharedLoading());
+      final result = await loadLanguageUsecase();
+
+      if (result is DataSuccess<Locale>) {
+        appLocale = result.data!;
+        emit(SharedInitial(
+            selectedItems, isSelectionMode, listMode, themeMode, appLocale));
+      } else {
+        emit(const SharedLoadFailed());
+      }
+    });
+
+    on<ChangeLanguage>((event, emit) async {
+      var result = await changeLanguageUsecase(event.locale);
+      print(result);
+      if (result is DataSuccess<Locale>) {
+        print("________________");
+        print(result.data);
+        appLocale = result.data!;
+        emit(SharedInitial(
+            selectedItems, isSelectionMode, listMode, themeMode, appLocale));
+      } else if (result is DataFailed) {
+        emit(const SharedLoadFailed());
+      }
     });
 
     /// when have long press on notes, this will comes up
@@ -84,7 +119,8 @@ class SharedBloc extends Bloc<SharedEvent, SharedState> {
       if (selectedItems.isEmpty) {
         isSelectionMode = false;
       }
-      emit(SharedInitial(selectedItems, isSelectionMode, listMode, themeMode));
+      emit(SharedInitial(
+          selectedItems, isSelectionMode, listMode, themeMode, appLocale));
     });
 
     on<TapItem>((event, emit) {
@@ -99,8 +135,8 @@ class SharedBloc extends Bloc<SharedEvent, SharedState> {
         if (selectedItems.isEmpty) {
           isSelectionMode = false;
         }
-        emit(
-            SharedInitial(selectedItems, isSelectionMode, listMode, themeMode));
+        emit(SharedInitial(
+            selectedItems, isSelectionMode, listMode, themeMode, appLocale));
       }
     });
 
@@ -109,7 +145,8 @@ class SharedBloc extends Bloc<SharedEvent, SharedState> {
       isSelectionMode = false;
       selectedItems.clear();
 
-      emit(SharedInitial(const [], isSelectionMode, listMode, themeMode));
+      emit(SharedInitial(
+          const [], isSelectionMode, listMode, themeMode, appLocale));
     });
 
     on<DeleteNoteEvent>((event, emit) async {
@@ -119,8 +156,8 @@ class SharedBloc extends Bloc<SharedEvent, SharedState> {
       if (result is DataSuccess<List<NoteModel>>) {
         isSelectionMode = false;
         selectedItems.clear();
-        emit(
-            SharedInitial(selectedItems, isSelectionMode, listMode, themeMode));
+        emit(SharedInitial(
+            selectedItems, isSelectionMode, listMode, themeMode, appLocale));
         locator<ArchiveBloc>().add(const GetAllArchive());
         locator<HomeBloc>().add(LoadAllNotes());
       } else if (result is DataFailed) {
@@ -135,8 +172,8 @@ class SharedBloc extends Bloc<SharedEvent, SharedState> {
         isSelectionMode = false;
         selectedItems.clear();
 
-        emit(
-            SharedInitial(selectedItems, isSelectionMode, listMode, themeMode));
+        emit(SharedInitial(
+            selectedItems, isSelectionMode, listMode, themeMode, appLocale));
         locator<DeleteBloc>().add(const GetAllDeleted());
       } else if (result is DataFailed) {
         emit(const SharedLoadFailed());
@@ -149,7 +186,7 @@ class SharedBloc extends Bloc<SharedEvent, SharedState> {
       locator<ArchiveBloc>().add(const GetAllArchive());
 
       if (result is DataSuccess<NoteModel>) {
-        emit(SharedInitial(const [], false, listMode, themeMode));
+        emit(SharedInitial(const [], false, listMode, themeMode, appLocale));
       } else if (result is DataFailed) {
         emit(const SharedLoadFailed());
       }
@@ -162,8 +199,8 @@ class SharedBloc extends Bloc<SharedEvent, SharedState> {
         isSelectionMode = false;
         selectedItems.clear();
 
-        emit(
-            SharedInitial(selectedItems, isSelectionMode, listMode, themeMode));
+        emit(SharedInitial(
+            selectedItems, isSelectionMode, listMode, themeMode, appLocale));
         locator<HomeBloc>().add(LoadAllNotes());
       } else if (result is DataFailed) {
         emit(const SharedLoadFailed());
@@ -190,8 +227,8 @@ class SharedBloc extends Bloc<SharedEvent, SharedState> {
         isSelectionMode = false;
         selectedItems.clear();
 
-        emit(
-            SharedInitial(selectedItems, isSelectionMode, listMode, themeMode));
+        emit(SharedInitial(
+            selectedItems, isSelectionMode, listMode, themeMode, appLocale));
         locator<HomeBloc>().add(LoadAllNotes());
       } else if (result is DataFailed) {
         emit(const SharedLoadFailed());
@@ -205,7 +242,8 @@ class SharedBloc extends Bloc<SharedEvent, SharedState> {
       } else {
         listMode = ListModeEnum.multiple;
       }
-      emit(SharedInitial(selectedItems, isSelectionMode, listMode, themeMode));
+      emit(SharedInitial(
+          selectedItems, isSelectionMode, listMode, themeMode, appLocale));
     });
   }
 }

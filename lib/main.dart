@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:mindwrite/core/localization/app_localizations.dart';
 import 'package:mindwrite/locator.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mindwrite/core/routes/app_routes.dart';
 import 'package:mindwrite/core/config/theme_config.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:mindwrite/features/archive_feature/presentation/bloc/archive_bloc.dart';
 import 'package:mindwrite/features/archive_feature/presentation/bloc/archive_event.dart';
 import 'package:mindwrite/features/delete_feature/presentation/bloc/delete_bloc.dart';
@@ -12,7 +14,6 @@ import 'package:mindwrite/features/home_feature/presentation/bloc/home_bloc.dart
 import 'package:mindwrite/features/label_feature/presentation/bloc/label_bloc.dart';
 import 'package:mindwrite/features/note_feature/presentation/bloc/note_bloc.dart';
 import 'package:mindwrite/features/shared_bloc/presentation/bloc/shared_bloc.dart';
-
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -55,10 +56,21 @@ class Root extends StatelessWidget {
         builder: (context, state) {
           return MaterialApp.router(
             theme: state.themeMode == ThemeMode.light
-                ? ThemeConfig.lightAppTheme
-                : ThemeConfig.darkAppTheme,
+                ? ThemeConfig.lightTheme(state.appLocale.languageCode)
+                : ThemeConfig.darkTheme(state.appLocale.languageCode),
             themeMode: state.themeMode,
             debugShowCheckedModeBanner: false,
+            locale: state.appLocale,
+            supportedLocales: const [
+              Locale('en', ''),
+              Locale('fa', ''),
+            ],
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
             routerDelegate: AppRoutes.router.routerDelegate,
             routeInformationParser: AppRoutes.router.routeInformationParser,
             routeInformationProvider: AppRoutes.router.routeInformationProvider,

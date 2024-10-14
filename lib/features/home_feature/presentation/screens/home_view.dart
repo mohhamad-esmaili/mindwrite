@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mindwrite/core/localization/app_localizations.dart';
 import 'package:mindwrite/core/widgets/masonary_builder.dart';
 import 'package:mindwrite/features/shared_bloc/presentation/bloc/shared_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,7 +29,8 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     SharedBloc sharedBloc = BlocProvider.of<SharedBloc>(context);
-
+    AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    bool isRTL = Localizations.localeOf(context).languageCode == 'fa';
     return Scaffold(
       resizeToAvoidBottomInset: true,
       key: _scaffoldKey,
@@ -62,14 +64,15 @@ class _HomeViewState extends State<HomeView> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   if (state.pinnedNotes.isNotEmpty)
-                                    const ListviewTitle(title: "Pinned"),
+                                    ListviewTitle(
+                                        title: appLocalizations.pinned),
                                   if (state.pinnedNotes.isNotEmpty)
                                     MasonaryBuilder(
                                       sharedBloc: sharedBloc,
                                       noteModelList: state.pinnedNotes,
                                       defaultArchiveNote: true,
                                     ),
-                                  const ListviewTitle(title: "Others"),
+                                  ListviewTitle(title: appLocalizations.others),
                                   MasonaryBuilder(
                                     sharedBloc: sharedBloc,
                                     noteModelList: state.notes,
@@ -82,7 +85,7 @@ class _HomeViewState extends State<HomeView> {
                         } else if (state is HomeLoadFailed) {
                           return Center(
                             child: Text(
-                              'Failed to load notes: ${state.error}',
+                              '${appLocalizations.failedtoloadnotes}: ${state.error}',
                               style: const TextStyle(color: Colors.red),
                             ),
                           );
@@ -100,7 +103,9 @@ class _HomeViewState extends State<HomeView> {
         ),
       ),
       floatingActionButton: const FloatingButtonWidget(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.miniEndDocked,
+      floatingActionButtonLocation: isRTL
+          ? FloatingActionButtonLocation.miniStartDocked
+          : FloatingActionButtonLocation.miniEndDocked,
       bottomNavigationBar: const HomeBottomBar(),
     );
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mindwrite/core/localization/app_localizations.dart';
 import 'package:mindwrite/core/widgets/app_drawer.dart';
 import 'package:mindwrite/core/widgets/screens_appbar.dart';
 import 'package:mindwrite/core/widgets/snackbar_widget.dart';
@@ -11,41 +12,43 @@ class AboutView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SharedBloc sharedBloc = BlocProvider.of(context);
     ThemeData themeData = Theme.of(context);
     return Scaffold(
-      appBar: ScreensAppbar(
-        appbarTitle: "About MindWrite",
-        sharedBloc: sharedBloc,
+      appBar: AppBar(
+        title: Text(AppLocalizations.of(context)!.aboutAndFeedback),
       ),
       drawer: const AppDrawer(),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text("Made with ", style: themeData.textTheme.labelLarge),
-              const Icon(Icons.favorite, color: Colors.red),
-              Text(" in Flutter", style: themeData.textTheme.labelLarge),
-            ],
-          ),
-          InkWell(
-            onTap: () => _launchURL(context),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("Give project ", style: themeData.textTheme.labelLarge),
-                  Icon(Icons.star, color: Colors.yellow[700]),
-                  Text(" in github", style: themeData.textTheme.labelLarge),
-                ],
+      body: Directionality(
+        textDirection: TextDirection.ltr,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text("Made with ", style: themeData.textTheme.labelLarge),
+                const Icon(Icons.favorite, color: Colors.red),
+                Text(" in Flutter", style: themeData.textTheme.labelLarge),
+              ],
+            ),
+            InkWell(
+              onTap: () => _launchURL(context),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Give project ",
+                        style: themeData.textTheme.labelLarge),
+                    Icon(Icons.star, color: Colors.yellow[700]),
+                    Text(" in github", style: themeData.textTheme.labelLarge),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mindwrite/core/gen/assets.gen.dart';
+import 'package:mindwrite/core/gen/fonts.gen.dart';
+import 'package:mindwrite/core/localization/app_localizations.dart';
 import 'package:mindwrite/core/utils/color_constants.dart';
 import 'package:mindwrite/core/widgets/circular_indicator_widget.dart';
 import 'package:mindwrite/features/shared_bloc/presentation/bloc/shared_bloc.dart';
@@ -18,6 +20,7 @@ class _SplashViewState extends State<SplashView> {
   void initState() {
     super.initState();
     context.read<SharedBloc>().add(LoadThemeMode());
+    context.read<SharedBloc>().add(LoadAppLanguage());
     Future.delayed(const Duration(seconds: 2)).then((_) {
       if (mounted) {
         context.go('/home');
@@ -46,8 +49,9 @@ class _SplashViewState extends State<SplashView> {
                 ),
               ),
               Text(
-                'Mind Write',
+                AppLocalizations.of(context)!.mindWrite,
                 style: TextStyle(
+                    fontFamily: FontFamily.samim,
                     color: AppColorConstants.primaryDarkColor,
                     decoration: TextDecoration.none,
                     fontWeight: FontWeight.bold,

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mindwrite/core/localization/app_localizations.dart';
 import 'package:mindwrite/core/usecase/background_changer.dart';
 import 'package:mindwrite/core/widgets/camera_capture.dart';
 import 'package:mindwrite/features/note_feature/presentation/bloc/note_bloc.dart';
@@ -14,6 +15,7 @@ class AtachButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return BlocBuilder<NoteBloc, NoteState>(
       builder: (context, state) {
         if (state is NoteInitial) {
@@ -23,58 +25,61 @@ class AtachButtonWidget extends StatelessWidget {
             color: initialColor == Colors.transparent
                 ? Colors.grey[800]
                 : initialColor,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisAlignment: MainAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                _makeSettingButton(
-                  context: context,
-                  onPress: () async {
-                    Uint8List? selectedImage = await CameraCapture.openCamera(
-                        context, ImageSource.camera);
+            child: Directionality(
+              textDirection: TextDirection.ltr,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _makeSettingButton(
+                    context: context,
+                    onPress: () async {
+                      Uint8List? selectedImage = await CameraCapture.openCamera(
+                          context, ImageSource.camera);
 
-                    if (context.mounted && selectedImage != null) {
-                      context
-                          .read<NoteBloc>()
-                          .add(ChangeDrawingLists(selectedImage));
-                    }
-                    if (context.mounted) {
+                      if (context.mounted && selectedImage != null) {
+                        context
+                            .read<NoteBloc>()
+                            .add(ChangeDrawingLists(selectedImage));
+                      }
+                      if (context.mounted) {
+                        context.pop();
+                      }
+                    },
+                    label: appLocalizations.takePhoto,
+                    icon: Icons.photo_camera_outlined,
+                  ),
+                  _makeSettingButton(
+                    context: context,
+                    onPress: () async {
+                      Uint8List? selectedImage = await CameraCapture.openCamera(
+                          context, ImageSource.gallery);
+
+                      if (context.mounted && selectedImage != null) {
+                        context
+                            .read<NoteBloc>()
+                            .add(ChangeDrawingLists(selectedImage));
+                      }
+
+                      if (context.mounted) {
+                        context.pop();
+                      }
+                    },
+                    label: appLocalizations.addImage,
+                    icon: Icons.image_outlined,
+                  ),
+                  _makeSettingButton(
+                    context: context,
+                    onPress: () {
                       context.pop();
-                    }
-                  },
-                  label: "Take photo",
-                  icon: Icons.photo_camera_outlined,
-                ),
-                _makeSettingButton(
-                  context: context,
-                  onPress: () async {
-                    Uint8List? selectedImage = await CameraCapture.openCamera(
-                        context, ImageSource.gallery);
-
-                    if (context.mounted && selectedImage != null) {
-                      context
-                          .read<NoteBloc>()
-                          .add(ChangeDrawingLists(selectedImage));
-                    }
-
-                    if (context.mounted) {
-                      context.pop();
-                    }
-                  },
-                  label: "Add image",
-                  icon: Icons.image_outlined,
-                ),
-                _makeSettingButton(
-                  context: context,
-                  onPress: () {
-                    context.pop();
-                    context.go('/draw');
-                  },
-                  label: "Drawing",
-                  icon: Icons.brush_rounded,
-                ),
-              ],
+                      context.go('/draw');
+                    },
+                    label: appLocalizations.drawing,
+                    icon: Icons.brush_rounded,
+                  ),
+                ],
+              ),
             ),
           );
         }

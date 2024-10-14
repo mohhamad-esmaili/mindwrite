@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mindwrite/core/localization/app_localizations.dart';
 import 'package:mindwrite/core/widgets/snackbar_widget.dart';
 import 'package:mindwrite/features/home_feature/presentation/bloc/home_bloc.dart';
 import 'package:mindwrite/features/note_feature/presentation/bloc/note_bloc.dart';
@@ -19,6 +20,7 @@ class NoteAppbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ThemeData themeData = Theme.of(context);
+    AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return BlocBuilder<NoteBloc, NoteState>(
       builder: (context, state) {
         if (state is NoteInitial) {
@@ -71,8 +73,8 @@ class NoteAppbar extends StatelessWidget {
                     context.go('/home');
                     SnackbarService.showStatusSnackbar(
                         context: context,
-                        message: "Note Archived",
-                        actionLabel: "Undo",
+                        message: appLocalizations.notearchived,
+                        actionLabel: appLocalizations.undo,
                         onAction: () {
                           context
                               .read<SharedBloc>()
@@ -82,8 +84,8 @@ class NoteAppbar extends StatelessWidget {
                   } else {
                     SnackbarService.showStatusSnackbar(
                         context: context,
-                        message: "Enter note title!",
-                        actionLabel: "Ok",
+                        message: "${appLocalizations.enternotetitle}!",
+                        actionLabel: appLocalizations.ok,
                         onAction: null,
                         onClosed: null);
                   }

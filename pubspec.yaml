@@ -3,7 +3,7 @@ description: "clone app of google keepNote with Bloc"
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.1+1
+version: 1.0.0+2
 
 environment:
   sdk: '>=3.4.4 <4.0.0'
@@ -29,6 +29,8 @@ dependencies:
   syncfusion_flutter_signaturepad: ^26.2.14
   share_plus: ^10.0.2
   url_launcher: ^6.3.0
+  flutter_localizations:
+    sdk: flutter
   
 dev_dependencies:
   flutter_test:
@@ -52,23 +54,36 @@ flutter:
 
   
   assets:
-    - assets/fonts/
+    - assets/fonts/google sans/
+    - assets/fonts/samim/
     - assets/images/
+    - lib/core/localization/app_fa.arb
+    - lib/core/localization/app_en.arb
   
   fonts:
     - family: Google sans
       fonts:
-        - asset: assets/fonts/GoogleSans-Bold.ttf
+        - asset: assets/fonts/google sans/GoogleSans-Bold.ttf
           weight: 700
-        - asset: assets/fonts/GoogleSans-BoldItalic.ttf
+        - asset: assets/fonts/google sans/GoogleSans-BoldItalic.ttf
           weight: 700
           style: italic
-        - asset: assets/fonts/GoogleSans-Italic.ttf
+        - asset: assets/fonts/google sans/GoogleSans-Italic.ttf
           style: italic
-        - asset: assets/fonts/GoogleSans-Medium.ttf
+        - asset: assets/fonts/google sans/GoogleSans-Medium.ttf
           weight: 500
-        - asset: assets/fonts/GoogleSans-MediumItalic.ttf
+        - asset: assets/fonts/google sans/GoogleSans-MediumItalic.ttf
           weight: 500
           style: italic
-        - asset: assets/fonts/GoogleSans-Regular.ttf
+        - asset: assets/fonts/google sans/GoogleSans-Regular.ttf
           weight: 100
+
+    - family: Samim
+      fonts:
+        - asset: assets/fonts/samim/Samim-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/samim/Samim-FD.ttf
+          weight: 600
+        - asset: assets/fonts/samim/Samim-Medium.ttf
+          weight: 500
+       

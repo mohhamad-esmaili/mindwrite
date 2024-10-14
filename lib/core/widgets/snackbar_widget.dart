@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mindwrite/core/localization/app_localizations.dart';
 import 'package:mindwrite/core/usecase/background_changer.dart';
 import 'package:mindwrite/core/utils/note_constants.dart';
 import 'package:mindwrite/features/shared_bloc/data/model/background_model.dart';
@@ -32,7 +33,7 @@ class SnackbarService {
               shadowColor: themeData.primaryColor,
             ),
             child: Text(
-              "No",
+              AppLocalizations.of(context)!.no,
               style: themeData.textTheme.labelMedium,
             ),
           ),
@@ -59,7 +60,7 @@ class SnackbarService {
       context: context,
       builder: (_) => AlertDialog(
         title: Text(
-          "Note Color",
+          AppLocalizations.of(context)!.noteColor,
           style: Theme.of(context).textTheme.labelLarge,
         ),
         actionsAlignment: MainAxisAlignment.spaceAround,

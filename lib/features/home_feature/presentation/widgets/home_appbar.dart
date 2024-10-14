@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:mindwrite/core/enums/listmode_enum.dart';
+import 'package:mindwrite/core/localization/app_localizations.dart';
 import 'package:mindwrite/core/utils/color_constants.dart';
 import 'package:mindwrite/core/widgets/pop_menu_widget.dart';
 import 'package:mindwrite/core/widgets/snackbar_widget.dart';
@@ -139,7 +140,7 @@ class TemporaryLoadingIndicator extends StatelessWidget {
                   ),
                   const SizedBox(width: 10),
                   Text(
-                    "Mind write",
+                    AppLocalizations.of(context)!.mindWrite,
                     style: themeData.textTheme.labelMedium,
                   ),
                 ],
@@ -180,7 +181,7 @@ class SearchTextFieldState extends State<SearchTextField> {
       controller: _searchController,
       textDirection: TextDirection.ltr,
       decoration: InputDecoration(
-        hintText: "Search your notes",
+        hintText: AppLocalizations.of(context)!.searchNotes,
         hintStyle: TextStyle(
             color: Colors.grey,
             fontSize: themeData.textTheme.labelMedium!.fontSize),

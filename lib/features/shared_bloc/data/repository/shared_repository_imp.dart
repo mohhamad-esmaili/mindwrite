@@ -32,6 +32,29 @@ class SharedRepositoryImp extends SharedRepository {
   }
 
   @override
+  Future<DataState<Locale>> changeLanguage(Locale locale) async {
+    try {
+      final result = await sharedLocalDatabase.changeLanguage(locale);
+      print("+++++++++");
+      print(result);
+      return DataSuccess(result);
+    } catch (e) {
+      return DataFailed(e.toString());
+    }
+  }
+
+  @override
+  Future<DataState<Locale>> loadAppLocade() async {
+    try {
+      final result = await sharedLocalDatabase.getAppLanguage();
+
+      return DataSuccess(result);
+    } catch (e) {
+      return DataFailed(e.toString());
+    }
+  }
+
+  @override
   Future<DataState<List<NoteModel>>> restoreNoteToBox(
       List<NoteModel> notes) async {
     try {

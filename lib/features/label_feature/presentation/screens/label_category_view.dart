@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mindwrite/core/localization/app_localizations.dart';
 import 'package:mindwrite/core/widgets/app_drawer.dart';
 import 'package:mindwrite/core/widgets/masonary_builder.dart';
 import 'package:mindwrite/core/widgets/screens_appbar.dart';
@@ -31,6 +32,7 @@ class _LabelCategoryViewState extends State<LabelCategoryView> {
     SharedBloc sharedBloc = BlocProvider.of<SharedBloc>(context);
     BlocProvider.of<LabelBloc>(context)
         .add(LoadLabelNotesEvent(selectedLabel: widget.selectedLabel));
+    AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: ScreensAppbar(
         appbarTitle: widget.selectedLabel.labelName,
@@ -50,14 +52,14 @@ class _LabelCategoryViewState extends State<LabelCategoryView> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     if (state.pinnednoteList.isNotEmpty)
-                      const ListviewTitle(title: "Pinned"),
+                      ListviewTitle(title: appLocalizations.pinned),
                     if (state.pinnednoteList.isNotEmpty)
                       MasonaryBuilder(
                         sharedBloc: sharedBloc,
                         noteModelList: state.pinnednoteList,
                         defaultArchiveNote: true,
                       ),
-                    const ListviewTitle(title: "Others"),
+                    ListviewTitle(title: appLocalizations.others),
                     MasonaryBuilder(
                       sharedBloc: sharedBloc,
                       noteModelList: state.noteList,
@@ -68,7 +70,7 @@ class _LabelCategoryViewState extends State<LabelCategoryView> {
               } else if (state is LabelFailed) {
                 return Center(
                   child: Text(
-                    'Failed to load notes: ${state.error}',
+                    '${appLocalizations.failedtoloadnotes}: ${state.error}',
                     style: const TextStyle(color: Colors.red),
                   ),
                 );

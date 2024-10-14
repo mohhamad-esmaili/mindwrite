@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mindwrite/core/localization/app_localizations.dart';
 import 'package:mindwrite/core/usecase/background_changer.dart';
 import 'package:mindwrite/core/utils/note_constants.dart';
 
@@ -24,7 +25,7 @@ class NoteView extends StatefulWidget {
 class NoteViewState extends State<NoteView> {
   late TextEditingController titleController;
   late TextEditingController descriptionController;
-  int descriptionLines = 1; // تعداد خطوط توصیف
+  int descriptionLines = 1;
 
   @override
   void initState() {
@@ -32,8 +33,7 @@ class NoteViewState extends State<NoteView> {
     titleController = TextEditingController(text: widget.selectedNote!.title);
     descriptionController =
         TextEditingController(text: widget.selectedNote!.description);
-    descriptionController
-        .addListener(_calculateLines); // لیسنر برای محاسبه خطوط
+    descriptionController.addListener(_calculateLines);
   }
 
   @override
@@ -44,7 +44,6 @@ class NoteViewState extends State<NoteView> {
     super.dispose();
   }
 
-  // تابعی برای محاسبه تعداد خطوط واقعی
   void _calculateLines() {
     final span = TextSpan(
       text: descriptionController.text,
@@ -55,13 +54,10 @@ class NoteViewState extends State<NoteView> {
       maxLines: null,
       textDirection: TextDirection.ltr,
     );
-    tp.layout(
-        maxWidth: MediaQuery.of(context).size.width - 30); // عرض TextField
+    tp.layout(maxWidth: MediaQuery.of(context).size.width - 30);
 
-    // محاسبه تعداد خطوط
     int lines = (tp.size.height / tp.preferredLineHeight).ceil();
 
-    // اگر تعداد خطوط تغییر کرد، height را تنظیم کن
     if (lines != descriptionLines) {
       setState(() {
         descriptionLines = lines;
@@ -72,13 +68,12 @@ class NoteViewState extends State<NoteView> {
   @override
   Widget build(BuildContext context) {
     ThemeData themeData = Theme.of(context);
-
+    AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return BlocBuilder<NoteBloc, NoteState>(builder: (context, state) {
       if (state is NoteSaving) {
         return const CircularIndicatorWidget();
       }
       if (state is NoteInitial) {
-        // تغییر رنگ متن
         Color initialColor = state.note.noteBackground!.darkColor! ==
                 Colors.transparent
             ? Theme.of(context).scaffoldBackgroundColor
@@ -154,7 +149,7 @@ class NoteViewState extends State<NoteView> {
                                       minLines: 1,
                                       keyboardType: TextInputType.multiline,
                                       decoration: InputDecoration(
-                                        hintText: "Title",
+                                        hintText: appLocalizations.title,
                                         hintStyle:
                                             themeData.textTheme.labelMedium,
                                         disabledBorder: InputBorder.none,
@@ -166,8 +161,7 @@ class NoteViewState extends State<NoteView> {
                                           const Duration(milliseconds: 300)),
                                   AnimatedContainer(
                                     duration: const Duration(milliseconds: 300),
-                                    height: descriptionLines * 24.0 +
-                                        16.0, // ارتفاع متغیر
+                                    height: descriptionLines * 24.0 + 16.0,
                                     child: TextField(
                                       controller: descriptionController,
                                       scrollPhysics:
@@ -177,7 +171,7 @@ class NoteViewState extends State<NoteView> {
                                       keyboardType: TextInputType.multiline,
                                       style: themeData.textTheme.labelMedium,
                                       decoration: InputDecoration(
-                                        hintText: "Description",
+                                        hintText: appLocalizations.description,
                                         hintStyle:
                                             themeData.textTheme.labelMedium,
                                         disabledBorder: InputBorder.none,

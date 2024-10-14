@@ -36,7 +36,9 @@ import 'package:mindwrite/features/note_feature/domain/repository/note_repositor
 import 'package:mindwrite/features/note_feature/domain/use_cases/save_note_usecase.dart';
 import 'package:mindwrite/features/note_feature/presentation/bloc/note_bloc.dart';
 import 'package:mindwrite/features/shared_bloc/domain/usecases/change_archive_usecase.dart';
+import 'package:mindwrite/features/shared_bloc/domain/usecases/change_language_usecase.dart';
 import 'package:mindwrite/features/shared_bloc/domain/usecases/change_paletter_usecase.dart';
+import 'package:mindwrite/features/shared_bloc/domain/usecases/load_language_usecase.dart';
 import 'package:mindwrite/features/shared_bloc/domain/usecases/load_theme_usecase.dart';
 import 'package:mindwrite/features/shared_bloc/domain/usecases/pin_note_usecase.dart';
 import 'package:mindwrite/features/shared_bloc/domain/usecases/toggle_theme_usecase.dart';
@@ -125,6 +127,12 @@ setup() async {
     () => ToggleThemeUsecase(locator<SharedRepository>()),
   );
   locator.registerFactory(
+    () => LoadLanguageUsecase(locator<SharedRepository>()),
+  );
+  locator.registerFactory(
+    () => ChangeLanguageUsecase(locator<SharedRepository>()),
+  );
+  locator.registerFactory(
     () => RestoreDeletedNoteUsecase(locator<SharedRepository>()),
   );
   locator.registerFactory(
@@ -176,6 +184,7 @@ setup() async {
   ));
 
   locator.registerSingleton<SharedBloc>(SharedBloc(
+    Locale('en', ''),
     false,
     [],
     ListModeEnum.multiple,
@@ -186,6 +195,8 @@ setup() async {
     locator<ChangePaletterUsecase>(),
     locator<LoadThemeUsecase>(),
     locator<ToggleThemeUsecase>(),
+    locator<LoadLanguageUsecase>(),
+    locator<ChangeLanguageUsecase>(),
   ));
   locator.registerSingleton<LabelBloc>(LabelBloc(
     [],

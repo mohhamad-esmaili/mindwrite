@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart'; // Import the package
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mindwrite/core/localization/app_localizations.dart';
 import 'package:mindwrite/core/resources/note_arguments.dart';
 
 import 'package:mindwrite/core/widgets/circular_indicator_widget.dart';
@@ -42,6 +43,7 @@ class _LabelSelectionViewState extends State<LabelSelectionView> {
   Widget build(BuildContext context) {
     context.read<LabelBloc>().add(LoadLabelsEvent());
     ThemeData themeData = Theme.of(context);
+    AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: true,
@@ -60,7 +62,7 @@ class _LabelSelectionViewState extends State<LabelSelectionView> {
           controller: _searchController,
           maxLength: 20,
           decoration: InputDecoration(
-            hintText: 'Search labels...',
+            hintText: '${appLocalizations.searchlabels}...',
             border: InputBorder.none,
             counterText: "",
             hintStyle: themeData.textTheme.labelMedium,
@@ -151,7 +153,7 @@ class _LabelSelectionViewState extends State<LabelSelectionView> {
               },
             );
           } else {
-            return const Center(child: Text('An error occurred'));
+            return Center(child: Text(appLocalizations.anerroroccurred));
           }
         },
       ),

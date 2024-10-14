@@ -26,6 +26,29 @@ class SharedLocalDatabase {
     return isDarkMode ? ThemeMode.dark : ThemeMode.light;
   }
 
+  Future<Locale> getAppLanguage() async {
+    String appLocale = await appBox.get("appLocale") ?? const Locale('en', '');
+
+    return Locale(appLocale);
+  }
+
+  Future<Locale> changeLanguage(Locale locale) async {
+    String appLocade = appBox.get("appLocale", defaultValue: 'en');
+
+    if (appLocade == 'en') {
+      await appBox.put("appLocale", 'fa');
+    } else {
+      await appBox.put("appLocale", 'en');
+    }
+    print(locale.languageCode);
+    print(Locale(
+      locale.languageCode,
+    ));
+    return Locale(
+      locale.languageCode,
+    );
+  }
+
   Future<List<NoteModel>?> toggleNoteArchiveToBox(List<NoteModel> notes) async {
     List<NoteModel> updatedNotes = [];
 

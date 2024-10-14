@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mindwrite/core/localization/app_localizations.dart';
 import 'package:mindwrite/features/label_feature/presentation/bloc/label_bloc.dart';
 import 'package:mindwrite/features/label_feature/data/model/label_model.dart';
 import 'package:mindwrite/features/label_feature/presentation/widgets/label_builder.dart';
@@ -44,7 +45,7 @@ class _LabelViewState extends State<LabelView> {
   @override
   Widget build(BuildContext context) {
     ThemeData themeData = Theme.of(context);
-
+    AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -55,7 +56,7 @@ class _LabelViewState extends State<LabelView> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("Edit Labels"),
+          title: Text(appLocalizations.editLabels),
           leading: IconButton(
             onPressed: () => context.go('/home'),
             icon: const Icon(Icons.arrow_back_rounded),
@@ -116,7 +117,7 @@ class _LabelViewState extends State<LabelView> {
                           }
                         },
                         decoration: InputDecoration(
-                          hintText: 'Label Name',
+                          hintText: appLocalizations.labelName,
                           errorText: errorText,
                           hintStyle: themeData.textTheme.labelMedium,
                           counterText: "",

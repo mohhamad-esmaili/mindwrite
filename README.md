@@ -58,13 +58,13 @@ syncfusion_flutter_signaturepad: ^26.2.14
 - [x] send and share + make copy
 - [x] light theme
 - [x] settings
+- [x] persian version
 
 ### Todo :
 
 - [ ] text to speech
 - [ ] reminders
 - [ ] date picker
-- [ ] persian version
 - [ ] recording
 - [ ] tick boxes in notes
 - [ ] do and redo buttons

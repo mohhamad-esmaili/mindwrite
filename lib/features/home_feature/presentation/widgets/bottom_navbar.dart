@@ -20,56 +20,60 @@ class HomeBottomBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Hero(
       tag: 'note',
-      child: BottomAppBar(
-        color: context.read<SharedBloc>().themeMode == ThemeMode.light
-            ? AppColorConstants.appbarLightColor
-            : AppColorConstants.appbarDarkColor,
-        notchMargin: 10,
-        padding: const EdgeInsets.all(5),
-        height: 70,
-        shape: const CircularNotchedRectangle(),
-        clipBehavior: Clip.antiAlias,
-        child: Row(
-          children: [
-            ///TODO: CHECKBOX IN NOTE
-            // IconButton(
-            //   onPressed: () {},
-            //   icon: const Icon(
-            //     Icons.check_box_outlined,
-            //     size: 30,
-            //   ),
-            // ),
-            IconButton(
-              onPressed: () {
-                context.read<NoteBloc>().add(const NoteInitialEvent());
-                context.go("/draw");
-              },
-              icon: const Icon(
-                Icons.brush_rounded,
-                size: 30,
-              ),
-            ),
-            IconButton(
-              onPressed: () async {
-                Uint8List? selectedImage = await CameraCapture.openCamera(
-                    context, ImageSource.gallery);
-
-                if (context.mounted && selectedImage != null) {
+      child: Directionality(
+        textDirection: TextDirection.ltr,
+        child: BottomAppBar(
+          color: context.read<SharedBloc>().themeMode == ThemeMode.light
+              ? AppColorConstants.appbarLightColor
+              : AppColorConstants.appbarDarkColor,
+          notchMargin: 10,
+          padding: const EdgeInsets.all(5),
+          height: 70,
+          shape: const CircularNotchedRectangle(),
+          clipBehavior: Clip.antiAlias,
+          child: Row(
+            children: [
+              ///TODO: CHECKBOX IN NOTE
+              // IconButton(
+              //   onPressed: () {},
+              //   icon: const Icon(
+              //     Icons.check_box_outlined,
+              //     size: 30,
+              //   ),
+              // ),
+              IconButton(
+                onPressed: () {
                   context.read<NoteBloc>().add(const NoteInitialEvent());
-                  context
-                      .read<NoteBloc>()
-                      .add(ChangeDrawingLists(selectedImage));
-
-                  context.go("/create_note",
-                      extra: NoteArguments(selectedNote: locator<NoteModel>()));
-                }
-              },
-              icon: const Icon(
-                Icons.image_outlined,
-                size: 30,
+                  context.go("/draw");
+                },
+                icon: const Icon(
+                  Icons.brush_rounded,
+                  size: 30,
+                ),
               ),
-            ),
-          ],
+              IconButton(
+                onPressed: () async {
+                  Uint8List? selectedImage = await CameraCapture.openCamera(
+                      context, ImageSource.gallery);
+
+                  if (context.mounted && selectedImage != null) {
+                    context.read<NoteBloc>().add(const NoteInitialEvent());
+                    context
+                        .read<NoteBloc>()
+                        .add(ChangeDrawingLists(selectedImage));
+
+                    context.go("/create_note",
+                        extra:
+                            NoteArguments(selectedNote: locator<NoteModel>()));
+                  }
+                },
+                icon: const Icon(
+                  Icons.image_outlined,
+                  size: 30,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

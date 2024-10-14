@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mindwrite/core/localization/app_localizations.dart';
 import 'package:mindwrite/core/widgets/circular_indicator_widget.dart';
 import 'package:mindwrite/core/widgets/snackbar_widget.dart';
 import 'package:mindwrite/features/note_feature/presentation/bloc/note_bloc.dart';
@@ -12,6 +13,7 @@ class NoteDrawSectionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return BlocBuilder<NoteBloc, NoteState>(
       builder: (context, state) {
         if (state is NoteInitial) {
@@ -53,8 +55,8 @@ class NoteDrawSectionWidget extends StatelessWidget {
                               ),
                               onPressed: () => SnackbarService.showAskingDialog(
                                 context: context,
-                                questionText: "Are You Sure?",
-                                onYesBTNText: "Yes",
+                                questionText: "${appLocalizations.areyousure}?",
+                                onYesBTNText: appLocalizations.yes,
                                 onYesPress: () {
                                   context
                                       .read<NoteBloc>()

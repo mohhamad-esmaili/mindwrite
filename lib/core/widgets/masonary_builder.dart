@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mindwrite/core/enums/listmode_enum.dart';
+import 'package:mindwrite/core/localization/app_localizations.dart';
 import 'package:mindwrite/core/resources/note_arguments.dart';
 import 'package:mindwrite/core/usecase/background_changer.dart';
 import 'package:mindwrite/core/utils/color_constants.dart';
@@ -184,7 +185,7 @@ class _MasonaryBuilderState extends State<MasonaryBuilder>
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                "There is no note yet",
+                AppLocalizations.of(context)!.thereIsNoNote,
                 style: Theme.of(context).textTheme.labelLarge,
               ),
             ),

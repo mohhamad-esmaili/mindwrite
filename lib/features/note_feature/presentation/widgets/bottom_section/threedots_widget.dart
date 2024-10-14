@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mindwrite/core/localization/app_localizations.dart';
 import 'package:mindwrite/core/usecase/background_changer.dart';
 import 'package:mindwrite/core/usecase/copy_clipboard.dart';
 import 'package:mindwrite/core/widgets/share_service.dart';
@@ -14,6 +15,7 @@ class ThreeDotsButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return BlocBuilder<NoteBloc, NoteState>(
       builder: (context, state) {
         if (state is NoteInitial) {
@@ -23,54 +25,57 @@ class ThreeDotsButtonWidget extends StatelessWidget {
             color: initialColor == Colors.transparent
                 ? Theme.of(context).appBarTheme.backgroundColor
                 : initialColor,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisAlignment: MainAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                _makeSettingButton(
-                  context: context,
-                  onPress: () {
-                    BlocProvider.of<SharedBloc>(context)
-                        .add(DeleteNoteEvent([state.note]));
-                    context.pop();
-                    context.go('/home');
-                  },
-                  label: "Delete",
-                  icon: Icons.delete,
-                ),
-                _makeSettingButton(
-                  context: context,
-                  onPress: () {
-                    if (state.note.title != null) {
-                      CopyClipboardService.copyNoteToClipboard(
-                          state.note.title!, state.note.description, context);
-                    }
+            child: Directionality(
+              textDirection: TextDirection.ltr,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _makeSettingButton(
+                    context: context,
+                    onPress: () {
+                      BlocProvider.of<SharedBloc>(context)
+                          .add(DeleteNoteEvent([state.note]));
+                      context.pop();
+                      context.go('/home');
+                    },
+                    label: appLocalizations.delete,
+                    icon: Icons.delete,
+                  ),
+                  _makeSettingButton(
+                    context: context,
+                    onPress: () {
+                      if (state.note.title != null) {
+                        CopyClipboardService.copyNoteToClipboard(
+                            state.note.title!, state.note.description, context);
+                      }
 
-                    context.pop();
-                  },
-                  label: "Make a copy",
-                  icon: Icons.copy_rounded,
-                ),
-                _makeSettingButton(
-                  context: context,
-                  onPress: () {
-                    ShareService.sendTo(state.note, context);
-                    context.pop();
-                  },
-                  label: "Send",
-                  icon: Icons.share_rounded,
-                ),
-                _makeSettingButton(
-                  context: context,
-                  onPress: () {
-                    context.go("/label_selection", extra: state.note);
-                    context.pop();
-                  },
-                  label: "Labels",
-                  icon: Icons.label_outline_rounded,
-                ),
-              ],
+                      context.pop();
+                    },
+                    label: appLocalizations.makeACopy,
+                    icon: Icons.copy_rounded,
+                  ),
+                  _makeSettingButton(
+                    context: context,
+                    onPress: () {
+                      ShareService.sendTo(state.note, context);
+                      context.pop();
+                    },
+                    label: appLocalizations.send,
+                    icon: Icons.share_rounded,
+                  ),
+                  _makeSettingButton(
+                    context: context,
+                    onPress: () {
+                      context.go("/label_selection", extra: state.note);
+                      context.pop();
+                    },
+                    label: appLocalizations.labels,
+                    icon: Icons.label_outline_rounded,
+                  ),
+                ],
+              ),
             ),
           );
         }
