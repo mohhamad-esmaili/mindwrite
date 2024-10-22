@@ -38,6 +38,9 @@ class AboutView extends StatelessWidget {
               context,
               'bazaar://details?id=$packageName',
               'https://cafebazaar.ir/app/$packageName',
+              //TODO: should change host from bazaar to Myket to publish in store
+              // 'myket://comment?id=$packageName',
+              // 'https://myket.ir/app/$packageName',
             ),
             child: Container(
               color: AppColorConstants.primaryDarkColor.withOpacity(0.5),
@@ -49,6 +52,7 @@ class AboutView extends StatelessWidget {
                   Text("${appLocalizations.rateApp} ",
                       style: themeData.textTheme.labelLarge),
                   Icon(Icons.handshake_outlined, color: Colors.blueAccent[700]),
+                  //TODO: CHANGE BAZAAR TO MYKET IN PUBLISH IN EACH PLATFORM
                   Text(" ${appLocalizations.bazaar}",
                       style: themeData.textTheme.labelLarge),
                 ],
