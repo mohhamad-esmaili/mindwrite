@@ -21,45 +21,51 @@ class _SplashViewState extends State<SplashView> {
     super.initState();
     context.read<SharedBloc>().add(LoadThemeMode());
     context.read<SharedBloc>().add(LoadAppLanguage());
-    Future.delayed(const Duration(seconds: 2)).then((_) {
-      if (mounted) {
-        context.go('/home');
-      }
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<SharedBloc, SharedState>(
-        builder: (context, state) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Center(
-                child: Assets.images.logoDark.svg(
-                  width: 300,
-                  height: 300,
-                  placeholderBuilder: (context) =>
-                      const CircularIndicatorWidget(),
-                  colorFilter: ColorFilter.mode(
-                    Theme.of(context).primaryColor,
-                    BlendMode.srcIn,
+      body: BlocListener<SharedBloc, SharedState>(
+        listener: (context, state) {
+          if (state is SharedInitial) {
+            Future.delayed(const Duration(seconds: 2)).then((value) {
+              if (context.mounted) {
+                context.go('/home');
+              }
+            });
+          }
+        },
+        child: BlocBuilder<SharedBloc, SharedState>(
+          builder: (context, state) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Center(
+                  child: Assets.images.logoDark.svg(
+                    width: 300,
+                    height: 300,
+                    placeholderBuilder: (context) =>
+                        const CircularIndicatorWidget(),
+                    colorFilter: ColorFilter.mode(
+                      Theme.of(context).primaryColor,
+                      BlendMode.srcIn,
+                    ),
                   ),
                 ),
-              ),
-              Text(
-                AppLocalizations.of(context)!.mindWrite,
-                style: TextStyle(
-                    fontFamily: FontFamily.samim,
-                    color: AppColorConstants.primaryDarkColor,
-                    decoration: TextDecoration.none,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 30),
-              ),
-            ],
-          );
-        },
+                Text(
+                  AppLocalizations.of(context)!.mindWrite,
+                  style: TextStyle(
+                      fontFamily: FontFamily.samim,
+                      color: AppColorConstants.primaryDarkColor,
+                      decoration: TextDecoration.none,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 30),
+                ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }

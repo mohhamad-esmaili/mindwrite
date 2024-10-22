@@ -75,10 +75,29 @@ class AboutView extends StatelessWidget {
             ),
           ),
           InkWell(
-            onTap: () => _launchURL(
-              context,
-              'mailto:esmaili.mohhamad@gmail.com?subject=Mindwrite Feedback&body=I%liked%20your%20app%20so%20much%20💖%20mindwrite%20feedback.',
-            ),
+            onTap: () async {
+              final parameters = <String, String>{
+                'subject': 'MindWrite feedback',
+                'body': 'Thanks for your app 💖',
+              };
+              final Uri emailLaunchUri = Uri(
+                scheme: 'mailto',
+                path: 'esmaili.mohhamad@gmail.com',
+                query: parameters.entries
+                    .map((e) =>
+                        '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
+                    .join('&'),
+              );
+              try {
+                await launchUrl(emailLaunchUri);
+              } catch (e) {
+                if (context.mounted) {
+                  SnackbarService.showStatusSnackbar(
+                      message: AppLocalizations.of(context)!.couldntload,
+                      context: context);
+                }
+              }
+            },
             child: Container(
               color: AppColorConstants.primaryDarkColor.withOpacity(0.5),
               margin: const EdgeInsets.symmetric(vertical: 2),
@@ -98,9 +117,9 @@ class AboutView extends StatelessWidget {
     );
   }
 
-  Future<void> _launchURL(BuildContext context, String selectedUrl,
+  Future<void> _launchURL(BuildContext context, String? selectedUrl,
       [String? fallbackUrl]) async {
-    final Uri url = Uri.parse(selectedUrl);
+    final Uri url = Uri.parse(selectedUrl!);
 
     if (await canLaunchUrl(url)) {
       await launchUrl(url);
