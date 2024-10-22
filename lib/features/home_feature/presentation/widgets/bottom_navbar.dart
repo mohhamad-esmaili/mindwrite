@@ -23,9 +23,10 @@ class HomeBottomBar extends StatelessWidget {
       child: Directionality(
         textDirection: TextDirection.ltr,
         child: BottomAppBar(
-          color: context.read<SharedBloc>().themeMode == ThemeMode.light
-              ? AppColorConstants.appbarLightColor
-              : AppColorConstants.appbarDarkColor,
+          color:
+              BlocProvider.of<SharedBloc>(context).themeMode == ThemeMode.light
+                  ? AppColorConstants.appbarLightColor
+                  : AppColorConstants.appbarDarkColor,
           notchMargin: 10,
           padding: const EdgeInsets.all(5),
           height: 70,

@@ -74,6 +74,14 @@ class AppLocalizations {
   String get labelName => translate('Label name');
   String get makeACopy => translate('Make a copy');
   String get noteCopied => translate('Note copied');
+  String get madewith => translate('Made with');
+  String get influtter => translate('in Flutter');
+  String get rateApp => translate('rate app');
+  String get bazaar => translate('bazaar');
+  String get myket => translate('myket');
+  String get contact => translate('contact');
+  String get followandgive => translate('Follow and give');
+  String get projectingithub => translate('project in github');
   String get editLabels => translate('Edit labels');
   String get backgrounds => translate('Backgrounds');
   String get description => translate('Description');
